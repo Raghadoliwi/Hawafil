@@ -33,34 +33,49 @@ const MenuIcon = ({ navigate }) => <Icon
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
 export default class addBusDriver extends React.Component {
-    /*UNSAFE_componentWillMount(){
-     var config = {
-     apiKey: "AIzaSyAtpvd_8Vhp9mLX8zOKmQrrQflrzURbEgk",
-     authDomain: "hawafil-6face.firebaseapp.com",
-     databaseURL: "https://hawafil-6face.firebaseio.com",
-     projectId: "hawafil-6face",
-     storageBucket: "hawafil-6face.appspot.com",
-     messagingSenderId: "165149934110"
-     };
-     //firebase.initializeApp(config);
+    UNSAFE_componentWillMount(){
+        const firebaseConfig = {
+          apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+          authDomain: "hawafildb.firebaseapp.com",
+          databaseURL: "https://hawafildb.firebaseio.com",
+          projectId: "hawafildb",
+          storageBucket: "",
+          messagingSenderId: "932110912763",
+          appId: "1:932110912763:web:68fca60e805543a655b45e",
+          measurementId: "G-G21F8ME7TS"
+        };
 
+        firebase.initializeApp(firebaseConfig);
+      }
      state = {
      email: '' ,
      password: '',
+     workerId: '',
+     driverName: '',
+     phoneNo: '',
+     busNo: '',
      errorMessage: null
      }
 
-     handleLogin = () => {
-     const {email, password} = this.state
-     firebase
-     .auth()
-     .signInWithEmailAndPassword(email,password)
-     .then(() => this.props.navigation.navigate('Main'))
-     .catch(error => this.setState({ errorMessage:
-     error.message}))
-     console.log('handleLogin')
-     }
-     }*/
+     handleInserting = () => {
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then( (data) => {
+            firebase.auth().onAuthStateChanged( user => {
+                if (user) {
+                  this.userId = user.uid
+                  firebase.database().ref('drivers/'+this.userId).set(
+                    {
+                      name: this.state.driverName,
+                      id: this.state.workerId,
+                      phoneNo: this.state.phoneNo,
+                      busNo: this.state.busNo,
+                    })
+                }
+              });
+        }).then(() => console.log('success!'))
+        //raghad plz edit the above line to the page you wanna navigate to after insertion
+        .catch(error => console.log(error.message ))
+    }//end inserting a driver
 
      static navigationOptions = function(props) {
      return {
@@ -94,9 +109,8 @@ export default class addBusDriver extends React.Component {
                 placeholder="الرقم الوظيفي"
                 keyboardType="ascii-capable"
                 underlineColorAndroid='transparent'
-                onChangeText={email => this.setState({ email })}
-                //line below is added new by lama:
-                //value={this.state.email}
+                onChangeText={workerId => this.setState({ workerId })}
+                value={this.state.workerId}
                 />
                 </View>
 
@@ -107,9 +121,8 @@ export default class addBusDriver extends React.Component {
                 placeholder="اسم القائد"
                 keyboardType="ascii-capable"
                 underlineColorAndroid='transparent'
-                onChangeText={email => this.setState({ email })}
-                //line below is added new by lama:
-                //value={this.state.email}
+                onChangeText={ driverName => this.setState({ driverName })}
+                value={this.state.driverName}
                 />
 
                 </View>
@@ -119,9 +132,9 @@ export default class addBusDriver extends React.Component {
                 placeholder="رقم الهاتف"
                 keyboardType="ascii-capable"
                 underlineColorAndroid='transparent'
-                onChangeText={email => this.setState({ email })}
+                onChangeText={phoneNo => this.setState({ phoneNo })}
                 //line below is added new by lama:
-                //value={this.state.email}
+                value={this.state.phoneNo}
                 />
                 </View>
 
@@ -135,7 +148,7 @@ export default class addBusDriver extends React.Component {
                 secureTextEntry
                 autoCapitalize="none"
                 onChangeText={password => this.setState({ password })}
-                //value={this.state.password}
+                value={this.state.password}
                 />
                 </View>
 
@@ -146,8 +159,7 @@ export default class addBusDriver extends React.Component {
                 keyboardType="ascii-capable"
                 underlineColorAndroid='transparent'
                 onChangeText={email => this.setState({ email })}
-                //line below is added new by lama:
-                //value={this.state.email}
+                value={this.state.email}
                 />
                 </View>
 
@@ -157,16 +169,17 @@ export default class addBusDriver extends React.Component {
                 placeholder="رقم الحافلة"
                 keyboardType="ascii-capable"
                 underlineColorAndroid='transparent'
-                onChangeText={email => this.setState({ email })}
+                onChangeText={busNo => this.setState({ busNo })}
                 //line below is added new by lama:
-                //value={this.state.email}
+                value={this.state.busNo}
                 />
                 </View>
 
 
 
 
-                <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={this.handleLogin}>
+                <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
+                onPress={this.handleInserting}>
 
                 <Text style={styles.loginText}>إضافة</Text>
 

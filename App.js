@@ -16,9 +16,8 @@ import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
-import Constants from 'expo-constants';
 
-import * as Font from 'expo-font';
+//import * as Font from 'expo-font';
 import registration from './screens/registration'
 import manageBuses from './screens/manageBuses'
 import manageDrivers from './screens/manageDrivers'
@@ -48,16 +47,20 @@ const MenuIcon = ({ navigate }) => <Icon
 class login extends React.Component {
 
 
-	UNSAFE_componentWillMount(){
-    var config = {
-      apiKey: "AIzaSyAtpvd_8Vhp9mLX8zOKmQrrQflrzURbEgk",
-      authDomain: "hawafil-6face.firebaseapp.com",
-      databaseURL: "https://hawafil-6face.firebaseio.com",
-      projectId: "hawafil-6face",
-      storageBucket: "hawafil-6face.appspot.com",
-      messagingSenderId: "165149934110"
+  UNSAFE_componentWillMount(){
+    const firebaseConfig = {
+      apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+      authDomain: "hawafildb.firebaseapp.com",
+      databaseURL: "https://hawafildb.firebaseio.com",
+      projectId: "hawafildb",
+      storageBucket: "",
+      messagingSenderId: "932110912763",
+      appId: "1:932110912763:web:68fca60e805543a655b45e",
+      measurementId: "G-G21F8ME7TS"
     };
-      //firebase.initializeApp(config);
+
+    firebase.initializeApp(firebaseConfig);
+  }
 
   state = {
             email: '' ,
@@ -70,12 +73,25 @@ class login extends React.Component {
       firebase
         .auth()
         .signInWithEmailAndPassword(email,password)
-        .then(() => this.props.navigation.navigate('Main'))
-        .catch(error => this.setState({ errorMessage:
-        error.message}))
+        .then((data) => {
+          firebase.auth().onAuthStateChanged( user => {
+            if (user) {
+              this.userId = user.uid
+              firebase.database().ref('managers/'+this.userId)
+              .once('value').then(function(snapshot) {
+                //get any data we what, using for in
+                //https://stackoverflow.com/questions/37506331/ref-once-not-called-on-firebase
+              })
+            }
+          });
+
+          //raghad plz change the below line to the page you wanna navigate to
+          this.props.navigation.navigate('manageDrivers')
+        })
+        .catch(error => console.log(error.message ))
       console.log('handleLogin')
     }
-  }
+
 	static navigationOptions = function(props) {
   return {
 		drawerLabel:'الدخول',
