@@ -1,0 +1,166 @@
+import * as React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  TouchableHighlight,
+  Image,
+  Alert} from 'react-native';
+  import firebase from 'firebase'
+
+export default class App extends React.Component {
+  UNSAFE_componentWillMount(){
+    const firebaseConfig = {
+      apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+      authDomain: "hawafildb.firebaseapp.com",
+      databaseURL: "https://hawafildb.firebaseio.com",
+      projectId: "hawafildb",
+      storageBucket: "",
+      messagingSenderId: "932110912763",
+      appId: "1:932110912763:web:68fca60e805543a655b45e",
+      measurementId: "G-G21F8ME7TS"
+    };
+  
+    firebase.initializeApp(firebaseConfig);
+  }
+  
+  state = { email: '', password: '', errorMessage: null }
+  handleSignUp = () => {
+    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    .then((data) => {
+        /*
+        هنا يضبط اضافة عادية مب بالاي دي الجديد
+        */
+        firebase.database().ref('users/34334').set(
+        {
+          name: 'outside' ,
+          age: 500
+        })
+        
+        //below is new code:
+        firebase.auth().onAuthStateChanged( user => {
+          if (user) { 
+            this.userId = user.uid 
+            firebase.database().ref('users/'+this.userId).set(
+              {
+                name: 'NEW CODE PLZ WORK',
+                age: 35
+              })
+          }
+        });
+        //new code ends.
+        
+      firebase.auth().onAuthStateChanged(function(data) {
+        if (data) {
+          // User is signed in.
+          userID = data.user.uid
+          console.log('ueid',data.user.uid)
+          firebase.database().ref('users/'+userID).set(
+            {
+              name: 'Su, userID, after loading',
+              age: 35
+            })
+
+            firebase.database().ref('users/'+ueid).set(
+              {
+                name: 'Su, ueid adding, after loading',
+                age: 35
+              })
+
+              firebase.database().ref('users/10001').set(
+                {
+                  name: 'normal inside on auth',
+                  age: 40
+                }
+              )
+              firebase.database().ref('users/'+verdict).set(
+                {
+                  name: 'verdict inside on auth',
+                  age: 40
+                }
+              )
+              
+          /*.then(() => {
+            console.log('inserted');
+          }).catch((error) => {
+            console.log('error');
+          })
+          */
+        }//end if
+        else{
+          firebase.database().ref('users/3949').set(
+            {
+              name: 'ELSE' ,
+              age: 500
+            })
+        }//end else
+      });
+      /*
+      if (data){
+        
+      }//end if
+*/
+      //console.log('userID',data.user.uid)
+
+        //console.log('uid',data.user.uid)
+        //firebase.auth().onAuthStateChanged
+        //firebase.auth().onAuthStateChanged(function(data) {
+          //paste the code here
+        //})
+      }).catch(error => this.setState({ errorMessage: error.message }))
+      //this.props.navigation.navigate('Main'))
+  }//end handle sign up
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>Sign Up</Text>
+        
+       {/*  {this.state.errorMessage &&
+          <Text style={{ color: 'red' }}>
+            {this.state.errorMessage}
+
+          </Text>} */}
+        <TextInput
+          placeholder="Email"
+          autoCapitalize="none"
+          style={styles.textInput}
+          onChangeText={email => this.setState({ email })}
+          value={this.state.email}
+        />
+        <TextInput
+          secureTextEntry
+          placeholder="Password"
+          autoCapitalize="none"
+          style={styles.textInput}
+          onChangeText={password => this.setState({ password })}
+          value={this.state.password}
+        />
+        <Button title="Sign Up" onPress={this.handleSignUp} />
+        <Button
+          title="Already have an account? Login"
+          onPress={() => this.props.navigation.navigate('Login')}
+        />
+        <Text>
+          lama
+        </Text>
+      </View>
+    )
+  }
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  textInput: {
+    height: 40,
+    width: '90%',
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginTop: 8
+  }
+})
