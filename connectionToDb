@@ -4,13 +4,16 @@ import firebase from 'firebase';
 //at the beginning of the Class, add this method:
 
 UNSAFE_componentWillMount(){
-    var config = {
-      apiKey: "AIzaSyAtpvd_8Vhp9mLX8zOKmQrrQflrzURbEgk",
-      authDomain: "hawafil-6face.firebaseapp.com",
-      databaseURL: "https://hawafil-6face.firebaseio.com",
-      projectId: "hawafil-6face",
-      storageBucket: "hawafil-6face.appspot.com",
-      messagingSenderId: "165149934110"
+    const firebaseConfig = {
+      apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+      authDomain: "hawafildb.firebaseapp.com",
+      databaseURL: "https://hawafildb.firebaseio.com",
+      projectId: "hawafildb",
+      storageBucket: "",
+      messagingSenderId: "932110912763",
+      appId: "1:932110912763:web:68fca60e805543a655b45e",
+      measurementId: "G-G21F8ME7TS"
     };
-    
-    firebase.initializeApp(config);
+  
+    firebase.initializeApp(firebaseConfig);
+  }
