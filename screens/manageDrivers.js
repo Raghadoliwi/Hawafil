@@ -10,6 +10,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
+import addBusDriver from './screens/addBusDriver'
 
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
@@ -153,4 +154,8 @@ const styles = StyleSheet.create({
     fontSize: 18 ,
 		fontWeight:'bold'
   }
+});
+
+const manageDriversStack = createStackNavigator({
+  addBusDriver: { screen: addBusDriver },
 });
