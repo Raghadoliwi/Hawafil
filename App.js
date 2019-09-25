@@ -19,7 +19,7 @@ import firebase from 'firebase';
 import Constants from 'expo-constants';
 
 import * as Font from 'expo-font';
-
+import registration from './screens/registration'
 import manageBuses from './screens/manageBuses'
 import manageDrivers from './screens/manageDrivers'
 import addBusDriver from './screens/addBusDriver'
@@ -149,7 +149,8 @@ class login extends React.Component {
     <Text style={{ color: 'grey', alignSelf:'center', paddingHorizontal:5}}>أو</Text>
     <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginRight:20}} />
 </View>
-				 			<TouchableHighlight style={[styles.buttonContainer, styles.registerButton]} onPress={() => this.onClickListener('register')}>
+				 			<TouchableHighlight style={[styles.buttonContainer, styles.registerButton]}
+               onPress={() => this.props.navigation.push('registration')}>
 				 					<Text style={styles.registerText}>التسجيل كمستخدم جديد</Text>
 				 			</TouchableHighlight>
 				 			</View>
@@ -258,6 +259,7 @@ registerText:{
 
 const loginStack = createStackNavigator({
   login: { screen: login },
+  registration: { screen: registration },
   manageBuses: { screen: manageBuses },
   manageDrivers: { screen: manageDrivers },
 
