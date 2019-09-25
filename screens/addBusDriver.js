@@ -1,18 +1,27 @@
-import * as React from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    Button,
-    TouchableHighlight,
-    Image,
-    Alert} from 'react-native';
-//import firebase from 'firebase'
+import React from 'react';
+//import react in our code.
+
+import { Text, View, StyleSheet, ScrollView, SafeAreaView,TouchableHighlight } from 'react-native';
+import { Card } from 'react-native-elements';
+import {DrawerNavigator} from 'react-navigation';
+import {createAppContainer } from 'react-navigation';
+import {createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import Icon from 'react-native-vector-icons/Octicons';
+import firebase from 'firebase';
+import Constants from 'expo-constants';
+
+const MenuIcon = ({ navigate }) => <Icon
+    name='three-bars'
+    size={20}
+    color='#fff'
+    onPress={() => this.navigation.openDrawer()}
+/>;
+
 
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
-export default class App extends React.Component {
+export default class addBusDriver extends React.Component {
     /*UNSAFE_componentWillMount(){
      var config = {
      apiKey: "AIzaSyAtpvd_8Vhp9mLX8zOKmQrrQflrzURbEgk",
@@ -42,6 +51,7 @@ export default class App extends React.Component {
      }
      }*/
     render() {
+      console.log ('what going on');
         return (
                 <View style={styles.container}>
 

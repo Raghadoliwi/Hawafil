@@ -10,8 +10,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
-import addBusDriver from './screens/addBusDriver'
-
+import addBusDriver from './addBusDriver'
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
     size={20}
@@ -21,7 +20,7 @@ const MenuIcon = ({ navigate }) => <Icon
 
 
 
-export default class AddBus extends React.Component {
+export default class manageDrivers extends React.Component {
 
 	static navigationOptions = function(props) {
   return {
@@ -48,7 +47,8 @@ export default class AddBus extends React.Component {
       <View style={{padding: 10, flex: 1}, styles.container} >
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
-     <TouchableHighlight style={[styles.buttonContainer, styles.addButton]} onPress={() => this.onClickListener('add')}>
+     <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
+     onPress={() => this.props.navigation.navigate('addBusDriver')}>
           <Text style={styles.addText}>إضافة قائد حافلة</Text>
         </TouchableHighlight>
 
@@ -154,8 +154,4 @@ const styles = StyleSheet.create({
     fontSize: 18 ,
 		fontWeight:'bold'
   }
-});
-
-const manageDriversStack = createStackNavigator({
-  addBusDriver: { screen: addBusDriver },
 });
