@@ -23,6 +23,7 @@ import * as Font from 'expo-font';
 import manageBuses from './screens/manageBuses'
 import manageDrivers from './screens/manageDrivers'
 import addBusDriver from './screens/addBusDriver'
+import addBus from './screens/addBus'
 
 //import addBus from './screens/addBus'
 
@@ -259,13 +260,18 @@ const loginStack = createStackNavigator({
   login: { screen: login },
   manageBuses: { screen: manageBuses },
   manageDrivers: { screen: manageDrivers },
+
 });
 
 const manageBusesStack = createStackNavigator({
   manageBuses: { screen: manageBuses },
+  addBus: { screen: addBus }
+
 });
 const manageDriversStack = createStackNavigator({
   manageBuses: { screen: manageDrivers },
+    addBusDriver: { screen: addBusDriver }
+
 });
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -277,9 +283,6 @@ const MyDrawerNavigator = createDrawerNavigator({
   },
   'إدارة السائقين': {
     screen: manageDriversStack,
-  },
-  'إضافة سائق': {
-    screen: addBusDriver,
   },
 },
 {

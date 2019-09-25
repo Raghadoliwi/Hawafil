@@ -47,7 +47,8 @@ export default class AddBus extends React.Component {
       <View style={{padding: 10, flex: 1}, styles.container} >
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
-     <TouchableHighlight style={[styles.buttonContainer, styles.addButton]} onPress={() => this.onClickListener('add')}>
+     <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
+     onPress={() => this.props.navigation.push('addBus')}>
           <Text style={styles.addText}>إضافة حافلة</Text>
         </TouchableHighlight>
 
