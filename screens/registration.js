@@ -1,37 +1,67 @@
 import * as React from 'react';
 import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    Button,
-    TouchableHighlight,
-    Image,
-    Alert} from 'react-native';
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+	StatusBar,
+  TouchableHighlight,
+	ScrollView,
+	SafeAreaView,
+  Image,
+  Alert} from 'react-native';
+import {createAppContainer } from 'react-navigation';
+import {createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import Icon from 'react-native-vector-icons/Octicons';
+import firebase from 'firebase';
+import Constants from 'expo-constants';
 
 export default class registration extends React.Component {
+  static navigationOptions = function(props) {
+  return {
+    title: '',
+    headerLeft: <View style={{paddingLeft:16}}>
+       <Icon
+           name="chevron-left"
+           size={25}
+           color='white'
+           onPress={() => props.navigation.goBack()} />
+   </View>,
+
+   headerTintColor: 'white',
+         headerStyle: {
+            backgroundColor: "#4C73CC"
+         }
+ }
+};
 
     render() {
         return (
                 <View style={styles.container}>
-
+                <Image source={require('.././assets/logo-white-borders.png')}
+   						style={{resizeMode: 'cover',width: 200, height: 144, marginTop:10}}/>
                 <View style={styles.smallContainer}>
 
                 <Text style={styles.Main}> التسجيل كـ</Text>
 
 
 
-                <TouchableHighlight style={[styles.firstButtonContainer, styles.typeButton]} onPress={this.handleLogin}>
+                <TouchableHighlight style={[styles.firstButtonContainer, styles.typeButton]}
+                onPress={this.handleLogin}>
 
                 <Text style={styles.firstText}>منشأة تعليمية</Text>
                 </TouchableHighlight>
 
-                <TouchableHighlight style={[styles.secondButtonContainer, styles.typeButton]} onPress={this.handleLogin}>
+                <TouchableHighlight style={[styles.secondButtonContainer, styles.typeButton]}
+                onPress={() => this.props.navigation.push('RegisterParent')}>
 
                 <Text style={styles.secondText}>ولي أمر طالب</Text>
                 </TouchableHighlight>
 
-                <TouchableHighlight style={[styles.thirdButtonContainer, styles.typeButton]} onPress={this.handleLogin}>
+                <TouchableHighlight style={[styles.thirdButtonContainer, styles.typeButton]}
+                onPress={this.handleLogin}>
 
                 <Text style={styles.thirdText}>طالب</Text>
                 </TouchableHighlight>
@@ -58,16 +88,19 @@ const styles = StyleSheet.create({
                                  justifyContent: 'center',
                                  alignItems: 'center',
                                  backgroundColor: '#F7FAFF',
-                                 flexDirection: 'row',
                                  },
                                  smallContainer:{
-                                 marginTop:400,
+                                 marginTop:20,
                                  justifyContent: 'center',
                                  alignItems: 'center',
                                  backgroundColor: 'white',
                                  borderRadius:10,
-                                 width:300,
+                                 width:275,
                                  height:300,
+                                 shadowOpacity: 0.04,
+                                         shadowRadius: 5,
+                                         shadowColor: 'black',
+                                         shadowOffset: { height: 0, width: 0 }
                                  },
 
 

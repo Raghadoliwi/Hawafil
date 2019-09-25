@@ -37,7 +37,7 @@ export default class SignUpView extends Component {
       <Text style={styles.header}>• ﻛ ولي أمر •</Text>
       <Text style={styles.perInfo}>المعلومات الشخصية</Text>
         <View style={styles.inputContainer}>
-          
+
           <TextInput style={styles.inputs}
               placeholder="الاسم"
               keyboardType="text"
@@ -46,16 +46,16 @@ export default class SignUpView extends Component {
         </View>
 
         <View style={styles.inputContainer}>
-          
+
           <TextInput style={styles.inputs}
               placeholder="البريد الإلكتروني"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
               onChangeText={(email) => this.setState({email})}/>
         </View>
-        
+
         <View style={styles.inputContainer}>
-          
+
           <TextInput style={styles.inputs}
               placeholder="كلمة المرور"
               secureTextEntry={true}
@@ -86,14 +86,14 @@ export default class SignUpView extends Component {
   }}
 />
               <Text style={styles.addChild}>إضافة التابعين</Text>
-                  
+
                <View style={styles.inputContainerDown}>
                <TextInput style={styles.inputDown}
               placeholder="اسم الطالب"
               keyboardType="acci-capable"
               underlineColorAndroid='transparent'
               onChangeText={(childName) => this.setState({childName})}/>
-            
+
               </View>
               <View style={styles.inputContainerDown}>
                <TextInput style={styles.inputDown}
@@ -101,7 +101,7 @@ export default class SignUpView extends Component {
               keyboardType="numeric"
               underlineColorAndroid='transparent'
               onChangeText={(busNo) => this.setState({busNo})}/>
-            
+
               </View>
               <View style={styles.inputContainerDown}>
                <TextInput style={styles.inputDown}
@@ -109,7 +109,7 @@ export default class SignUpView extends Component {
               keyboardType="acci-capable"
               underlineColorAndroid='transparent'
               onChangeText={(school) => this.setState({school})}/>
-            
+
               </View>
         <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() => this.onClickListener('sign_up')}>
           <Text style={styles.signUpText}>التالي</Text>
@@ -145,20 +145,20 @@ const styles = StyleSheet.create({
      justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderRadius:'10',
+    borderRadius:10,
       width:300,
       height:550
   },
-  header:{ 
+  header:{
     color: "#8197C6",
-    fontsize: 100 ,//problema
-    fontWeight:"900", 
+
+    fontWeight:"900",
     bottom: 30,
   },
   perInfo:{
     color: "#9F9F9F",
-    fontsize: 80 ,
-    fontWeight:"100", 
+
+    fontWeight:"100",
     bottom: 40,
     marginTop: 20,
   },
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
       alignSelf:'flex-end',
       borderColor: '#EAEAEA',
       marginLeft:10,
-      
+
   },
   phoneContainer:{
      backgroundColor: '#FFFFFF',
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
       marginRight: 40,
       flexDirection: 'row-reverse',
       //justifyContent:'flex-end',
-      alignItems:'felx-end',
+      alignItems:'flex-end',
       borderColor: '#EAEAEA'
   },
   phoneInput:{
@@ -230,10 +230,10 @@ const styles = StyleSheet.create({
   },*/
   addChild:{
     color: "#9F9F9F",
-    fontsize: 80 ,
-    fontWeight:"100", 
+
+    fontWeight:"100",
     bottom: 9,
-   
+
   },
   inputContainerDown:{
     backgroundColor: '#FFFFFF',
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
      // alignItems:'left',
       borderColor: '#EAEAEA',
       marginTop:15,
-      
+
   },
    inputDown:{
      flex:1,
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
       borderColor: '#EAEAEA',
       marginLeft:10,
    },
-  
+
   buttonContainer: {
     height:45,
     flexDirection: 'row',
@@ -282,5 +282,3 @@ const styles = StyleSheet.create({
     color: 'white',
   }
 });
-
-

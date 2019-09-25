@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
     borderRadius: 550,
   },
   cards:{
-    borderRadius: 25, width: 250, marginTop: 20, borderWidth: 0.5, shadowOpacity: 0.04,
+    borderRadius: 25, width: 250, marginTop: 20, borderWidth: 0.5,
+    shadowOpacity: 0.04,
             shadowRadius: 5,
             shadowColor: 'black',
             shadowOffset: { height: 0, width: 0 },
