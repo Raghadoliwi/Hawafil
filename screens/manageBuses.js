@@ -2,14 +2,48 @@ import React from 'react';
 //import react in our code.
 
 import { Text, View, StyleSheet, ScrollView, SafeAreaView,TouchableHighlight } from 'react-native';
-//import all the components we are going to use.
-import Constants from 'expo-constants';
 import { Card } from 'react-native-elements';
 import {DrawerNavigator} from 'react-navigation';
+import {createAppContainer } from 'react-navigation';
+import {createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import Icon from 'react-native-vector-icons/Octicons';
+import firebase from 'firebase';
+import Constants from 'expo-constants';
+
+const MenuIcon = ({ navigate }) => <Icon
+    name='three-bars'
+    size={20}
+    color='#fff'
+    onPress={() => this.navigation.openDrawer()}
+/>;
+
+
 
 export default class AddBus extends React.Component {
+
+	static navigationOptions = function(props) {
+  return {
+		drawerLabel:'إدارة الحافلات',
+    title: 'إدارة الحافلات',
+    headerLeft: <View style={{paddingLeft:16}}>
+				<Icon
+						name="three-bars"
+						size={25}
+						color='white'
+						onPress={() => props.navigation.openDrawer()} />
+		</View>,
+
+		headerTintColor: 'white',
+		      headerStyle: {
+		         backgroundColor: "#4C73CC"
+		      }
+	}
+};
+
 	render() {
     return (
+
        <SafeAreaView style={styles.scrollArea}>
       <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -18,14 +52,7 @@ export default class AddBus extends React.Component {
      <TouchableHighlight style={[styles.buttonContainer, styles.addButton]} onPress={() => this.onClickListener('add')}>
           <Text style={styles.addText}>إضافة حافلة</Text>
         </TouchableHighlight>
-<View
-  style={{
-    borderBottomColor: '#EAEAEA',
-    borderBottomWidth: 2,
-    width: 260,
-     marginLeft: 50,
-  }}
-/>
+
 
         <Card style={{fontSize:96, backgroundcolor: '#3C68BF', }} title="حافلة #٩">
         {/*react-native-elements Card*/}
@@ -81,19 +108,19 @@ export default class AddBus extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F7FAFF',
-
-  },
+	container: {
+	flex: 1,
+	alignSelf: 'stretch',
+	justifyContent: 'center',
+	alignItems: 'center',
+	backgroundColor: '#F7FAFF',
+},
   smallContainer: {
-    top: 80,
+    top: 50,
   },
   scrollArea: {
     flex: 1,
-    marginTop: Constants.statusBarHeight,
+
   },
   scrollView: {
     //backgroundColor: 'pink',
@@ -101,11 +128,11 @@ const styles = StyleSheet.create({
   },
 
   paragraph: {
-    marginTop: 20,
-    fontSize: 18,
+    marginTop: 10,
+    fontSize: 14,
 
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'right',
     color: '#3C68BF',
     width:300 ,
     borderRadius: 550,
@@ -120,18 +147,19 @@ const styles = StyleSheet.create({
     borderRadius:30,
   },
   addButton: {
-    //backgroundColor: "#FF4DFF",
-    marginRight: 90,
+		flex: 1,
+		alignSelf:'center',
       justifyContent: 'center',
     alignItems: 'center',
     width: 180,
-    height:30,
+    height:40,
     bottom: 5,
-    backgroundColor:"#3C68BF",
+    backgroundColor:"#EDC51B",
     //marginBottom: 300,
   },
   addText: {
     color: 'white',
-    fontSize: 16 ,
+    fontSize: 18 ,
+		fontWeight:'bold'
   }
 });
