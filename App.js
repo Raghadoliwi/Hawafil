@@ -21,6 +21,8 @@ import Constants from 'expo-constants';
 import * as Font from 'expo-font';
 
 import manageBuses from './screens/manageBuses'
+import manageDrivers from './screens/manageDrivers'
+
 //import addBus from './screens/addBus'
 
 const MenuIcon = ({ navigate }) => <Icon
@@ -255,10 +257,14 @@ registerText:{
 const loginStack = createStackNavigator({
   login: { screen: login },
   manageBuses: { screen: manageBuses },
+  manageDrivers: { screen: manageDrivers },
 });
 
-const addBusesStack = createStackNavigator({
+const manageBusesStack = createStackNavigator({
   manageBuses: { screen: manageBuses },
+});
+const manageDriversStack = createStackNavigator({
+  manageBuses: { screen: manageDrivers },
 });
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -266,7 +272,10 @@ const MyDrawerNavigator = createDrawerNavigator({
     screen: loginStack,
   },
   'إدارة الحافلات': {
-    screen: addBusesStack,
+    screen: manageBusesStack,
+  },
+  'إدارة السائقين': {
+    screen: manageDriversStack,
   },
 },
 {

@@ -44,17 +44,14 @@ export default class AddBus extends React.Component {
 	render() {
     return (
 
-       <SafeAreaView style={styles.scrollArea}>
-      <ScrollView style={styles.scrollView}>
-      <View style={styles.container}>
-      <View style={styles.smallContainer}>
+      <View style={{padding: 10, flex: 1}, styles.container} >
+      <ScrollView style={{flex: 1, marginBottom:20}}>
 
      <TouchableHighlight style={[styles.buttonContainer, styles.addButton]} onPress={() => this.onClickListener('add')}>
           <Text style={styles.addText}>إضافة حافلة</Text>
         </TouchableHighlight>
 
-
-        <Card style={{fontSize:96, backgroundcolor: '#3C68BF', }} title="حافلة #٩">
+<Card containerStyle={styles.cards} title="حافلة #٩">
         {/*react-native-elements Card*/}
           <Text style={styles.paragraph}>
             • اسم السائق: فاروق
@@ -68,7 +65,7 @@ export default class AddBus extends React.Component {
           </Text>
         </Card>
 
-            <Card title="حافلة #٣">
+            <Card containerStyle={styles.cards} title="حافلة #٣">
         {/*react-native-elements Card*/}
           <Text style={styles.paragraph}>
             • اسم السائق: محمد
@@ -81,13 +78,10 @@ export default class AddBus extends React.Component {
            • رقم لوحة الحافلة: ٦٦٦ ب ي ت
           </Text>
         </Card>
-        <Card title="معلومات الحافلة">
+        <Card containerStyle={styles.cards} title="حافلة #٧">
         {/*react-native-elements Card*/}
           <Text style={styles.paragraph}>
             • اسم السائق: محمود
-          </Text>
-          <Text style={styles.paragraph}>
-            • رقم الحافلة: ٧
           </Text>
 
           <Text style={styles.paragraph}>
@@ -98,51 +92,48 @@ export default class AddBus extends React.Component {
           </Text>
         </Card>
 
-      </View>
-      </View>
 
       </ScrollView>
-       </SafeAreaView>
+      </View>
+
+
 
     );
   }
 }
 const styles = StyleSheet.create({
 	container: {
-	flex: 1,
-	alignSelf: 'stretch',
 	justifyContent: 'center',
 	alignItems: 'center',
+  flex: 1,
 	backgroundColor: '#F7FAFF',
 },
-  smallContainer: {
-    top: 50,
-  },
-  scrollArea: {
-    flex: 1,
 
-  },
-  scrollView: {
-    //backgroundColor: 'pink',
-   // marginHorizontal: 20,
-  },
+
 
   paragraph: {
     marginTop: 10,
     fontSize: 14,
-
     fontWeight: 'bold',
     textAlign: 'right',
     color: '#3C68BF',
-    width:300 ,
     borderRadius: 550,
   },
+  cards:{
+    borderRadius: 25, width: 250, marginTop: 20, borderWidth: 0.5, shadowOpacity: 0.04,
+            shadowRadius: 5,
+            shadowColor: 'black',
+            shadowOffset: { height: 0, width: 0 },
+
+  }
+  ,
   buttonContainer: {
     height:45,
+    top:25,
     flexDirection: 'row-reverse',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:12,
+    marginBottom:20,
     width:250,
     borderRadius:30,
   },
