@@ -58,7 +58,7 @@ class login extends React.Component {
       appId: "1:932110912763:web:68fca60e805543a655b45e",
       measurementId: "G-G21F8ME7TS"
     };
-
+  
     firebase.initializeApp(firebaseConfig);
   }
 

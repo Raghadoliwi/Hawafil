@@ -56,7 +56,6 @@ export default class addBusDriver extends React.Component {
      busNo: '',
      errorMessage: null
      }
-
      handleInserting = () => {
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then( (data) => {
@@ -72,7 +71,7 @@ export default class addBusDriver extends React.Component {
                     })
                 }
               });
-        }).then(() => console.log('success!'))
+        }).then(() => this.props.navigation.navigate('manageDrivers'))
         //raghad plz edit the above line to the page you wanna navigate to after insertion
         .catch(error => console.log(error.message ))
     }//end inserting a driver
@@ -178,8 +177,12 @@ export default class addBusDriver extends React.Component {
 
 
 
+<<<<<<< HEAD
                 <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
                 onPress={this.handleInserting}>
+=======
+                <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={this.handleInserting}>
+>>>>>>> 8505f3e6ec5e3c33e3a46589f0b4c7b37c7c001e
 
                 <Text style={styles.loginText}>إضافة</Text>
 

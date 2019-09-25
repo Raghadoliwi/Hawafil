@@ -11,34 +11,71 @@ import {
 	SafeAreaView,
   Image,
   Alert} from 'react-native';
+ 
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
-import Constants from 'expo-constants';
 
 
 
-export default class asParent extends Component {
-
-  constructor(props) {
-    super(props);
+export default class App extends Component {
+  UNSAFE_componentWillMount(){
+    const firebaseConfig = {
+      apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+      authDomain: "hawafildb.firebaseapp.com",
+      databaseURL: "https://hawafildb.firebaseio.com",
+      projectId: "hawafildb",
+      storageBucket: "",
+      messagingSenderId: "932110912763",
+      appId: "1:932110912763:web:68fca60e805543a655b45e",
+      measurementId: "G-G21F8ME7TS"
+    };
+  
+    firebase.initializeApp(firebaseConfig);
+  }
+ 
     state = {
       fullName: '',
-      email   : '',
+      email: '',
       password: '',
-    editable : '',
-    school:'',
-    busno:'',
-
+      phoneNo:'',
+    childName : '',
+    school: '',
+    busNo: '',
     }
-  }
+    addParent = () => {
+      firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then( (data) => {
+          firebase.auth().onAuthStateChanged( user => {
+              if (user) { 
+                this.userId = user.uid 
+                firebase.database().ref('parents/'+this.userId).set(
+                  {
+                    name: this.state.fullName,
+                    phoneNo: this.state.phoneNo,
+                    busNo: this.state.busNo,
+                    childName: this.state.childName,
+                    school:this.state.school,
+                  })
+              }
+            });
+      }).then(() => this.props.navigation.navigate('Main'))
+      //raghad plz edit the above line to the page you wanna navigate to after insertion
+      .catch(error => this.setState({ errorMessage: error.message }))
+  }//end adding a parent
 
+/*
   onClickListener = (viewId) => {
     Alert.alert("Alert", "Button pressed "+viewId);
   }
-  static navigationOptions = function(props) {
+  */
+
+  //lama deleted the word static from here
+  /*
+ navigationOptions = function(props) {
   return {
     title: '',
     headerLeft: <View style={{paddingLeft:16}}>
@@ -54,8 +91,8 @@ export default class asParent extends Component {
             backgroundColor: "#4C73CC"
          }
  }
-};
-
+};//end navigationOptions
+*/
   render() {
     return (
       <View style={styles.container}>
@@ -68,7 +105,9 @@ export default class asParent extends Component {
               placeholder="الاسم"
               keyboardType="ascii-capable"
               underlineColorAndroid='transparent'
-              onChangeText={(fullName) => this.setState({fullName})}/>
+              onChangeText={(fullName) => this.setState({fullName})}
+              value={this.state.fullName}
+              />
         </View>
 
         <View style={styles.inputContainer}>
@@ -77,7 +116,9 @@ export default class asParent extends Component {
               placeholder="البريد الإلكتروني"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
-              onChangeText={(email) => this.setState({email})}/>
+              onChangeText={(email) => this.setState({email})}
+              value={this.state.email}
+              />
         </View>
 
         <View style={styles.inputContainer}>
@@ -86,7 +127,9 @@ export default class asParent extends Component {
               placeholder="كلمة المرور"
               secureTextEntry={true}
               underlineColorAndroid='transparent'
-              onChangeText={(password) => this.setState({password})}/>
+              onChangeText={(password) => this.setState({password})}
+              value={this.state.password}
+              />
         </View>
 <View style={styles.phoneContainer}>
 
@@ -99,7 +142,9 @@ export default class asParent extends Component {
               placeholder="رقم الجوال"
               secureTextEntry={true}
               underlineColorAndroid='transparent'
-              onChangeText={(password) => this.setState({password})}/>
+              onChangeText={(phoneNo) => this.setState({phoneNo})}
+              value={this.state.phoneNo}
+              />
               </View>
               </View>
                <View
@@ -118,15 +163,19 @@ export default class asParent extends Component {
               placeholder="اسم الطالب"
               keyboardType="ascii-capable"
               underlineColorAndroid='transparent'
-              onChangeText={(childName) => this.setState({childName})}/>
-
+              onChangeText={(childName) => this.setState({childName})}
+              value={this.state.childName}
+              />
               </View>
               <View style={styles.inputContainerDown}>
                <TextInput style={styles.inputDown}
               placeholder="رقم الحافلة"
               keyboardType="numeric"
               underlineColorAndroid='transparent'
-              onChangeText={(busNo) => this.setState({busNo})}/>
+              onChangeText={(busNo) => this.setState({busNo})}
+              value={this.state.busNo}
+
+              />
 
               </View>
               <View style={styles.inputContainerDown}>
@@ -134,10 +183,13 @@ export default class asParent extends Component {
               placeholder=" المرحلة الدراسية"
               keyboardType="ascii-capable"
               underlineColorAndroid='transparent'
-              onChangeText={(school) => this.setState({school})}/>
+              onChangeText={(school) => this.setState({school})}
+              value={this.state.school}
+
+              />
 
               </View>
-        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() => this.onClickListener('sign_up')}>
+        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addParent}>
           <Text style={styles.signUpText}>التالي</Text>
         </TouchableHighlight>
         </View>
