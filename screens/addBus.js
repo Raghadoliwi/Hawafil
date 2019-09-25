@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import firebase from 'firebase'
 
-export default class addBuses extends Component {
+export default class addBus extends Component {
   UNSAFE_componentWillMount(){
     const firebaseConfig = {
       apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
@@ -24,8 +24,7 @@ export default class addBuses extends Component {
       appId: "1:932110912763:web:68fca60e805543a655b45e",
       measurementId: "G-G21F8ME7TS"
     };
-  
-    firebase.initializeApp(firebaseConfig);
+
   }
 
   state = {
@@ -56,13 +55,13 @@ export default class addBuses extends Component {
   }
 */
   render() {
-    
+
     return (
       <View style={styles.container}>
       <View style={styles.smallContainer}>
       <Text style={styles.header}>• إضافة بيانات حافلة جديدة •</Text>
       <View style={styles.inputContainer}>
-          
+
           <TextInput style={styles.inputs}
               placeholder="رقم الحافلة"
               keyboardType="numeric"
@@ -73,7 +72,7 @@ export default class addBuses extends Component {
         </View>
 
         <View style={styles.inputContainer}>
-          
+
           <TextInput style={styles.inputs}
               placeholder="رقم لوحة الحافلة"
               keyboardType="ascii-capable"
@@ -82,9 +81,9 @@ export default class addBuses extends Component {
               value={this.state.carPlate}
               />
         </View>
-        
+
       <View style={styles.inputContainer}>
-          
+
           <TextInput style={styles.inputs}
               placeholder="اسم السائق"
               keyboardType="ascii-capable"
@@ -94,7 +93,7 @@ export default class addBuses extends Component {
               />
         </View>
           <View style={styles.inputContainer}>
-          
+
           <TextInput style={styles.inputs}
               placeholder="الحي السكني"
               keyboardType="ascii-capable"
@@ -102,11 +101,11 @@ export default class addBuses extends Component {
               onChangeText={(neighborhood) => this.setState({neighborhood})}
               value={this.state.neighborhood}
               />
-              
+
         </View>
 
-             
-              
+
+
         <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.insertBus}>
           <Text style={styles.signUpText}>إضافة الحافلة</Text>
         </TouchableHighlight>
@@ -145,13 +144,13 @@ const styles = StyleSheet.create({
       width:300,
       height:400
   },
-  header:{ 
+  header:{
     color: "#8197C6",
     fontSize: 15 ,//problema
-    fontWeight:'900', 
+    fontWeight:'900',
     bottom: 30,
   },
-  
+
   inputs:{
       flex:1,
       height:40,
@@ -161,10 +160,10 @@ const styles = StyleSheet.create({
       //justifyContent:'flex-end',
       //marginright:16,
       borderColor: '#EAEAEA',
-      
+
   },
- 
-  
+
+
   buttonContainer: {
     height:45,
     flexDirection: 'row',

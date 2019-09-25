@@ -45,7 +45,6 @@ export default class addBusDriver extends React.Component {
           measurementId: "G-G21F8ME7TS"
         };
 
-        firebase.initializeApp(firebaseConfig);
       }
      state = {
      email: '' ,
