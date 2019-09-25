@@ -177,12 +177,8 @@ export default class addBusDriver extends React.Component {
 
 
 
-<<<<<<< HEAD
                 <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
                 onPress={this.handleInserting}>
-=======
-                <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={this.handleInserting}>
->>>>>>> 8505f3e6ec5e3c33e3a46589f0b4c7b37c7c001e
 
                 <Text style={styles.loginText}>إضافة</Text>
 
