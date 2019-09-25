@@ -55,7 +55,7 @@ export default class registration extends React.Component {
                 </TouchableHighlight>
 
                 <TouchableHighlight style={[styles.secondButtonContainer, styles.typeButton]}
-                onPress={() => this.props.navigation.push('RegisterParent')}>
+                onPress={() => this.props.navigation.push('asParent')}>
 
                 <Text style={styles.secondText}>ولي أمر طالب</Text>
                 </TouchableHighlight>

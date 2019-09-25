@@ -1,17 +1,26 @@
-import React, { Component } from 'react';
+import React , {Component} from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
   Button,
+	StatusBar,
   TouchableHighlight,
+	ScrollView,
+	SafeAreaView,
   Image,
-  Alert
-} from 'react-native';
+  Alert} from 'react-native';
+import {createAppContainer } from 'react-navigation';
+import {createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import Icon from 'react-native-vector-icons/Octicons';
+import firebase from 'firebase';
+import Constants from 'expo-constants';
 
 
-export default class SignUpView extends Component {
+
+export default class asParent extends Component {
 
   constructor(props) {
     super(props);
@@ -29,6 +38,23 @@ export default class SignUpView extends Component {
   onClickListener = (viewId) => {
     Alert.alert("Alert", "Button pressed "+viewId);
   }
+  static navigationOptions = function(props) {
+  return {
+    title: '',
+    headerLeft: <View style={{paddingLeft:16}}>
+       <Icon
+           name="chevron-left"
+           size={25}
+           color='white'
+           onPress={() => props.navigation.goBack()} />
+   </View>,
+
+   headerTintColor: 'white',
+         headerStyle: {
+            backgroundColor: "#4C73CC"
+         }
+ }
+};
 
   render() {
     return (
@@ -40,7 +66,7 @@ export default class SignUpView extends Component {
 
           <TextInput style={styles.inputs}
               placeholder="الاسم"
-              keyboardType="text"
+              keyboardType="ascii-capable"
               underlineColorAndroid='transparent'
               onChangeText={(fullName) => this.setState({fullName})}/>
         </View>
@@ -90,7 +116,7 @@ export default class SignUpView extends Component {
                <View style={styles.inputContainerDown}>
                <TextInput style={styles.inputDown}
               placeholder="اسم الطالب"
-              keyboardType="acci-capable"
+              keyboardType="ascii-capable"
               underlineColorAndroid='transparent'
               onChangeText={(childName) => this.setState({childName})}/>
 
@@ -106,7 +132,7 @@ export default class SignUpView extends Component {
               <View style={styles.inputContainerDown}>
                <TextInput style={styles.inputDown}
               placeholder=" المرحلة الدراسية"
-              keyboardType="acci-capable"
+              keyboardType="ascii-capable"
               underlineColorAndroid='transparent'
               onChangeText={(school) => this.setState({school})}/>
 
