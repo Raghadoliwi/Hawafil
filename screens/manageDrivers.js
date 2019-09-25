@@ -48,13 +48,13 @@ export default class AddBus extends React.Component {
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
      <TouchableHighlight style={[styles.buttonContainer, styles.addButton]} onPress={() => this.onClickListener('add')}>
-          <Text style={styles.addText}>إضافة حافلة</Text>
+          <Text style={styles.addText}>إضافة قائد حافلة</Text>
         </TouchableHighlight>
 
-<Card containerStyle={styles.cards} title="حافلة #٩">
+<Card containerStyle={styles.cards} title="فاروق نور الدين">
         {/*react-native-elements Card*/}
           <Text style={styles.paragraph}>
-            • اسم السائق: فاروق
+            • رقم الحافلة : ٩
           </Text>
 
           <Text style={styles.paragraph}>
@@ -65,10 +65,10 @@ export default class AddBus extends React.Component {
           </Text>
         </Card>
 
-            <Card containerStyle={styles.cards} title="حافلة #٣">
+            <Card containerStyle={styles.cards} title="محمد سليمان">
         {/*react-native-elements Card*/}
           <Text style={styles.paragraph}>
-            • اسم السائق: محمد
+          • رقم الحافلة : ٣
           </Text>
 
           <Text style={styles.paragraph}>
@@ -78,10 +78,10 @@ export default class AddBus extends React.Component {
            • رقم لوحة الحافلة: ٦٦٦ ب ي ت
           </Text>
         </Card>
-        <Card containerStyle={styles.cards} title="حافلة #٧">
+        <Card containerStyle={styles.cards} title="محمود ناصر">
         {/*react-native-elements Card*/}
           <Text style={styles.paragraph}>
-            • اسم السائق: محمود
+        • رقم الحافلة: ٧
           </Text>
 
           <Text style={styles.paragraph}>
