@@ -24,6 +24,7 @@ import manageDrivers from './screens/manageDrivers'
 import addBusDriver from './screens/addBusDriver'
 import addBus from './screens/addBus'
 import asParent from './screens/asParent'
+import asStudent from './screens/asStudent'
 //import addBus from './screens/addBus'
 
 const MenuIcon = ({ navigate }) => <Icon
@@ -58,7 +59,7 @@ class login extends React.Component {
       appId: "1:932110912763:web:68fca60e805543a655b45e",
       measurementId: "G-G21F8ME7TS"
     };
-  
+
     firebase.initializeApp(firebaseConfig);
   }
 
@@ -278,7 +279,7 @@ const loginStack = createStackNavigator({
   registration: { screen: registration },
   manageBuses: { screen: manageBuses },
   manageDrivers: { screen: manageDrivers },
-  asParent: { screen: asParent }
+  asStudent: { screen: asStudent }
 
 });
 
@@ -286,6 +287,7 @@ const registrationStack = createStackNavigator({
   registration: { screen: registration },
 //  asOrganisation: { screen: RegisterOrganisation },
     asParent: { screen: asParent },
+    asStudent: { screen: asStudent },
 //    asStudent: { screen: RegisterStudent }
 });
 
