@@ -38,20 +38,42 @@ export default class asStudent extends Component {
   }
   state = {
   fullName: '',
-      email   : '',
+  email   : '',
   password: '',
-      editable : '',
   university:'',
-  busno:'',
+  busNo:'',
   neighborhood:'',
-
+  phoneNo : '',
   }
 
+  addStudent = () => {
+    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    .then( (data) => {
+        firebase.auth().onAuthStateChanged( user => {
+            if (user) { 
+              this.userId = user.uid 
+              firebase.database().ref('students/'+this.userId).set(
+                {
+                  name: this.state.fullName,
+                  phoneNo: this.state.phoneNo,
+                  busNo: this.state.busNo,
+                  neighborhood: this.state.neighborhood,
+                  university:this.state.university,
+                })
+            }
+          });
+    }).then(() => this.props.navigation.navigate('Main'))
+    //raghad plz edit the above line to the page you wanna navigate to after insertion
+    .catch(error => this.setState({ errorMessage: error.message }))
+}//end adding a parent
 
+
+
+/*
     onClickListener = (viewId) => {
         Alert.alert("Alert", "Button pressed "+viewId);
     }
-
+*/
     static navigationOptions = function(props) {
     return {
       title: 'التسجيل',
@@ -81,7 +103,9 @@ export default class asStudent extends Component {
                 placeholder="الاسم"
                 keyboardType="ascii-capable"
                 underlineColorAndroid='transparent'
-                onChangeText={(fullName) => this.setState({fullName})}/>
+                onChangeText={(fullName) => this.setState({fullName})}
+                value={this.state.fullName}
+                />
                 </View>
 
                 <View style={styles.inputContainer}>
@@ -90,7 +114,9 @@ export default class asStudent extends Component {
                 placeholder="البريد الإلكتروني"
                 keyboardType="email-address"
                 underlineColorAndroid='transparent'
-                onChangeText={(email) => this.setState({email})}/>
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}
+                />
                 </View>
 
                 <View style={styles.inputContainer}>
@@ -99,7 +125,9 @@ export default class asStudent extends Component {
                 placeholder="كلمة المرور"
                 secureTextEntry={true}
                 underlineColorAndroid='transparent'
-                onChangeText={(password) => this.setState({password})}/>
+                onChangeText={(password) => this.setState({password})}
+                value={this.state.password}
+                />
                 </View>
                 <View style={styles.phoneContainer}>
 
@@ -110,9 +138,10 @@ export default class asStudent extends Component {
                 <View>
                 <TextInput style={styles.phoneInput}
                 placeholder="رقم الجوال"
-                secureTextEntry={true}
                 underlineColorAndroid='transparent'
-                onChangeText={(password) => this.setState({password})}/>
+                onChangeText={(phoneNo) => this.setState({phoneNo})}
+                value={this.state.phoneNo}
+                />
                 </View>
                 </View>
 
@@ -122,15 +151,19 @@ export default class asStudent extends Component {
                 placeholder="اسم الجامعة"
                 keyboardType="ascii-capable"
                 underlineColorAndroid='transparent'
-                onChangeText={(university) => this.setState({university})}/>
-
+                onChangeText={(university) => this.setState({university})}
+                value={this.state.university}
+                />
                 </View>
                 <View style={styles.inputContainer}>
                 <TextInput style={styles.inputDown}
                 placeholder="رقم الحافلة"
                 keyboardType="numeric"
                 underlineColorAndroid='transparent'
-                onChangeText={(busNo) => this.setState({busNo})}/>
+                onChangeText={(busNo) => this.setState({busNo})}
+                value={this.state.busNo}
+
+                />
 
                 </View>
                 <View style={styles.inputContainer}>
@@ -138,10 +171,12 @@ export default class asStudent extends Component {
                 placeholder=" الحي السكني"
                 keyboardType="ascii-capable"
                 underlineColorAndroid='transparent'
-                onChangeText={(neighborhood) => this.setState({neighborhood})}/>
+                onChangeText={(neighborhood) => this.setState({neighborhood})}
+                  value={this.state.neighborhood}
+                />
 
                 </View>
-                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() => this.onClickListener('sign_up')}>
+                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addStudent}>
                 <Text style={styles.signUpText}>التالي</Text>
                 </TouchableHighlight>
                 </View>
