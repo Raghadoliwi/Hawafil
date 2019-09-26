@@ -50,8 +50,8 @@ export default class asStudent extends Component {
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then( (data) => {
         firebase.auth().onAuthStateChanged( user => {
-            if (user) { 
-              this.userId = user.uid 
+            if (user) {
+              this.userId = user.uid
               firebase.database().ref('students/'+this.userId).set(
                 {
                   name: this.state.fullName,
@@ -62,9 +62,9 @@ export default class asStudent extends Component {
                 })
             }
           });
-    }).then(() => this.props.navigation.navigate('Main'))
+    }).then(() => this.props.navigation.navigate('login'))
     //raghad plz edit the above line to the page you wanna navigate to after insertion
-    .catch(error => this.setState({ errorMessage: error.message }))
+    .catch(error => console.log(error.message))
 }//end adding a parent
 
 

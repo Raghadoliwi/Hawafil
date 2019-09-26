@@ -25,6 +25,7 @@ import addBusDriver from './screens/addBusDriver'
 import addBus from './screens/addBus'
 import asParent from './screens/asParent'
 import asStudent from './screens/asStudent'
+import asManager from './screens/asManager'
 //import addBus from './screens/addBus'
 
 const MenuIcon = ({ navigate }) => <Icon
@@ -289,6 +290,7 @@ const registrationStack = createStackNavigator({
 //  asOrganisation: { screen: RegisterOrganisation },
     asParent: { screen: asParent },
     asStudent: { screen: asStudent },
+    asManager: { screen: asManager },
 //    asStudent: { screen: RegisterStudent }
 });
 

@@ -11,13 +11,22 @@ import {
 	SafeAreaView,
   Image,
   Alert} from 'react-native';
+
+import {createAppContainer } from 'react-navigation';
+import {createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+
+import Icon from 'react-native-vector-icons/Octicons';
+import firebase from 'firebase';
+
+
   /*
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 */
 //import Icon from 'react-native-vector-icons/Octicons';
-import firebase from 'firebase';
+
 
 
 
@@ -33,10 +42,10 @@ export default class App extends Component {
       appId: "1:932110912763:web:68fca60e805543a655b45e",
       measurementId: "G-G21F8ME7TS"
     };
-  
-    firebase.initializeApp(firebaseConfig);
+
+
   }
- 
+
     state = {
       fullName: '',
       email: '',
@@ -50,8 +59,8 @@ export default class App extends Component {
       firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then( (data) => {
           firebase.auth().onAuthStateChanged( user => {
-              if (user) { 
-                this.userId = user.uid 
+              if (user) {
+                this.userId = user.uid
                 firebase.database().ref('parents/'+this.userId).set(
                   {
                     name: this.state.fullName,
@@ -62,7 +71,7 @@ export default class App extends Component {
                   })
               }
             });
-      }).then(() => this.props.navigation.navigate('Main'))
+      }).then(() => this.props.navigation.navigate('login'))
       //raghad plz edit the above line to the page you wanna navigate to after insertion
       .catch(error => this.setState({ errorMessage: error.message }))
   }//end adding a parent
@@ -93,6 +102,23 @@ export default class App extends Component {
  }
 };//end navigationOptions
 */
+static navigationOptions = function(props) {
+return {
+  title: 'التسجيل',
+  headerLeft: <View style={{paddingLeft:16}}>
+     <Icon
+         name="chevron-left"
+         size={25}
+         color='white'
+         onPress={() => props.navigation.goBack()} />
+ </View>,
+
+ headerTintColor: 'white',
+       headerStyle: {
+          backgroundColor: "#4C73CC"
+       }
+}
+};
   render() {
     return (
       <View style={styles.container}>
