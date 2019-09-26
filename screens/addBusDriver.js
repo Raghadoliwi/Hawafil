@@ -52,6 +52,7 @@ export default class addBusDriver extends React.Component {
      workerId: '',
      driverName: '',
      phoneNo: '',
+     inst:'',
      busNo: '',
      errorMessage: null
      }
@@ -66,11 +67,13 @@ export default class addBusDriver extends React.Component {
                       name: this.state.driverName,
                       id: this.state.workerId,
                       phoneNo: this.state.phoneNo,
+                      inst: this.state.inst,
                       busNo: this.state.busNo,
+                      busPlate: this.state.busPlate,
                     })
                 }
               });
-        }).then(() => this.props.navigation.navigate('manageDrivers'))
+        }).then(() => this.props.navigation.navigate('renderManageDrivers'))
         //raghad plz edit the above line to the page you wanna navigate to after insertion
         .catch(error => console.log(error.message ))
     }//end inserting a driver
@@ -117,7 +120,7 @@ export default class addBusDriver extends React.Component {
 
                 <TextInput style={styles.email}
                 placeholder="اسم القائد"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={ driverName => this.setState({ driverName })}
                 value={this.state.driverName}
@@ -133,6 +136,17 @@ export default class addBusDriver extends React.Component {
                 onChangeText={phoneNo => this.setState({ phoneNo })}
                 //line below is added new by lama:
                 value={this.state.phoneNo}
+                />
+                </View>
+
+                <View style={styles.inputContainer}>
+
+                <TextInput style={styles.email}
+                placeholder="البريد الإلكتروني"
+                keyboardType="ascii-capable"
+                underlineColorAndroid='transparent'
+                onChangeText={email => this.setState({ email })}
+                value={this.state.email}
                 />
                 </View>
 
@@ -156,8 +170,8 @@ export default class addBusDriver extends React.Component {
                 placeholder="اسم المنشأة"
                 keyboardType="ascii-capable"
                 underlineColorAndroid='transparent'
-                onChangeText={email => this.setState({ email })}
-                value={this.state.email}
+                onChangeText={inst => this.setState({ inst })}
+                value={this.state.inst}
                 />
                 </View>
 
@@ -173,6 +187,17 @@ export default class addBusDriver extends React.Component {
                 />
                 </View>
 
+                <View style={styles.inputContainer}>
+
+                <TextInput style={styles.email}
+                placeholder="رقم اللوحة"
+                keyboardType="ascii-capable"
+                underlineColorAndroid='transparent'
+                onChangeText={busPlate => this.setState({ busPlate })}
+                //line below is added new by lama:
+                value={this.state.busPlate}
+                />
+                </View>
 
 
 
