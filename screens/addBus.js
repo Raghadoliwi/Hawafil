@@ -43,10 +43,9 @@ export default class addBus extends Component {
                   carPlate: this.state.carPlate,
                   driverName: this.state.driverName,
                   neighborhood: this.state.neighborhood,
-                })
-    .then(() => this.navigation.navigate('ManageBuses'))
+                }).then(() => this.props.navigation.navigate('renderManageBuses'))
     //raghad plz make sure of the above line (the page)
-    .catch(error => this.setState({ errorMessage: error.message }))
+    .catch(error => this.setState(console.log(error.message)))
 }//end inserting a bus
 
 /*
@@ -106,7 +105,8 @@ export default class addBus extends Component {
 
 
 
-        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.insertBus}>
+        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]}
+        onPress={this.insertBus}>
           <Text style={styles.signUpText}>إضافة الحافلة</Text>
         </TouchableHighlight>
         </View>

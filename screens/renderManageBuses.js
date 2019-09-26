@@ -58,7 +58,7 @@ export default class renderManageBuses extends React.Component {
             console.log("lama-------");
             console.log(this.state.items); //This is wrong
             itm.forEach((itms) => {
-                console.log(itms.name);
+                console.log(itms.driverName);
             })
         })//end on
 
@@ -96,7 +96,7 @@ export default class renderManageBuses extends React.Component {
         {
         this.state.items.map((u, i ) => {
             return (
-                <Card containerStyle={styles.cards} title={u.busNo + 'رقم الحافلة:'}>
+                <Card containerStyle={styles.cards} title={'رقم الحافلة:'+ u.busNo}>
                 <Text style={styles.paragraph} key={u.driverName}>اسم السائق: {u.driverName}</Text>
                     <Text style={styles.paragraph} key={u.neighborhood}>الحي: {u.neighborhood}</Text>
                     <Text style={styles.paragraph} key={u.carPlate}>رقم اللوحة: {u.carPlate}</Text>

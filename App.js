@@ -19,7 +19,7 @@ import firebase from 'firebase';
 
 //import * as Font from 'expo-font';
 import registration from './screens/registration'
-import manageBuses from './screens/manageBuses'
+import renderManageBuses from './screens/renderManageBuses'
 import renderManageDrivers from './screens/renderManageDrivers'
 import addBusDriver from './screens/addBusDriver'
 import addBus from './screens/addBus'
@@ -278,7 +278,7 @@ registerText:{
 const loginStack = createStackNavigator({
   login: { screen: login },
   registration: { screen: registration },
-  manageBuses: { screen: manageBuses },
+  renderManageBuses: { screen: renderManageBuses },
   renderManageDrivers: { screen: renderManageDrivers },
   asParent: { screen: asParent },
   asStudent: { screen: asStudent },
@@ -296,12 +296,12 @@ const registrationStack = createStackNavigator({
 });
 
 const manageBusesStack = createStackNavigator({
-  manageBuses: { screen: manageBuses },
+  renderManageBuses: { screen: renderManageBuses },
   addBus: { screen: addBus }
 
 });
 const manageDriversStack = createStackNavigator({
-  manageBuses: { screen: renderManageDrivers },
+  renderManageBuses: { screen: renderManageDrivers },
     addBusDriver: { screen: addBusDriver }
 });
 
