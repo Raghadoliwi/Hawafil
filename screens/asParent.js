@@ -21,7 +21,7 @@ import firebase from 'firebase';
 
 
 
-export default class App extends Component {
+export default class asParent extends Component {
   UNSAFE_componentWillMount(){
     const firebaseConfig = {
       apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
@@ -62,7 +62,7 @@ export default class App extends Component {
                   })
               }
             });
-      }).then(() => this.props.navigation.navigate('Main'))
+      }).then(() => this.props.navigation.navigate('login'))
       //raghad plz edit the above line to the page you wanna navigate to after insertion
       .catch(error => this.setState({ errorMessage: error.message }))
   }//end adding a parent

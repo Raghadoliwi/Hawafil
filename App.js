@@ -279,6 +279,7 @@ const loginStack = createStackNavigator({
   registration: { screen: registration },
   manageBuses: { screen: manageBuses },
   manageDrivers: { screen: manageDrivers },
+  asParent: { screen: asParent },
   asStudent: { screen: asStudent }
 
 });
