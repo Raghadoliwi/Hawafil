@@ -49,7 +49,7 @@ export default class registration extends React.Component {
 
 
                 <TouchableHighlight style={[styles.firstButtonContainer, styles.typeButton]}
-                onPress={this.handleLogin}>
+                onPress={() => this.props.navigation.push('asManager')}>
 
                 <Text style={styles.firstText}>منشأة تعليمية</Text>
                 </TouchableHighlight>

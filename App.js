@@ -20,7 +20,7 @@ import firebase from 'firebase';
 //import * as Font from 'expo-font';
 import registration from './screens/registration'
 import manageBuses from './screens/manageBuses'
-import manageDrivers from './screens/manageDrivers'
+import renderManageDrivers from './screens/renderManageDrivers'
 import addBusDriver from './screens/addBusDriver'
 import addBus from './screens/addBus'
 import asParent from './screens/asParent'
@@ -88,7 +88,7 @@ class login extends React.Component {
           });
 
           //raghad plz change the below line to the page you wanna navigate to
-          this.props.navigation.navigate('manageDrivers')
+          this.props.navigation.navigate('renderManageDrivers')
         })
         .catch(error => console.log(error.message ))
       console.log('handleLogin')
@@ -279,9 +279,10 @@ const loginStack = createStackNavigator({
   login: { screen: login },
   registration: { screen: registration },
   manageBuses: { screen: manageBuses },
-  manageDrivers: { screen: manageDrivers },
+  renderManageDrivers: { screen: renderManageDrivers },
   asParent: { screen: asParent },
-  asStudent: { screen: asStudent }
+  asStudent: { screen: asStudent },
+  asManager: { screen: asManager },
 
 });
 
@@ -300,7 +301,7 @@ const manageBusesStack = createStackNavigator({
 
 });
 const manageDriversStack = createStackNavigator({
-  manageBuses: { screen: manageDrivers },
+  manageBuses: { screen: renderManageDrivers },
     addBusDriver: { screen: addBusDriver }
 });
 

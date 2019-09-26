@@ -68,12 +68,14 @@ constructor(props){
                   instName:this.state.instName,
                 })
             }
+
           });
     }).then(() => this.props.navigation.navigate('manageBuses'))
     //raghad plz edit the above line to the page you wanna navigate to after insertion
 
-    .catch(error => this.setState(error => console.log(error.message))
-}//end adding a parent
+    .catch(error => this.setState(error => console.log(error.message)))
+  }//end adding a parent
+
 static navigationOptions = function(props) {
 return {
   title: 'التسجيل',
