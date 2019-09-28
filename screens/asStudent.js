@@ -46,7 +46,22 @@ export default class asStudent extends Component {
   busNo:'',
   neighborhood:'',
   phoneNo : '',
+  currentColor: '#EAEAEA'
   }
+
+  validateNumber = (phoneNo) => {
+    //Regex
+    const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
+    if (!numRegex.test('0'+this.state.phoneNo)) {
+      console.log('number bad');
+      console.log('0'+this.state.phoneNo);
+      
+
+      }
+      else {
+      this.setState({currentColor: '#91b804'})
+      }
+}//end inserting a bus
 
   addStudent = () => {
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
@@ -136,17 +151,21 @@ export default class asStudent extends Component {
                 value={this.state.password}
                 />
                 </View>
-                <View style={styles.phoneContainer}>
+                <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
+                >
 
                 <TextInput style={styles.keyText}
                 value="+966"
                 editable={false}
                 />
 
-                <TextInput style={styles.phoneInput}
+                <TextInput style={[styles.phoneInput]}
                 placeholder="رقم الجوال"
+                keyboardType="numeric"
+                ref="phoneNumber"
                 underlineColorAndroid='transparent'
                 onChangeText={(phoneNo) => this.setState({phoneNo})}
+                onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
                 value={this.state.phoneNo}
                 />
                 </View>
@@ -263,7 +282,6 @@ const styles = StyleSheet.create({
                                  flexDirection: 'row',
                                  //justifyContent:'flex-end',
                                  justifyContent:'space-around',
-                                 borderColor: '#EAEAEA'
                                  },
 
                                  phoneInput:{
