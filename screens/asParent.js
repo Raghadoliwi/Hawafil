@@ -231,17 +231,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7FAFF',
   },
   inputContainer: {
-      backgroundColor: '#FFFFFF',
-      borderRadius:30,
-      borderWidth: 1,
-      width:250,
-      height:35,
-      marginBottom:15,
-     bottom: 20,
-    //  flexDirection: 'row-reverse',
-     // justifyContent:'flex-end',
-     // alignItems:'left',
-      borderColor: '#EAEAEA'
+    borderColor: '#EAEAEA',
+    backgroundColor: '#FFFFFF',
+    borderRadius:25,
+    borderWidth: 1,
+    width:250,
+    height:40,
+    marginBottom:15,
+    paddingHorizontal:10,
+
   },
   smallContainer:{
      marginTop:0,

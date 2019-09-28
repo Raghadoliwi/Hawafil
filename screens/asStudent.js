@@ -6,12 +6,14 @@ import {
   TextInput,
   Button,
 	StatusBar,
+  KeyboardAvoidingView,
   TouchableHighlight,
 	ScrollView,
 	SafeAreaView,
+  Picker,
   Image,
   Alert} from 'react-native';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
@@ -93,15 +95,20 @@ export default class asStudent extends Component {
     };
     render() {
         return (
-                <View style={styles.container}>
+                <KeyboardAwareScrollView
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      contentContainerStyle={styles.container}
+      scrollEnabled={false}>
                 <View style={styles.smallContainer}>
                 <Text style={styles.header}>• ﻛ طالب •</Text>
                 <Text style={styles.perInfo}>──── المعلومات الشخصية ────</Text>
                 <View style={styles.inputContainer}>
 
+
+
                 <TextInput style={styles.inputs}
                 placeholder="الاسم"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={(fullName) => this.setState({fullName})}
                 value={this.state.fullName}
@@ -131,11 +138,11 @@ export default class asStudent extends Component {
                 </View>
                 <View style={styles.phoneContainer}>
 
-                <View  style={styles.keyNo}><TextInput style={styles.keyText}
-                value="+٩٦٦"
+                <TextInput style={styles.keyText}
+                value="+966"
                 editable={false}
-                /></View>
-                <View>
+                />
+
                 <TextInput style={styles.phoneInput}
                 placeholder="رقم الجوال"
                 underlineColorAndroid='transparent'
@@ -143,20 +150,21 @@ export default class asStudent extends Component {
                 value={this.state.phoneNo}
                 />
                 </View>
-                </View>
 
 
                 <View style={styles.inputContainer}>
-                <TextInput style={styles.inputDown}
+                <TextInput style={styles.inputs}
                 placeholder="اسم الجامعة"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={(university) => this.setState({university})}
                 value={this.state.university}
                 />
                 </View>
+
+
                 <View style={styles.inputContainer}>
-                <TextInput style={styles.inputDown}
+                <TextInput style={styles.inputs}
                 placeholder="رقم الحافلة"
                 keyboardType="numeric"
                 underlineColorAndroid='transparent'
@@ -167,20 +175,23 @@ export default class asStudent extends Component {
 
                 </View>
                 <View style={styles.inputContainer}>
-                <TextInput style={styles.inputDown}
+                <TextInput style={styles.inputs}
                 placeholder=" الحي السكني"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={(neighborhood) => this.setState({neighborhood})}
                   value={this.state.neighborhood}
                 />
 
                 </View>
+
                 <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addStudent}>
-                <Text style={styles.signUpText}>التالي</Text>
+                <Text style={styles.signUpText}>تسجيل</Text>
                 </TouchableHighlight>
+
                 </View>
-                </View>
+
+                </KeyboardAwareScrollView>
                 );
     }
 }
@@ -190,37 +201,36 @@ const styles = StyleSheet.create({
                                  flex: 1,
                                  justifyContent: 'center',
                                  alignItems: 'center',
-                                 marginTop: 30,
+
+
                                  backgroundColor: '#F7FAFF',
                                  },
 
                                  inputContainer: {
-                                 backgroundColor: '#FFFFFF',
-                                 borderRadius:30,
-                                 borderWidth: 1,
-                                 width:250,
-                                 height:35,
-                                 marginBottom:15,
-                                 bottom: 20,
-                                 //  flexDirection: 'row-reverse',
-                                 // justifyContent:'flex-end',
-                                 // alignItems:'left',
-                                 borderColor: '#EAEAEA'
+                                   borderColor: '#EAEAEA',
+                                   backgroundColor: '#FFFFFF',
+                                   borderRadius:25,
+                                   borderWidth: 1,
+                                   width:250,
+                                   height:40,
+                                   marginBottom:15,
+                                   paddingHorizontal:10,
+
                                  },
 
                                  smallContainer:{
-                                 marginTop:0,
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 backgroundColor: 'white',
-                                 borderRadius:10,
-                                 width:300,
-                                 height:550
+
+                                   justifyContent: 'center',
+                                  alignItems: 'center',
+                                  backgroundColor: 'white',
+                                  borderRadius:10,
+                                    width:300,
+                                    height:600
                                  },
 
                                  header:{
                                  color: "#8197C6",
-                                 fontSize: 30 ,//problema
+                                 fontSize: 20 ,//problema
                                  //fontWeight:900,
                                  bottom: 20,
                                  },
@@ -239,47 +249,42 @@ const styles = StyleSheet.create({
                                  //flexDirection:'row-reverse',
                                  //justifyContent:'flex-end',
                                  //marginright:16,
-                                 alignSelf:'flex-end',
+                                textAlign:'right',
                                  borderColor: '#EAEAEA',
                                  marginLeft:10,
 
                                  },
                                  phoneContainer:{
                                  backgroundColor: '#FFFFFF',
-                                 borderRadius:30,
+                                 borderRadius:25,
                                  borderWidth: 1,
-                                 width:200,
-                                 height:35,
-                                 bottom: 20,
+                                 width:250,
                                  marginBottom:20,
-                                 marginRight: 40,
-                                 flexDirection: 'row-reverse',
+                                 flexDirection: 'row',
                                  //justifyContent:'flex-end',
-                                 alignItems:'flex-end',
+                                 justifyContent:'space-around',
                                  borderColor: '#EAEAEA'
                                  },
 
                                  phoneInput:{
-                                 flex:1,
-                                 height:40,
-                                 //flexDirection:'row-reverse',
-                                 //justifyContent:'flex-end',
-                                 //marginright:16,
-                                 alignSelf:'flex-end',
+
+                                 height:35,
+                                 width:200,
+
                                  borderColor: '#EAEAEA',
-                                 marginLeft:10,
+
                                  },
 
                                  keyNo:{
                                  backgroundColor: '#FFFFFF',
                                  borderRadius:30,
                                  borderWidth: 1,
-                                 width:60,
+                                 width:30,
                                  height:35,
-                                 marginBottom:-2,
+                                 alignItems:'right',
                                  // marginLeft: 250,
-                                 left:205,
-                                 flexDirection: 'row-reverse',
+
+
                                  //justifyContent:'flex-end',
                                  //alignItems:'flex-end',
                                  borderColor: '#EAEAEA'
@@ -290,7 +295,6 @@ const styles = StyleSheet.create({
                                  height:40,
                                  textAlign:'center',
                                  //marginRight: 30,
-                                 flexDirection:'row-reverse',
                                  //justifyContent:'flex-end',
                                  //marginright:16,
                                  borderColor: '#EAEAEA',
@@ -311,11 +315,16 @@ const styles = StyleSheet.create({
                                  //flexDirection:'row-reverse',
                                  //justifyContent:'flex-end',
                                  //marginright:16,
-                                 alignSelf:'flex-end',
-                                 borderColor: '#EAEAEA',
-                                 marginLeft:10,
-                                 },
 
+                                 borderColor: '#EAEAEA',
+
+                                 },
+                                 MainContainer: {
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    margin: 20
+
+                                  },
                                  buttonContainer: {
                                  height:45,
                                  flexDirection: 'row',

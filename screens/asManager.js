@@ -11,6 +11,7 @@ import {
 	SafeAreaView,
   Image,
   Alert} from 'react-native';
+  import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
@@ -95,7 +96,10 @@ return {
 };
     render() {
         return (
-                <View style={styles.container}>
+          <KeyboardAwareScrollView
+resetScrollToCoords={{ x: 0, y: 0 }}
+contentContainerStyle={styles.container}
+scrollEnabled={false}>
 
                 <View style={styles.smallContainer}>
 
@@ -108,7 +112,7 @@ return {
 
                 <TextInput style={styles.email}
                 placeholder="الاسم"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={name => this.setState({ name })}
                 value={this.state.name}
@@ -121,7 +125,7 @@ return {
 
                 <TextInput style={styles.email}
                 placeholder="البريد الإلكتروني"
-                keyboardType="ascii-capable"
+                keyboardType="email-address"
                 underlineColorAndroid='transparent'
                 onChangeText={email => this.setState({ email })}
                 value={this.state.email}
@@ -129,13 +133,18 @@ return {
 
                 </View>
 
-                <View style={styles.inputContainer}>
+                <View style={styles.phoneContainer}>
 
-                <TextInput style={styles.email}
-                placeholder="رقم الهاتف"
-                keyboardType="ascii-capable"
+                <TextInput style={styles.keyText}
+                value="+966"
+                editable={false}
+                />
+
+                <TextInput style={styles.phoneInput}
+                placeholder="رقم الجوال"
+                keyboardType="numeric"
                 underlineColorAndroid='transparent'
-                onChangeText={phoneNo => this.setState({ phoneNo })}
+                onChangeText={(phoneNo) => this.setState({phoneNo})}
                 value={this.state.phoneNo}
                 />
                 </View>
@@ -144,7 +153,7 @@ return {
 
                 <TextInput style={styles.email}
                 placeholder="الهوية/الإقامة"
-                keyboardType="ascii-capable"
+                keyboardType="numeric"
                 underlineColorAndroid='transparent'
                 onChangeText={nationalId => this.setState({ nationalId })}
                 value={this.state.nationalId}
@@ -183,7 +192,7 @@ return {
 
                 <TextInput style={styles.email}
                 placeholder="اسم المنشأة"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={instName => this.setState({ instName })}
                 value={this.state.instName}
@@ -205,7 +214,7 @@ return {
                 </TouchableHighlight>
 
                 </View>
-                </View>
+                </KeyboardAwareScrollView>
                 );
     }
 }
@@ -231,13 +240,14 @@ const styles = StyleSheet.create({
                                  fontSize:10,
                                  marginBottom:30,
                                 },
-                                 container: {
-                                 flex: 1,
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 backgroundColor: '#F7FAFF',
-                                 flexDirection: 'row',
-                                 },
+                                container: {
+                                flex: 1,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+
+
+                                backgroundColor: '#F7FAFF',
+                                },
                                  smallContainer:{
                                  marginTop:70,
                                  justifyContent: 'center',
@@ -259,27 +269,56 @@ const styles = StyleSheet.create({
                                  },
 
                                  inputContainer: {
-                                 borderColor: '#EAEAEA',
+                                   borderColor: '#EAEAEA',
+                                   backgroundColor: '#FFFFFF',
+                                   borderRadius:25,
+                                   borderWidth: 1,
+                                   width:250,
+                                   height:40,
+                                   marginBottom:15,
+                                   paddingHorizontal:10,
+
+                                 },
+                                 phoneContainer:{
                                  backgroundColor: '#FFFFFF',
-                                 borderRadius:45,
-                                 borderWidth: 2,
+                                 borderRadius:25,
+                                 borderWidth: 1,
                                  width:250,
-                                 height:40,
-                                 marginBottom:15,
-                                textAlign:'right',
+                                 marginBottom:20,
+                                 flexDirection: 'row',
+                                 //justifyContent:'flex-end',
+                                 justifyContent:'space-around',
+                                 borderColor: '#EAEAEA'
+                                 },
+                                 phoneInput:{
+
+                                 height:35,
+                                 width:200,
+
+                                 borderColor: '#EAEAEA',
 
                                  },
 
-                                inputContainertwo: {
-                                 borderColor: '#EAEAEA',
+                                 keyNo:{
                                  backgroundColor: '#FFFFFF',
-                                 borderRadius:45,
-                                 borderWidth: 2,
-                                 width:250,
-                                 height:40,
-                                 marginBottom:15,
+                                 borderRadius:30,
+                                 borderWidth: 1,
+                                 width:30,
+                                 height:35,
+                                 alignItems:'right',
 
+                                 borderColor: '#EAEAEA'
+                                 },
 
+                                inputContainertwo: {
+                                  borderColor: '#EAEAEA',
+                                  backgroundColor: '#FFFFFF',
+                                  borderRadius:25,
+                                  borderWidth: 1,
+                                  width:250,
+                                  height:40,
+                                  marginBottom:15,
+                                  paddingHorizontal:10,
                                  },
 
                                  pass:{
@@ -291,7 +330,8 @@ const styles = StyleSheet.create({
                                  email:{
                                   borderBottomColor: '#FFFFFF',
                                    flex:1,
-                                 alignSelf:'flex-end'
+                                   textAlign:'right',
+
                                  },
 
                                  buttonContainer: {

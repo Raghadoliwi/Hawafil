@@ -108,7 +108,7 @@ export default class addBusDriver extends React.Component {
 
                 <TextInput style={styles.email}
                 placeholder="الرقم الوظيفي"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={workerId => this.setState({ workerId })}
                 value={this.state.workerId}
@@ -131,7 +131,7 @@ export default class addBusDriver extends React.Component {
 
                 <TextInput style={styles.email}
                 placeholder="رقم الهاتف"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={phoneNo => this.setState({ phoneNo })}
                 //line below is added new by lama:
@@ -143,7 +143,7 @@ export default class addBusDriver extends React.Component {
 
                 <TextInput style={styles.email}
                 placeholder="البريد الإلكتروني"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={email => this.setState({ email })}
                 value={this.state.email}
@@ -168,7 +168,7 @@ export default class addBusDriver extends React.Component {
 
                 <TextInput style={styles.email}
                 placeholder="اسم المنشأة"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={inst => this.setState({ inst })}
                 value={this.state.inst}
@@ -179,7 +179,7 @@ export default class addBusDriver extends React.Component {
 
                 <TextInput style={styles.email}
                 placeholder="رقم الحافلة"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={busNo => this.setState({ busNo })}
                 //line below is added new by lama:
@@ -191,7 +191,7 @@ export default class addBusDriver extends React.Component {
 
                 <TextInput style={styles.email}
                 placeholder="رقم اللوحة"
-                keyboardType="ascii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={busPlate => this.setState({ busPlate })}
                 //line below is added new by lama:
@@ -245,14 +245,15 @@ const styles = StyleSheet.create({
                                  },
 
                                  inputContainer: {
-                                 borderColor: '#EAEAEA',
-                                 backgroundColor: '#FFFFFF',
-                                 borderRadius:45,
-                                 borderWidth: 2,
-                                 width:250,
-                                 height:45,
-                                 marginBottom:20,
-                                 flexDirection: 'row',
+                                   borderColor: '#EAEAEA',
+                                   backgroundColor: '#FFFFFF',
+                                   borderRadius:25,
+                                   borderWidth: 1,
+                                   width:250,
+                                   height:40,
+                                   marginBottom:15,
+                                   paddingHorizontal:10,
+
 
                                  },
 

@@ -137,7 +137,7 @@ class login extends React.Component {
 
 				 				<TextInput style={styles.email}
 				 						placeholder="اسم المستخدم"
-				 						keyboardType="ascii-capable"
+				 						keyboardType="TextInput"
 				 						underlineColorAndroid='transparent'
 				 						onChangeText={(email) => this.setState({email})}/>
 				 			</View>
@@ -208,15 +208,14 @@ smallContainer:{
 		height:300
 },
 inputContainer: {
-		borderColor: '#EAEAEA',
-		backgroundColor: '#FFFFFF',
-		borderRadius:45,
-		borderWidth: 1,
-		width:250,
-		height:45,
-		marginBottom:10,
-		flexDirection: 'row',
-		//alignItems:'center'
+  borderColor: '#EAEAEA',
+  backgroundColor: '#FFFFFF',
+  borderRadius:25,
+  borderWidth: 1,
+  width:250,
+  height:40,
+  marginBottom:15,
+  paddingHorizontal:10,
 },
 email:{
 		height:45,

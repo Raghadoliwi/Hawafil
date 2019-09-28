@@ -74,7 +74,7 @@ export default class addBus extends Component {
 
           <TextInput style={styles.inputs}
               placeholder="رقم لوحة الحافلة"
-              keyboardType="ascii-capable"
+              keyboardType="TextInput"
               underlineColorAndroid='transparent'
               onChangeText={(carPlate) => this.setState({carPlate})}
               value={this.state.carPlate}
@@ -85,7 +85,7 @@ export default class addBus extends Component {
 
           <TextInput style={styles.inputs}
               placeholder="اسم السائق"
-              keyboardType="ascii-capable"
+              keyboardType="TextInput"
               underlineColorAndroid='transparent'
               onChangeText={(driverName) => this.setState({driverName})}
               value={this.state.driverName}
@@ -95,7 +95,7 @@ export default class addBus extends Component {
 
           <TextInput style={styles.inputs}
               placeholder="الحي السكني"
-              keyboardType="ascii-capable"
+              keyboardType="TextInput"
               underlineColorAndroid='transparent'
               onChangeText={(neighborhood) => this.setState({neighborhood})}
               value={this.state.neighborhood}
@@ -123,17 +123,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7FAFF',
   },
   inputContainer: {
-      backgroundColor: '#FFFFFF',
-      borderRadius:30,
-      borderWidth: 1,
-      width:250,
-      height:35,
-      marginBottom:15,
-     top: 10,
-     // flexDirection: 'row-reverse',
-      //justifyContent:'flex-end',
-     // alignItems:'left',
-      borderColor: '#EAEAEA'
+    borderColor: '#EAEAEA',
+    backgroundColor: '#FFFFFF',
+    borderRadius:25,
+    borderWidth: 1,
+    width:250,
+    height:40,
+    marginBottom:15,
+    paddingHorizontal:10,
+
   },
   smallContainer:{
      marginTop:40,
