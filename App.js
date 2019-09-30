@@ -26,6 +26,7 @@
   import asParent from './screens/asParent'
   import asStudent from './screens/asStudent'
   import asManager from './screens/asManager'
+  import logout from './screens/logout'
   //import addBus from './screens/addBus'
 
   const MenuIcon = ({ navigate }) => <Icon
@@ -110,6 +111,15 @@
         console.log('handleLogin')
       }
 
+
+
+
+      forgetPassword = () => {
+        firebase.auth().sendPasswordResetEmail(this.state.email)
+
+
+      }
+
   	static navigationOptions = function(props) {
     return {
   		drawerLabel:'الدخول',
@@ -191,7 +201,7 @@
 
   			        </TouchableHighlight>
 
-  				 			<TouchableHighlight style={styles.forgetPass} onPress={() => this.onClickListener('restore_password')}>
+  				 			<TouchableHighlight style={styles.forgetPass} onPress={this.forgetPassword}>
   				 					<Text style={styles.forgetPassText}> نسيت كلمة المرور؟</Text>
   				 			</TouchableHighlight>
 
@@ -350,6 +360,9 @@
     },
     'إدارة السائقين': {
       screen: manageDriversStack,
+    },
+    'تسجيل الخروج': {
+      screen: logout,
     },
   },
   {
