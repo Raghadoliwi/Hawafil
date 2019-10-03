@@ -6,6 +6,7 @@ import {
   TextInput,
   Button,
 	StatusBar,
+  Div,
   TouchableHighlight,
 	ScrollView,
 	SafeAreaView,
@@ -30,13 +31,22 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 export default class asManager extends React.Component {
 constructor(props){
     super(props)
-    this.state={typeOf:'university',
+    this.state={typeOf:'',
                 name: '',
                 email: '',
                 password: '',
                 phoneNo:'',
                 nationalId : '',
-                instName: '',}
+                instName: '',
+                nameBorders:'#EAEAEA',
+                emailBorders:'#EAEAEA',
+                numberBorders:'',
+                idBorders:'',
+                passBorders:'#EAEAEA',
+                instBorders:'',
+
+
+              }
 
 }
 
@@ -101,11 +111,11 @@ resetScrollToCoords={{ x: 0, y: 0 }}
 contentContainerStyle={styles.container}
 scrollEnabled={false}>
 
-                <View style={styles.smallContainer}>
+                <Div style={styles.smallContainer}>
 
-                <Text style={styles.Main}> كـ مؤسسة تعليمية</Text>
+                <Text style={styles.Main}>• كـ مؤسسة تعليمية •</Text>
 
-                <Text style={styles.Sub}>معلومات ممثل المنشأة</Text>
+                <Text style={styles.Sub}>── معلومات ممثل المنشأة ──</Text>
 
 
                 <View style={styles.inputContainer}>
@@ -135,7 +145,7 @@ scrollEnabled={false}>
 
                 <View style={styles.phoneContainer}>
 
-                <TextInput style={styles.keyText}
+                <TextInput style={styles.keyNo}
                 value="+966"
                 editable={false}
                 />
@@ -172,8 +182,19 @@ scrollEnabled={false}>
                 />
                 </View>
 
-                <Text style={styles.Sub}>معلومات المنشأة</Text>
+                <View style={styles.inputContainer}>
 
+                <TextInput style={styles.pass}
+                placeholder="تأكيد كلمة المرور"
+                secureTextEntry={true}
+                underlineColorAndroid='transparent'
+                autoCapitalize="none"
+                onChangeText={password => this.setState({ password })}
+                value={this.state.password}
+                />
+                </View>
+
+                <Text style={styles.Sub}>معلومات المنشأة</Text>
                 <View style={styles.typeContainer}>
                 <TouchableHighlight style={[styles.typeButtonContainer, this.state.typeOf === 'school'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'school'})} >
 
@@ -213,8 +234,9 @@ scrollEnabled={false}>
 
                 </TouchableHighlight>
 
-                </View>
+                </Div>
                 </KeyboardAwareScrollView>
+
                 );
     }
 }
@@ -227,11 +249,11 @@ const styles = StyleSheet.create({
                                  alignItems: 'center',
                                  marginBottom:20,
                                  marginTop:15,
-                                fontSize:25,
+                                fontSize:20,
                                  },
                                 Sub:{
                                  color:'#9F9F9F',
-                                 fontSize:15,
+                                 fontSize:12,
                                  marginBottom:10,
 
                                 },
@@ -244,18 +266,18 @@ const styles = StyleSheet.create({
                                 flex: 1,
                                 justifyContent: 'center',
                                 alignItems: 'center',
-
-
                                 backgroundColor: '#F7FAFF',
                                 },
                                  smallContainer:{
-                                 marginTop:70,
+                                 marginTop:30,
                                  justifyContent: 'center',
                                  alignItems: 'center',
                                  backgroundColor: 'white',
                                  borderRadius:10,
                                  width:300,
-                                 height:650,
+                                 height:800,
+                                 overflowY: 'scroll',
+                                 paddingVertical:35,
                                  },
 
                                  typeContainer:{
@@ -292,7 +314,7 @@ const styles = StyleSheet.create({
                                  },
                                  phoneInput:{
 
-                                 height:35,
+                                 height:40,
                                  width:200,
 
                                  borderColor: '#EAEAEA',
@@ -300,14 +322,9 @@ const styles = StyleSheet.create({
                                  },
 
                                  keyNo:{
-                                 backgroundColor: '#FFFFFF',
-                                 borderRadius:30,
-                                 borderWidth: 1,
-                                 width:30,
-                                 height:35,
-                                 alignItems:'right',
 
-                                 borderColor: '#EAEAEA'
+                                 color:'grey',
+
                                  },
 
                                 inputContainertwo: {

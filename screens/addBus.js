@@ -11,8 +11,23 @@ import {
   Dropdown,
 } from 'react-native';
 import firebase from 'firebase'
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
 export default class addBus extends Component {
+
+  _menu = null;
+
+  setMenuRef = ref => {
+    this._menu = ref;
+  };
+
+  hideMenu = () => {
+    this._menu.hide();
+  };
+
+  showMenu = () => {
+    this._menu.show();
+  };
   UNSAFE_componentWillMount(){
     const firebaseConfig = {
       apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
@@ -93,16 +108,23 @@ export default class addBus extends Component {
         </View>
           <View style={styles.inputContainer}>
 
-          <TextInput style={styles.inputs}
-              placeholder="الحي السكني"
-              keyboardType="TextInput"
-              underlineColorAndroid='transparent'
-              onChangeText={(neighborhood) => this.setState({neighborhood})}
-              value={this.state.neighborhood}
-              />
+    
 
         </View>
-
+<View style={styles.inputContainer}>
+        <Menu
+          ref={this.setMenuRef}
+          button={<Text onPress={this.showMenu}>الحي السكني</Text>}
+        >
+          <MenuItem onPress={this.hideMenu}>Menu item 1</MenuItem>
+          <MenuItem onPress={this.hideMenu}>Menu item 2</MenuItem>
+          <MenuItem onPress={this.hideMenu} disabled>
+            Menu item 3
+          </MenuItem>
+          <MenuDivider />
+          <MenuItem onPress={this.hideMenu}>Menu item 4</MenuItem>
+        </Menu>
+</View>
 
 
         <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]}
