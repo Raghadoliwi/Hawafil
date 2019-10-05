@@ -21,15 +21,28 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 
-  /*
-import {createAppContainer } from 'react-navigation';
-import {createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-*/
-//import Icon from 'react-native-vector-icons/Octicons';
 
-export default class forgetPassword extends React.Component {
+export default class asManager extends React.Component {
+constructor(props){
+    super(props)
+    this.state={typeOf:'',
+                name: '',
+                email: '',
+                password: '',
+                phoneNo:'',
+                nationalId : '',
+                instName: '',
+                nameBorders:'#EAEAEA',
+                emailBorders:'#EAEAEA',
+                numberBorders:'',
+                idBorders:'',
+                passBorders:'#EAEAEA',
+                instBorders:'',
 
+
+              }
+
+}
 
     UNSAFE_componentWillMount(){
     const firebaseConfig = {
@@ -46,15 +59,31 @@ export default class forgetPassword extends React.Component {
 
   }
 
-  state={
-                  email: '',
-                  emailBorders:'#EAEAEA',
+    addInstit = () => {
+    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    .then( (data) => {
+        firebase.auth().onAuthStateChanged( user => {
+            if (user) {
+              this.userId = user.uid
+              firebase.database().ref('managers/'+this.userId).set(
+                {
+                  name: this.state.name,
+                  phoneNo: this.state.phoneNo,
+                  nationalId: this.state.nationalId,
+                  instName:this.state.instName,
+                })
+            }
 
-                }
+          });
+    }).then(() => this.props.navigation.navigate('manageBuses'))
+    //raghad plz edit the above line to the page you wanna navigate to after insertion
+
+    .catch(error => this.setState(error => console.log(error.message)))
+  }//end adding a parent
 
 static navigationOptions = function(props) {
 return {
-  title: 'استعادة كلمة المرور',
+  title: 'التسجيل',
   headerLeft: <View style={{paddingLeft:16}}>
      <Icon
          name="chevron-left"
@@ -76,9 +105,25 @@ resetScrollToCoords={{ x: 0, y: 0 }}
 contentContainerStyle={styles.container}
 scrollEnabled={false}>
 
-                <View style={styles.smallContainer}>
+                <Div style={styles.smallContainer}>
 
-                <Text style={styles.Main}>قم بإدخال بريدك الإلكتروني:</Text>
+                <Text style={styles.Main}>• كـ مؤسسة تعليمية •</Text>
+
+                <Text style={styles.Sub}>── معلومات ممثل المنشأة ──</Text>
+
+
+                <View style={styles.inputContainer}>
+
+                <TextInput style={styles.email}
+                placeholder="الاسم"
+                keyboardType="TextInput"
+                underlineColorAndroid='transparent'
+                onChangeText={name => this.setState({ name })}
+                value={this.state.name}
+                />
+
+                </View>
+
 
                 <View style={styles.inputContainer}>
 
@@ -86,20 +131,104 @@ scrollEnabled={false}>
                 placeholder="البريد الإلكتروني"
                 keyboardType="email-address"
                 underlineColorAndroid='transparent'
-                onChangeText={(email) => this.setState({ email })}
+                onChangeText={email => this.setState({ email })}
                 value={this.state.email}
                 />
 
                 </View>
 
+                <View style={styles.phoneContainer}>
 
-                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} >
+                <TextInput style={styles.keyNo}
+                value="+966"
+                editable={false}
+                />
 
-                <Text style={styles.signupText}>إرسال</Text>
+                <TextInput style={styles.phoneInput}
+                placeholder="رقم الجوال"
+                keyboardType="numeric"
+                underlineColorAndroid='transparent'
+                onChangeText={(phoneNo) => this.setState({phoneNo})}
+                value={this.state.phoneNo}
+                />
+                </View>
+
+                <View style={styles.inputContainer}>
+
+                <TextInput style={styles.email}
+                placeholder="الهوية/الإقامة"
+                keyboardType="numeric"
+                underlineColorAndroid='transparent'
+                onChangeText={nationalId => this.setState({ nationalId })}
+                value={this.state.nationalId}
+                />
+                </View>
+
+                <View style={styles.inputContainer}>
+
+                <TextInput style={styles.pass}
+                placeholder="كلمة المرور"
+                secureTextEntry={true}
+                underlineColorAndroid='transparent'
+                autoCapitalize="none"
+                onChangeText={password => this.setState({ password })}
+                value={this.state.password}
+                />
+                </View>
+
+                <View style={styles.inputContainer}>
+
+                <TextInput style={styles.pass}
+                placeholder="تأكيد كلمة المرور"
+                secureTextEntry={true}
+                underlineColorAndroid='transparent'
+                autoCapitalize="none"
+                onChangeText={password => this.setState({ password })}
+                value={this.state.password}
+                />
+                </View>
+
+                <Text style={styles.Sub}>معلومات المنشأة</Text>
+                <View style={styles.typeContainer}>
+                <TouchableHighlight style={[styles.typeButtonContainer, this.state.typeOf === 'school'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'school'})} >
+
+                <Text style={styles.typeText}>مدرسة</Text>
+                </TouchableHighlight>
+
+                <TouchableHighlight style={[styles.typeButtonContainer, this.state.typeOf === 'university'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'university'})}>
+
+                <Text style={styles.typeText}>جامعة</Text>
+                </TouchableHighlight>
+                </View>
+
+
+
+                <View style={styles.inputContainertwo}>
+
+                <TextInput style={styles.email}
+                placeholder="اسم المنشأة"
+                keyboardType="TextInput"
+                underlineColorAndroid='transparent'
+                onChangeText={instName => this.setState({ instName })}
+                value={this.state.instName}
+                />
+
+                </View>
+
+                <TouchableHighlight style={[styles.attachButtonContainer, styles.attachButton]} onPress={this.handleLogin}>
+
+                <Text style={styles.signupText}>إرفاق الإثبات</Text>
+
+                </TouchableHighlight>
+                <Text style={styles.SubSub}>*يسمح بملفات (PNG , PDF , JPG)</Text>
+
+                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addInstit}>
+
+                <Text style={styles.signupText}>تسجيل جديد</Text>
 
                 </TouchableHighlight>
 
-                </View>
+                </Div>
                 </KeyboardAwareScrollView>
 
                 );
@@ -203,7 +332,18 @@ const styles = StyleSheet.create({
                                   paddingHorizontal:10,
                                  },
 
+                                 pass:{
 
+                                 borderBottomColor: '#FFFFFF',
+                                 flex:1,
+                                 alignSelf:'flex-end'
+                                 },
+                                 email:{
+                                  borderBottomColor: '#FFFFFF',
+                                   flex:1,
+                                   textAlign:'right',
+
+                                 },
 
                                  buttonContainer: {
                                  height:40,
@@ -215,13 +355,51 @@ const styles = StyleSheet.create({
                                  borderRadius:30,
 
                                  },
+                                 typeButtonContainer: {
+                                 height:40,
+                                 flexDirection: 'row',
+                                 justifyContent: 'center',
+                                 alignItems: 'center',
+                                 marginBottom:5,
+                                 width:'38%',
+                                 borderRadius:30,
+                                 },
+
+                                 attachButtonContainer: {
+                                 height:40,
+                                 flexDirection: 'row',
+                                 justifyContent: 'center',
+                                 alignItems: 'center',
+
+                                 width:'30%',
+                                 borderRadius:30,
+
+
+                                 },
 
 
                                  signupButton: {
                                  backgroundColor: "#4C73CC",
                                  },
 
+                                typeButton: {
+                                 backgroundColor: "#DFE8FB",
+                                    marginLeft:10,
+                                    marginRight:10,
 
+                                 },
+
+                                pressedButton: {
+                                 backgroundColor: "#7597DB",
+                                    marginLeft:10,
+                                    marginRight:10,
+
+                                 },
+                                 attachButton: {
+                                 backgroundColor: "#8BC8E4",
+
+
+                                 },
                                 signupText: {
                                  color: 'white',
                                  },

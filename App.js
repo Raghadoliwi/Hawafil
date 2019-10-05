@@ -93,23 +93,39 @@ import * as React from 'react';
             firebase.auth().onAuthStateChanged( user => {
               if (user) {
                 this.userId = user.uid
-                firebase.database().ref('managers/'+this.userId)
-                .once('value').then(function(snapshot) {
+                //Search in managers
+                firebase.database().ref('managers/'+this.userId).once('value').then(function(snapshot) {
+                  //raghad plz change the below line to the page you wanna navigate to
+                  this.props.navigation.navigate('renderManageDrivers')
+                })
+                //Search in parents
+                firebase.database().ref('drivers/'+this.userId).once('value').then(function(snapshot) {
                   //get any data we what, using for in
                   //https://stackoverflow.com/questions/37506331/ref-once-not-called-on-firebase
                 })
+                //Search in students
+                firebase.database().ref('parents/'+this.userId).once('value').then(function(snapshot) {
+                    console.log('yay!')
+                  //get any data we what, using for in
+                  //https://stackoverflow.com/questions/37506331/ref-once-not-called-on-firebase
+                })
+                //Search in students
+                firebase.database().ref('students/'+this.userId).once('value').then(function(snapshot) {
+                  //get any data we what, using for in
+                  //https://stackoverflow.com/questions/37506331/ref-once-not-called-on-firebase
+                })
+                //done searching
               }
             });
 
-            //raghad plz change the below line to the page you wanna navigate to
-            this.props.navigation.navigate('renderManageDrivers')
+
           })
           .catch((error) => {
             console.log(error.message)
 
             this.setState({visibilty: 'flex'})
           })
-        console.log('handleLogin')
+
       }
 
 
