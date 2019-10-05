@@ -12,6 +12,8 @@ import {
 	SafeAreaView,
   Image,
   Alert} from 'react-native';
+  import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
@@ -20,12 +22,54 @@ import firebase from 'firebase';
 import Constants from 'expo-constants';
 
 export default class forgetPassword extends React.Component {
+
+      UNSAFE_componentWillMount(){
+        const firebaseConfig = {
+          apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+          authDomain: "hawafildb.firebaseapp.com",
+          databaseURL: "https://hawafildb.firebaseio.com",
+          projectId: "hawafildb",
+          storageBucket: "",
+          messagingSenderId: "932110912763",
+          appId: "1:932110912763:web:68fca60e805543a655b45e",
+          measurementId: "G-G21F8ME7TS"
+        };
+      }
   state={
+      visibilty: 'none',
                   email: '',
                   emailBorders:'#EAEAEA',
+                  errorMsg:'',
 
                 }
 
+
+                      forgetPassword = () => {
+                        if (this.state.email == '') {
+                          this.setState({emailBorders: 'red'})
+                          return;
+                        }
+                        firebase.auth().sendPasswordResetEmail(this.state.email)
+                        .then(function() {
+                          this.props.navigation.navigate('login');
+                          })
+                          .catch((error) => {
+
+                            if (error.message == 'There is no user record corresponding to this identifier. The user may have been deleted.')
+                            {
+                              this.setState({errorMsg: 'لا يوجد مستخدم بهذا البريد الإلكتروني'})
+                              this.setState({visibilty: 'flex'})
+                            }
+                            else if(error.message == 'The email address is badly formatted.'){
+                              this.setState({errorMsg: 'فضلًا، قم بإدخال بريد إلكتروني صحيح'})
+                              this.setState({visibilty: 'flex'})
+                            }
+
+                          // Error occurred. Inspect error.code.
+                            });
+
+
+                      }
   static navigationOptions = function(props) {
   return {
     title: 'استعادة كلمة المرور',
@@ -46,33 +90,44 @@ export default class forgetPassword extends React.Component {
 
     render() {
         return (
-                <View style={styles.container}>
+          <KeyboardAwareScrollView
+resetScrollToCoords={{ x: 0, y: 0 }}
+contentContainerStyle={styles.container}
+scrollEnabled={false}>
 
               <View style={styles.smallContainer}>
 
               <Text style={styles.Main}>قم بإدخال بريدك الإلكتروني:</Text>
 
-              <View style={styles.inputContainer}>
+              <View style={[styles.inputContainer, {borderColor:this.state.emailBorders}]}>
 
-              <TextInput style={styles.email}
-              placeholder="البريد الإلكتروني"
-              keyboardType="email-address"
-              underlineColorAndroid='transparent'
-              onChangeText={(email) => this.setState({ email })}
-              value={this.state.email}
-              />
 
+                <TextInput style={styles.email}
+                    placeholder="البريد الإلكتروني"
+                    keyboardType="email-address"
+                    underlineColorAndroid='transparent'
+                    onChangeText={(email) => {
+                      this.setState({email})
+                      this.setState({visibilty: 'none'})
+                      this.setState({emailBorders: '#EAEAEA'})
+
+                    } }/>
+              </View>
+              <View >
+
+                <Text style={[styles.warning, {display: this.state.visibilty}]}> {this.state.errorMsg} </Text>
               </View>
 
+              <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]}
 
-              <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} >
+              onPress={this.forgetPassword}>
 
               <Text style={styles.signupText}>إرسال</Text>
 
               </TouchableHighlight>
 
               </View>
-                </View>
+                </KeyboardAwareScrollView>
                 );
     }
 }
@@ -192,7 +247,12 @@ const styles = StyleSheet.create({
                                  signupButton: {
                                  backgroundColor: "#4C73CC",
                                  },
-
+                                 warning:{
+                                   color: 'red',
+                                   fontSize:12,
+                                   textAlign:'right',
+                                   marginBottom:10,
+                                 },
 
                                 signupText: {
                                  color: 'white',

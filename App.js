@@ -115,11 +115,6 @@ import * as React from 'react';
 
 
 
-      forgetPassword = () => {
-        firebase.auth().sendPasswordResetEmail(this.state.email)
-
-
-      }
 
   	static navigationOptions = function(props) {
     return {
@@ -203,7 +198,7 @@ import * as React from 'react';
   			        </TouchableHighlight>
 
   				 			<TouchableHighlight style={styles.forgetPass}
-                onPress={this.forgetPassword}>
+                   onPress={() => this.props.navigation.push('forgetPassword')}>
   				 					<Text style={styles.forgetPassText}> نسيت كلمة المرور؟</Text>
   				 			</TouchableHighlight>
 
@@ -325,6 +320,7 @@ import * as React from 'react';
 
   const loginStack = createStackNavigator({
     login: { screen: login },
+    forgetPassword: { screen: forgetPassword },
     registration: { screen: registration },
     renderManageBuses: { screen: renderManageBuses },
     renderManageDrivers: { screen: renderManageDrivers },
