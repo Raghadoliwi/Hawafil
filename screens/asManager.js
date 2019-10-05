@@ -17,7 +17,6 @@ import {
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import DocumentPicker from 'react-native-document-picker';
 
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
@@ -62,6 +61,33 @@ constructor(props){
 
   }
 
+
+    validateSAID = (id) => {
+    id = id.trim();
+    if (isNaN(parseInt(id))) {
+      return -1;
+    }
+    if (id.length !== 10) {
+      return -1;
+    }
+    var type = id.substr(0, 1);
+    if (type !== '2' && type !== '1') {
+      return -1;
+    }
+    var sum = 0;
+    for (var i = 0; i < 10; i++) {
+      if (i % 2 === 0) {
+        var ZFOdd = String('00' + String(Number(id.substr(i, 1)) * 2)).slice(-2);
+        sum += Number(ZFOdd.substr(0, 1)) + Number(ZFOdd.substr(1, 1));
+      } else {
+        sum += Number(id.substr(i, 1));
+      }
+
+    }
+    return (sum % 10 !== 0) ? -1 : type;
+  }
+
+
     addInstit = () => {
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then( (data) => {
@@ -85,27 +111,45 @@ constructor(props){
   }//end adding a parent
 
 
+
+
  async handleDocPicker() {
-   
+
 // Pick a single file
 // Pick a single file
-try {
-  const res = await DocumentPicker.pick({
-    type: [DocumentPicker.types.images],
-  });
-  console.log(
-    res.uri,
-    res.type, // mime type
-    res.name,
-    res.size
-  );
-} catch (err) {
-  if (DocumentPicker.isCancel(err)) {
-    // User cancelled the picker, exit any dialogs or menus and move on
-  } else {
-    throw err;
-  }
-}
+    const DocumentPicker = require('react-native-document-picker').default;
+    //Opening Document Picker for selection of one file
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+        //There can me more options as well
+        // DocumentPicker.types.allFiles
+        // DocumentPicker.types.images
+        // DocumentPicker.types.plainText
+        // DocumentPicker.types.audio
+        // DocumentPicker.types.pdf
+      });
+      //Printing the log realted to the file
+      console.log('res : ' + JSON.stringify(res));
+      console.log('URI : ' + res.uri);
+      console.log('Type : ' + res.type);
+      console.log('File Name : ' + res.name);
+      console.log('File Size : ' + res.size);
+      //Setting the state to show single file attributes
+      this.setState({ singleFile: res });
+    } catch (err) {
+      //Handling any exception (If any)
+      if (DocumentPicker.isCancel(err)) {
+        //If user canceled the document selection
+        alert('Canceled from single doc picker');
+      } else {
+        //For Unknown Error
+        alert('Unknown Error: ' + JSON.stringify(err));
+        console.log (JSON.stringify(err));
+        throw err;
+      }
+    }
+
  }
 
 
@@ -274,7 +318,7 @@ const styles = StyleSheet.create({
                                  justifyContent: 'center',
                                  alignItems: 'center',
                                  marginBottom:20,
-                                 marginTop:15,
+                                 marginTop:10,
                                 fontSize:20,
                                  },
                                 Sub:{
@@ -305,6 +349,10 @@ const styles = StyleSheet.create({
                                  height:700,
                                  overflowY: 'scroll',
                                  paddingVertical:35,
+                                 shadowOpacity: 0.04,
+                                         shadowRadius: 5,
+                                         shadowColor: 'black',
+                                         shadowOffset: { height: 0, width: 0 }
                                  },
 
                                  typeContainer:{
@@ -366,10 +414,9 @@ const styles = StyleSheet.create({
                                  },
 
                                  pass:{
-
-                                 borderBottomColor: '#FFFFFF',
-                                 flex:1,
-                                 alignSelf:'flex-end'
+                                   borderBottomColor: '#FFFFFF',
+                                    flex:1,
+                                    textAlign:'right',
                                  },
                                  email:{
                                   borderBottomColor: '#FFFFFF',

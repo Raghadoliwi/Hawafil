@@ -42,12 +42,25 @@ export default class asStudent extends Component {
   fullName: '',
   email   : '',
   password: '',
+  confirmPassword:'',
   university:'',
   busNo:'',
   neighborhood:'',
   phoneNo : '',
-  currentColor: '#EAEAEA'
+  currentColor: '#EAEAEA',
+  passError:'none'
   }
+
+
+identicalPass = (password) => {
+if (this.state.password != this.state.confirmPassword){
+  this.setState({passError: 'flex'})
+}
+
+}//end inserting a bus
+
+
+
 
   validateNumber = (phoneNo) => {
     //Regex
@@ -110,10 +123,11 @@ export default class asStudent extends Component {
     };
     render() {
         return (
-                <KeyboardAwareScrollView
-      resetScrollToCoords={{ x: 0, y: 0 }}
-      contentContainerStyle={styles.container}
-      scrollEnabled={false}>
+          <ScrollView>
+          <KeyboardAwareScrollView
+resetScrollToCoords={{ x: 0, y: 0 }}
+contentContainerStyle={styles.container}
+scrollEnabled={false}>
                 <View style={styles.smallContainer}>
                 <Text style={styles.header}>• ﻛ طالب •</Text>
                 <Text style={styles.perInfo}>──── المعلومات الشخصية ────</Text>
@@ -147,10 +161,34 @@ export default class asStudent extends Component {
                 placeholder="كلمة المرور"
                 secureTextEntry={true}
                 underlineColorAndroid='transparent'
-                onChangeText={(password) => this.setState({password})}
+                onChangeText={(password) => {
+                  this.setState({password})
+                }}
                 value={this.state.password}
                 />
                 </View>
+
+                <View style={styles.inputContainer}>
+
+                <TextInput style={styles.inputs}
+                placeholder="تأكيد كلمة المرور"
+                secureTextEntry={true}
+                underlineColorAndroid='transparent'
+                onChangeText={(confirmPassword) => {
+
+                  this.setState({confirmPassword})
+                }}
+                  onEndEditing={(confirmPassword) =>{this.identicalPass(confirmPassword)} }
+                value={this.state.confirmPassword}
+                />
+                </View>
+
+                <View >
+
+                  <Text style={[styles.warning, {display: this.state.passError}]}> كلمة المرور غير متطابقة </Text>
+                </View>
+
+
                 <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
                 >
 
@@ -211,6 +249,7 @@ export default class asStudent extends Component {
                 </View>
 
                 </KeyboardAwareScrollView>
+                </ScrollView>
                 );
     }
 }
@@ -238,19 +277,26 @@ const styles = StyleSheet.create({
                                  },
 
                                  smallContainer:{
+                                   marginTop:15,
 
                                    justifyContent: 'center',
                                   alignItems: 'center',
                                   backgroundColor: 'white',
                                   borderRadius:10,
                                     width:300,
-                                    height:600
+                                    height:650,
+                                    marginBottom:30,
+                                    shadowOpacity: 0.04,
+                                            shadowRadius: 5,
+                                            shadowColor: 'black',
+                                            shadowOffset: { height: 0, width: 0 }
                                  },
 
                                  header:{
                                  color: "#8197C6",
                                  fontSize: 20 ,//problema
                                  //fontWeight:900,
+                                 marginTop:30,
                                  bottom: 20,
                                  },
 
@@ -260,7 +306,7 @@ const styles = StyleSheet.create({
                                  //fontWeight:100,
                                  bottom: 30,
                                  marginTop: 20,
-                                 marginBottom:20,
+                          
                                  },
                                  inputs:{
                                  flex:1,
@@ -364,6 +410,11 @@ const styles = StyleSheet.create({
 
                                  signUpText: {
                                  color: 'white',
-                                 }
+                               },
+                               warning:{
+                                 color: 'red',
+                                 fontSize:12,
+                                 marginBottom:10,
+                               }
 
                                  });
