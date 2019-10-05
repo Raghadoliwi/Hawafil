@@ -157,7 +157,12 @@ else {
           });
     }).then(() => this.props.navigation.navigate('login'))
     //raghad plz edit the above line to the page you wanna navigate to after insertion
-    .catch(error => console.log(error.message))
+    .catch((error) => {
+      console.log(error.message)
+
+      this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
+      this.setState({errorMsgVisibilty: 'flex'})
+    })
 }//end adding a parent
 
 
@@ -185,7 +190,7 @@ else {
     }
     };
     render() {
-      
+
 let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'النخيل'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]
 
 
@@ -553,6 +558,7 @@ const styles = StyleSheet.create({
                                  color: 'red',
                                  fontSize:12,
                                  marginBottom:10,
+                                 textAlign:'center'
                                }
 
                                  });
