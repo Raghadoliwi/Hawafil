@@ -16,8 +16,6 @@
   import { createDrawerNavigator } from 'react-navigation-drawer';
   import Icon from 'react-native-vector-icons/Octicons';
   import firebase from 'firebase';
-
-  //import * as Font from 'expo-font';
   import registration from './screens/registration'
   import renderManageBuses from './screens/renderManageBuses'
   import renderManageDrivers from './screens/renderManageDrivers'
@@ -27,6 +25,7 @@
   import asStudent from './screens/asStudent'
   import asManager from './screens/asManager'
   import logout from './screens/logout'
+  import forgetPassword from './screens/forgetPassword'
   //import addBus from './screens/addBus'
 
   const MenuIcon = ({ navigate }) => <Icon
@@ -201,7 +200,8 @@
 
   			        </TouchableHighlight>
 
-  				 			<TouchableHighlight style={styles.forgetPass} onPress={this.forgetPassword}>
+  				 			<TouchableHighlight style={styles.forgetPass}
+               onPress={() => this.props.navigation.push('forgetPassword')}>
   				 					<Text style={styles.forgetPassText}> نسيت كلمة المرور؟</Text>
   				 			</TouchableHighlight>
 
@@ -323,6 +323,7 @@
 
   const loginStack = createStackNavigator({
     login: { screen: login },
+    forgetPassword: { screen: forgetPassword },
     registration: { screen: registration },
     renderManageBuses: { screen: renderManageBuses },
     renderManageDrivers: { screen: renderManageDrivers },
