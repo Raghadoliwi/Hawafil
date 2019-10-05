@@ -40,27 +40,7 @@ export default class asStudent extends Component {
       measurementId: "G-G21F8ME7TS"
     };
   }
-    componentDidMount(){ //to fetch data
-        firebase.database().ref('managers/').on('value', (snap) => {
-            let universities = [];
-            snap.forEach((child) => {
-              this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
 
-                /*universities.push({
-                    value: child.val().instName ,
-                })*/
-            })//end snap for each
-            //itm = universities;
-            //this.setState({universities: itm});
-            console.log(this.state.universities);
-
-          /*  itm.forEach((itms) => {
-                console.log(itms.name);
-            })*/
-        })//end on
-
-
-    }
 
   state = {
   fullName: '',
@@ -82,9 +62,46 @@ export default class asStudent extends Component {
   conPasswordBorder:'#EAEAEA',
   neighborhoodBorder:'#EAEAEA',
   uniBorder:'#EAEAEA',
-  busBorder:'#EAEAEA'
+  busBorder:'#EAEAEA',
+  formErrorMsg:'',
+  errorMsgVisibilty:'none'
   }
 
+  componentDidMount(){ //to fetch data
+      firebase.database().ref('managers/').once('value', (snap) => {
+
+          snap.forEach((child) => {
+            this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
+
+              /*universities.push({
+                  value: child.val().instName ,
+              })*/
+          })//end snap for each
+          //itm = universities;
+          //this.setState({universities: itm});
+          console.log(this.state.universities);
+
+        /*  itm.forEach((itms) => {
+              console.log(itms.name);
+          })*/
+      })//end on
+
+
+  }
+
+
+validateEmail = (email) => {
+
+  let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+  if(reg.test(this.state.email)== false)
+  {
+
+  this.setState({emailBorder:'red'})
+    }
+  else {
+    this.setState({emailBorder:'#91b804'})
+  }
+}//end validate phone number
 
 identicalPass = (password) => {
 if (this.state.password != this.state.confirmPassword){
@@ -95,9 +112,6 @@ else {
 }
 
 }//end inserting a bus
-
-
-
 
   validateNumber = (phoneNo) => {
     //Regex
@@ -111,9 +125,21 @@ else {
       else {
       this.setState({currentColor: '#91b804'})
       }
-}//end inserting a bus
+}//end validate phone number
+
 
   addStudent = () => {
+    if (this.state.email == ''||this.state.password == ''||this.state.confirmPassword==''||this.state.university==''||this.state.busNo==''||this.state.phoneNo==''||this.state.neighborhood=='') {
+      this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
+      this.setState({errorMsgVisibilty: 'flex'})
+      return;
+    }
+    if (this.state.emailBorder == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'||this.state.uniBorder=='red'||this.state.busBorder=='red'||this.state.currentColor=='red'||this.state.neighborhoodBorder=='red'){
+      this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
+      this.setState({errorMsgVisibilty: 'flex'})
+      return;
+    }
+
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then( (data) => {
         firebase.auth().onAuthStateChanged( user => {
@@ -159,7 +185,7 @@ else {
     }
     };
     render() {
-let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'النخيل'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'}]
+let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'النخيل'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]
 
 
 
@@ -197,7 +223,9 @@ scrollEnabled={false}>
                 onChangeText={(email) => {
                   this.setState({email})
                   this.setState({emailBorder: '#EAEAEA'})
-                } }
+                }
+              }
+                onEndEditing={(email) => this.validateEmail(email)}
                 value={this.state.email}
                 />
                 </View>
@@ -227,6 +255,7 @@ scrollEnabled={false}>
                 onChangeText={(confirmPassword) => {
                   this.setState({confirmPassword})
                   this.setState({conPasswordBorder: '#EAEAEA'})
+                  this.setState({passError: 'none'})
                 } }
                   onEndEditing={(confirmPassword) =>{this.identicalPass(confirmPassword)} }
                 value={this.state.confirmPassword}
@@ -271,9 +300,9 @@ scrollEnabled={false}>
                   style={{textAlign:'right'}}
                   dropdownOffset={{ top: 0, left: 0}}
                                    inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
-                                  containerStyle={{marginBottom:-30,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                                  containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
                                   pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
-                                  itemPadding={5}
+                                  itemPadding={10}
                                   shadeOpacity={0}
                                   rippleInsets={{top: 0, bottom: 0}}
                                   dropdownMargins	={{min: 0, max: 0}}
@@ -291,24 +320,26 @@ scrollEnabled={false}>
 
               <View style={[styles.neighborhoodList, {borderColor: this.state.uniBorder}]}>
                             <Dropdown
-                              itemColor='#919191'
-                              baseColor='#919191'
-                              textColor='#919191'
-                        itemTextStyle={{color:'red',textAlign:'right'}}
-            style={{textAlign:'right'}}
-            dropdownOffset={{ top: 0, left: 0}}
-                             inputContainerStyle={{color:'red',textAlign:'right', borderBottomColor: 'transparent' }}
-                            containerStyle={{color:'red',marginBottom:-30,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.uniBorder, borderRadius:25}}
-                            pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
-                            itemPadding={5}
-                            shadeOpacity={0}
-                            rippleInsets={{top: 0, bottom: 0}}
-                            dropdownMargins	={{min: 0, max: 0}}
-                            dropdownPosition ={0}
+                            itemColor='#919191'
+                            baseColor='#919191'
+                            textColor='#919191'
+
+                            itemTextStyle={{textAlign:'right'}}
+                style={{textAlign:'right'}}
+                dropdownOffset={{ top: 0, left: 0}}
+                                 inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
+                                containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                                pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                                itemPadding={10}
+                                shadeOpacity={0}
+                                rippleInsets={{top: 0, bottom: 0}}
+                                dropdownMargins	={{min: 0, max: 0}}
+                                dropdownPosition ={0}
 
                 label='الجامعة'
 
     onChangeText={(value) => {
+      console.log(this.state.universities);
       this.setState({university:value})
       this.setState({uniBorder: '#EAEAEA'})
     } }
@@ -329,7 +360,10 @@ scrollEnabled={false}>
                 />
 
                 </View>
+                <View >
 
+                  <Text style={[styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
+                </View>
 
 
 
@@ -352,8 +386,6 @@ const styles = StyleSheet.create({
                                  flex: 1,
                                  justifyContent: 'center',
                                  alignItems: 'center',
-
-
                                  backgroundColor: '#F7FAFF',
                                  },
 
@@ -377,7 +409,7 @@ const styles = StyleSheet.create({
                                   backgroundColor: 'white',
                                   borderRadius:10,
                                     width:300,
-                                    height:650,
+                                    height:700,
                                     marginBottom:30,
                                     shadowOpacity: 0.04,
                                             shadowRadius: 5,
@@ -456,6 +488,7 @@ const styles = StyleSheet.create({
                                    width:250,
                                    height:100,
                                    marginBottom:-40,
+                                   marginTop:5
                                  },
 
                                  keyText:{
