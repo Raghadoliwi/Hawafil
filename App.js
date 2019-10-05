@@ -202,7 +202,8 @@ import * as React from 'react';
 
   			        </TouchableHighlight>
 
-  				 			<TouchableHighlight style={styles.forgetPass} onPress={this.forgetPassword}>
+  				 			<TouchableHighlight style={styles.forgetPass}
+                onPress={this.forgetPassword}>
   				 					<Text style={styles.forgetPassText}> نسيت كلمة المرور؟</Text>
   				 			</TouchableHighlight>
 

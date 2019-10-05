@@ -6,14 +6,14 @@ import {
   TextInput,
   Button,
 	StatusBar,
-  Div,
+  KeyboardAvoidingView,
   TouchableHighlight,
 	ScrollView,
 	SafeAreaView,
+  Picker,
   Image,
   Alert} from 'react-native';
-  import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
@@ -21,36 +21,10 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 
-  /*
-import {createAppContainer } from 'react-navigation';
-import {createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-*/
-//import Icon from 'react-native-vector-icons/Octicons';
-
-export default class asManager extends React.Component {
-constructor(props){
-    super(props)
-    this.state={typeOf:'',
-                name: '',
-                email: '',
-                password: '',
-                phoneNo:'',
-                nationalId : '',
-                instName: '',
-                nameBorders:'#EAEAEA',
-                emailBorders:'#EAEAEA',
-                numberBorders:'',
-                idBorders:'',
-                passBorders:'#EAEAEA',
-                instBorders:'',
 
 
-              }
-
-}
-
-    UNSAFE_componentWillMount(){
+export default class asStudent extends Component {
+  UNSAFE_componentWillMount(){
     const firebaseConfig = {
       apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
       authDomain: "hawafildb.firebaseapp.com",
@@ -64,230 +38,191 @@ constructor(props){
 
 
   }
+  state = {
+  fullName: '',
+  email   : '',
+  password: '',
+  university:'',
+  busNo:'',
+  neighborhood:'',
+  phoneNo : '',
+  currentColor: '#EAEAEA'
+  }
 
-    addInstit = () => {
+  validateNumber = (phoneNo) => {
+    //Regex
+    const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
+    if (!numRegex.test('0'+this.state.phoneNo)) {
+      console.log('number bad');
+      console.log('0'+this.state.phoneNo);
+
+
+      }
+      else {
+      this.setState({currentColor: '#91b804'})
+      }
+}//end inserting a bus
+
+  addStudent = () => {
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then( (data) => {
         firebase.auth().onAuthStateChanged( user => {
             if (user) {
               this.userId = user.uid
-              firebase.database().ref('managers/'+this.userId).set(
+              firebase.database().ref('students/'+this.userId).set(
                 {
-                  name: this.state.name,
+                  name: this.state.fullName,
                   phoneNo: this.state.phoneNo,
-                  nationalId: this.state.nationalId,
-                  instName:this.state.instName,
+                  busNo: this.state.busNo,
+                  neighborhood: this.state.neighborhood,
+                  university:this.state.university,
                 })
             }
-
           });
-    }).then(() => this.props.navigation.navigate('manageBuses'))
+    }).then(() => this.props.navigation.navigate('login'))
     //raghad plz edit the above line to the page you wanna navigate to after insertion
+    .catch(error => console.log(error.message))
+}//end adding a parent
 
-    .catch(error => this.setState(error => console.log(error.message)))
-  }//end adding a parent
 
-static navigationOptions = function(props) {
-return {
-  title: 'التسجيل',
-  headerLeft: <View style={{paddingLeft:16}}>
-     <Icon
-         name="chevron-left"
-         size={25}
-         color='white'
-         onPress={() => props.navigation.goBack()} />
- </View>,
 
- headerTintColor: 'white',
-       headerStyle: {
-          backgroundColor: "#4C73CC"
-       }
-}
-};
+/*
+    onClickListener = (viewId) => {
+        Alert.alert("Alert", "Button pressed "+viewId);
+    }
+*/
+    static navigationOptions = function(props) {
+    return {
+      title: 'التسجيل',
+      headerLeft: <View style={{paddingLeft:16}}>
+         <Icon
+             name="chevron-left"
+             size={25}
+             color='white'
+             onPress={() => props.navigation.goBack()} />
+     </View>,
+
+     headerTintColor: 'white',
+           headerStyle: {
+              backgroundColor: "#4C73CC"
+           }
+    }
+    };
     render() {
         return (
-          <KeyboardAwareScrollView
-resetScrollToCoords={{ x: 0, y: 0 }}
-contentContainerStyle={styles.container}
-scrollEnabled={false}>
-
-                <Div style={styles.smallContainer}>
-
-                <Text style={styles.Main}>• كـ مؤسسة تعليمية •</Text>
-
-                <Text style={styles.Sub}>── معلومات ممثل المنشأة ──</Text>
-
-
+                <KeyboardAwareScrollView
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      contentContainerStyle={styles.container}
+      scrollEnabled={false}>
+                <View style={styles.smallContainer}>
+                <Text style={styles.header}>• ﻛ طالب •</Text>
+                <Text style={styles.perInfo}>──── المعلومات الشخصية ────</Text>
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
+
+
+                <TextInput style={styles.inputs}
                 placeholder="الاسم"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={name => this.setState({ name })}
-                value={this.state.name}
+                onChangeText={(fullName) => this.setState({fullName})}
+                value={this.state.fullName}
                 />
-
                 </View>
-
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
+                <TextInput style={styles.inputs}
                 placeholder="البريد الإلكتروني"
                 keyboardType="email-address"
                 underlineColorAndroid='transparent'
-                onChangeText={email => this.setState({ email })}
+                onChangeText={(email) => this.setState({email})}
                 value={this.state.email}
                 />
-
                 </View>
 
-                <View style={styles.phoneContainer}>
+                <View style={styles.inputContainer}>
 
-                <TextInput style={styles.keyNo}
+                <TextInput style={styles.inputs}
+                placeholder="كلمة المرور"
+                secureTextEntry={true}
+                underlineColorAndroid='transparent'
+                onChangeText={(password) => this.setState({password})}
+                value={this.state.password}
+                />
+                </View>
+                <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
+                >
+
+                <TextInput style={styles.keyText}
                 value="+966"
                 editable={false}
                 />
 
-                <TextInput style={styles.phoneInput}
+                <TextInput style={[styles.phoneInput]}
                 placeholder="رقم الجوال"
                 keyboardType="numeric"
+                ref="phoneNumber"
                 underlineColorAndroid='transparent'
                 onChangeText={(phoneNo) => this.setState({phoneNo})}
+                onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
                 value={this.state.phoneNo}
                 />
                 </View>
 
-                <View style={styles.inputContainer}>
-
-                <TextInput style={styles.email}
-                placeholder="الهوية/الإقامة"
-                keyboardType="numeric"
-                underlineColorAndroid='transparent'
-                onChangeText={nationalId => this.setState({ nationalId })}
-                value={this.state.nationalId}
-                />
-                </View>
 
                 <View style={styles.inputContainer}>
-
-                <TextInput style={styles.pass}
-                placeholder="كلمة المرور"
-                secureTextEntry={true}
-                underlineColorAndroid='transparent'
-                autoCapitalize="none"
-                onChangeText={password => this.setState({ password })}
-                value={this.state.password}
-                />
-                </View>
-
-                <View style={styles.inputContainer}>
-
-                <TextInput style={styles.pass}
-                placeholder="تأكيد كلمة المرور"
-                secureTextEntry={true}
-                underlineColorAndroid='transparent'
-                autoCapitalize="none"
-                onChangeText={password => this.setState({ password })}
-                value={this.state.password}
-                />
-                </View>
-
-                <Text style={styles.Sub}>معلومات المنشأة</Text>
-                <View style={styles.typeContainer}>
-                <TouchableHighlight style={[styles.typeButtonContainer, this.state.typeOf === 'school'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'school'})} >
-
-                <Text style={styles.typeText}>مدرسة</Text>
-                </TouchableHighlight>
-
-                <TouchableHighlight style={[styles.typeButtonContainer, this.state.typeOf === 'university'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'university'})}>
-
-                <Text style={styles.typeText}>جامعة</Text>
-                </TouchableHighlight>
-                </View>
-
-
-
-                <View style={styles.inputContainertwo}>
-
-                <TextInput style={styles.email}
-                placeholder="اسم المنشأة"
+                <TextInput style={styles.inputs}
+                placeholder="اسم الجامعة"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={instName => this.setState({ instName })}
-                value={this.state.instName}
+                onChangeText={(university) => this.setState({university})}
+                value={this.state.university}
+                />
+                </View>
+
+
+                <View style={styles.inputContainer}>
+                <TextInput style={styles.inputs}
+                placeholder="رقم الحافلة"
+                keyboardType="numeric"
+                underlineColorAndroid='transparent'
+                onChangeText={(busNo) => this.setState({busNo})}
+                value={this.state.busNo}
+
+                />
+
+                </View>
+                <View style={styles.inputContainer}>
+                <TextInput style={styles.inputs}
+                placeholder=" الحي السكني"
+                keyboardType="TextInput"
+                underlineColorAndroid='transparent'
+                onChangeText={(neighborhood) => this.setState({neighborhood})}
+                  value={this.state.neighborhood}
                 />
 
                 </View>
 
-                <TouchableHighlight style={[styles.attachButtonContainer, styles.attachButton]} onPress={this.handleLogin}>
-
-                <Text style={styles.signupText}>إرفاق الإثبات</Text>
-
-                </TouchableHighlight>
-                <Text style={styles.SubSub}>*يسمح بملفات (PNG , PDF , JPG)</Text>
-
-                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addInstit}>
-
-                <Text style={styles.signupText}>تسجيل جديد</Text>
-
+                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addStudent}>
+                <Text style={styles.signUpText}>تسجيل</Text>
                 </TouchableHighlight>
 
-                </Div>
+                </View>
+
                 </KeyboardAwareScrollView>
-
                 );
     }
 }
 
 const styles = StyleSheet.create({
-                                 Main:{
-                                 color:'#4C73CC',
-                                 flexDirection: 'row',
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 marginBottom:20,
-                                 marginTop:15,
-                                fontSize:20,
-                                 },
-                                Sub:{
-                                 color:'#9F9F9F',
-                                 fontSize:12,
-                                 marginBottom:10,
-
-                                },
-                                SubSub:{
-                                 color:'#9F9F9F',
-                                 fontSize:10,
-                                 marginBottom:30,
-                                },
-                                container: {
-                                flex: 1,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor: '#F7FAFF',
-                                },
-                                 smallContainer:{
-                                 marginTop:30,
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 backgroundColor: 'white',
-                                 borderRadius:10,
-                                 width:300,
-                                 height:800,
-                                 overflowY: 'scroll',
-                                 paddingVertical:35,
-                                 },
-
-                                 typeContainer:{
-                                 justifyContent: 'center',
-
-                                 backgroundColor: 'white',
-                                 borderRadius:10,
-
+                                 container: {
                                  flex: 1,
-                                 flexDirection: 'row',
+                                 justifyContent: 'center',
+                                 alignItems: 'center',
+
+
+                                 backgroundColor: '#F7FAFF',
                                  },
 
                                  inputContainer: {
@@ -301,6 +236,43 @@ const styles = StyleSheet.create({
                                    paddingHorizontal:10,
 
                                  },
+
+                                 smallContainer:{
+
+                                   justifyContent: 'center',
+                                  alignItems: 'center',
+                                  backgroundColor: 'white',
+                                  borderRadius:10,
+                                    width:300,
+                                    height:600
+                                 },
+
+                                 header:{
+                                 color: "#8197C6",
+                                 fontSize: 20 ,//problema
+                                 //fontWeight:900,
+                                 bottom: 20,
+                                 },
+
+                                 perInfo:{
+                                 color: "#9F9F9F",
+                                 fontSize: 12 ,
+                                 //fontWeight:100,
+                                 bottom: 30,
+                                 marginTop: 20,
+                                 marginBottom:20,
+                                 },
+                                 inputs:{
+                                 flex:1,
+                                 height:40,
+                                 //flexDirection:'row-reverse',
+                                 //justifyContent:'flex-end',
+                                 //marginright:16,
+                                textAlign:'right',
+                                 borderColor: '#EAEAEA',
+                                 marginLeft:10,
+
+                                 },
                                  phoneContainer:{
                                  backgroundColor: '#FFFFFF',
                                  borderRadius:25,
@@ -310,11 +282,11 @@ const styles = StyleSheet.create({
                                  flexDirection: 'row',
                                  //justifyContent:'flex-end',
                                  justifyContent:'space-around',
-                                 borderColor: '#EAEAEA'
                                  },
+
                                  phoneInput:{
 
-                                 height:40,
+                                 height:35,
                                  width:200,
 
                                  borderColor: '#EAEAEA',
@@ -322,97 +294,76 @@ const styles = StyleSheet.create({
                                  },
 
                                  keyNo:{
+                                 backgroundColor: '#FFFFFF',
+                                 borderRadius:30,
+                                 borderWidth: 1,
+                                 width:30,
+                                 height:35,
+                                 alignItems:'right',
+                                 // marginLeft: 250,
 
-                                 color:'grey',
 
+                                 //justifyContent:'flex-end',
+                                 //alignItems:'flex-end',
+                                 borderColor: '#EAEAEA'
                                  },
 
-                                inputContainertwo: {
-                                  borderColor: '#EAEAEA',
-                                  backgroundColor: '#FFFFFF',
-                                  borderRadius:25,
-                                  borderWidth: 1,
-                                  width:250,
-                                  height:40,
-                                  marginBottom:15,
-                                  paddingHorizontal:10,
-                                 },
-
-                                 pass:{
-
-                                 borderBottomColor: '#FFFFFF',
+                                 keyText:{
                                  flex:1,
-                                 alignSelf:'flex-end'
+                                 height:40,
+                                 textAlign:'center',
+                                 //marginRight: 30,
+                                 //justifyContent:'flex-end',
+                                 //marginright:16,
+                                 borderColor: '#EAEAEA',
+                                 color:'#646464' ,
                                  },
-                                 email:{
-                                  borderBottomColor: '#FFFFFF',
-                                   flex:1,
-                                   textAlign:'right',
+
+                                 /*inputIcon:{
+                                  width:30,
+                                  height:30,
+                                  marginLeft:15,
+                                  justifyContent: 'center'
+                                  },*/
+
+
+                                 inputDown:{
+                                 flex:1,
+                                 height:40,
+                                 //flexDirection:'row-reverse',
+                                 //justifyContent:'flex-end',
+                                 //marginright:16,
+
+                                 borderColor: '#EAEAEA',
 
                                  },
+                                 MainContainer: {
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    margin: 20
 
+                                  },
                                  buttonContainer: {
-                                 height:40,
+                                 height:45,
                                  flexDirection: 'row',
                                  justifyContent: 'center',
                                  alignItems: 'center',
-                                 marginBottom:10,
-                                 width:'40%',
-                                 borderRadius:30,
-
-                                 },
-                                 typeButtonContainer: {
-                                 height:40,
-                                 flexDirection: 'row',
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 marginBottom:5,
-                                 width:'38%',
+                                 top: 20,
+                                 width:250,
                                  borderRadius:30,
                                  },
-
-                                 attachButtonContainer: {
-                                 height:40,
-                                 flexDirection: 'row',
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-
-                                 width:'30%',
-                                 borderRadius:30,
-
-
-                                 },
-
 
                                  signupButton: {
-                                 backgroundColor: "#4C73CC",
+                                 //backgroundColor: "#FF4DFF",
+                                 width: 70,
+                                 height:30,
+                                 //top: 120,
+                                 backgroundColor:"#3C68BF",
+                                 //marginBottom: 300,
                                  },
 
-                                typeButton: {
-                                 backgroundColor: "#DFE8FB",
-                                    marginLeft:10,
-                                    marginRight:10,
-
-                                 },
-
-                                pressedButton: {
-                                 backgroundColor: "#7597DB",
-                                    marginLeft:10,
-                                    marginRight:10,
-
-                                 },
-                                 attachButton: {
-                                 backgroundColor: "#8BC8E4",
-
-
-                                 },
-                                signupText: {
+                                 signUpText: {
                                  color: 'white',
-                                 },
-
-                                typeText: {
-                                 color: 'white',
-                                 },
-
+                                 }
 
                                  });

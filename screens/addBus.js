@@ -108,7 +108,7 @@ export default class addBus extends Component {
         </View>
           <View style={styles.inputContainer}>
 
-    
+
 
         </View>
 <View style={styles.inputContainer}>

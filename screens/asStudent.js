@@ -55,7 +55,7 @@ export default class asStudent extends Component {
     if (!numRegex.test('0'+this.state.phoneNo)) {
       console.log('number bad');
       console.log('0'+this.state.phoneNo);
-      
+
 
       }
       else {
