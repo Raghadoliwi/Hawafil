@@ -1,42 +1,3 @@
-<<<<<<< HEAD
-import React , {Component} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-	StatusBar,
-  KeyboardAvoidingView,
-  TouchableHighlight,
-	ScrollView,
-	SafeAreaView,
-  Picker,
-  Image,
-  Alert} from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {createAppContainer } from 'react-navigation';
-import {createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-
-import Icon from 'react-native-vector-icons/Octicons';
-import firebase from 'firebase';
-
-
-
-export default class asStudent extends Component {
-  UNSAFE_componentWillMount(){
-    const firebaseConfig = {
-      apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
-      authDomain: "hawafildb.firebaseapp.com",
-      databaseURL: "https://hawafildb.firebaseio.com",
-      projectId: "hawafildb",
-      storageBucket: "",
-      messagingSenderId: "932110912763",
-      appId: "1:932110912763:web:68fca60e805543a655b45e",
-      measurementId: "G-G21F8ME7TS"
-    };
-=======
   import * as React from 'react';
   import {
     StyleSheet,
@@ -88,7 +49,6 @@ export default class asStudent extends Component {
 
   class login extends React.Component {
 
->>>>>>> e7a1a270622633028b618eeef342a633ff900726
 
 
   }
@@ -109,7 +69,7 @@ export default class asStudent extends Component {
     if (!numRegex.test('0'+this.state.phoneNo)) {
       console.log('number bad');
       console.log('0'+this.state.phoneNo);
-      
+
 
       }
       else {
@@ -140,14 +100,6 @@ export default class asStudent extends Component {
 
 
 
-<<<<<<< HEAD
-/*
-    onClickListener = (viewId) => {
-        Alert.alert("Alert", "Button pressed "+viewId);
-    }
-*/
-    static navigationOptions = function(props) {
-=======
 
 
       forgetPassword = () => {
@@ -157,25 +109,9 @@ export default class asStudent extends Component {
       }
 
   	static navigationOptions = function(props) {
->>>>>>> e7a1a270622633028b618eeef342a633ff900726
     return {
       title: 'التسجيل',
       headerLeft: <View style={{paddingLeft:16}}>
-<<<<<<< HEAD
-         <Icon
-             name="chevron-left"
-             size={25}
-             color='white'
-             onPress={() => props.navigation.goBack()} />
-     </View>,
-
-     headerTintColor: 'white',
-           headerStyle: {
-              backgroundColor: "#4C73CC"
-           }
-    }
-    };
-=======
   				<Icon
   						name="three-bars"
   						size={25}
@@ -435,7 +371,6 @@ export default class asStudent extends Component {
   const MyApp = createAppContainer(MyDrawerNavigator);
 
   export default class App extends React.Component {
->>>>>>> e7a1a270622633028b618eeef342a633ff900726
     render() {
         return (
                 <KeyboardAwareScrollView
