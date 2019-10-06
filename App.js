@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-  import * as React from 'react';
-=======
 import * as React from 'react';
->>>>>>> b4918aa042c183576e9b1052ff8e0fb6b3e072f9
   import {
     StyleSheet,
     Text,
@@ -70,15 +66,6 @@ import * as React from 'react';
       firebase.initializeApp(firebaseConfig);
     }
 
-<<<<<<< HEAD
-  validateNumber = (phoneNo) => {
-    //Regex
-    const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
-    if (!numRegex.test('0'+this.state.phoneNo)) {
-      console.log('number bad');
-      console.log('0'+this.state.phoneNo);
-
-=======
     state = {
               email: '' ,
               password: '',
@@ -86,7 +73,6 @@ import * as React from 'react';
               visibilty: 'none',
               emailBorders:'#EAEAEA',
               passBorders:'#EAEAEA',
->>>>>>> b4918aa042c183576e9b1052ff8e0fb6b3e072f9
 
             }
 
@@ -137,13 +123,10 @@ import * as React from 'react';
           .catch((error) => {
             console.log(error.message)
 
-<<<<<<< HEAD
-=======
             this.setState({visibilty: 'flex'})
           })
 
       }
->>>>>>> b4918aa042c183576e9b1052ff8e0fb6b3e072f9
 
 
 
@@ -419,161 +402,4 @@ import * as React from 'react';
   		return <MyApp />;
 
     }
-<<<<<<< HEAD
-}
-
-const styles = StyleSheet.create({
-                                 container: {
-                                 flex: 1,
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-
-
-                                 backgroundColor: '#F7FAFF',
-                                 },
-
-                                 inputContainer: {
-                                   borderColor: '#EAEAEA',
-                                   backgroundColor: '#FFFFFF',
-                                   borderRadius:25,
-                                   borderWidth: 1,
-                                   width:250,
-                                   height:40,
-                                   marginBottom:15,
-                                   paddingHorizontal:10,
-
-                                 },
-
-                                 smallContainer:{
-
-                                   justifyContent: 'center',
-                                  alignItems: 'center',
-                                  backgroundColor: 'white',
-                                  borderRadius:10,
-                                    width:300,
-                                    height:600
-                                 },
-
-                                 header:{
-                                 color: "#8197C6",
-                                 fontSize: 20 ,//problema
-                                 //fontWeight:900,
-                                 bottom: 20,
-                                 },
-
-                                 perInfo:{
-                                 color: "#9F9F9F",
-                                 fontSize: 12 ,
-                                 //fontWeight:100,
-                                 bottom: 30,
-                                 marginTop: 20,
-                                 marginBottom:20,
-                                 },
-                                 inputs:{
-                                 flex:1,
-                                 height:40,
-                                 //flexDirection:'row-reverse',
-                                 //justifyContent:'flex-end',
-                                 //marginright:16,
-                                textAlign:'right',
-                                 borderColor: '#EAEAEA',
-                                 marginLeft:10,
-
-                                 },
-                                 phoneContainer:{
-                                 backgroundColor: '#FFFFFF',
-                                 borderRadius:25,
-                                 borderWidth: 1,
-                                 width:250,
-                                 marginBottom:20,
-                                 flexDirection: 'row',
-                                 //justifyContent:'flex-end',
-                                 justifyContent:'space-around',
-                                 },
-
-                                 phoneInput:{
-
-                                 height:35,
-                                 width:200,
-
-                                 borderColor: '#EAEAEA',
-
-                                 },
-
-                                 keyNo:{
-                                 backgroundColor: '#FFFFFF',
-                                 borderRadius:30,
-                                 borderWidth: 1,
-                                 width:30,
-                                 height:35,
-                                 alignItems:'right',
-                                 // marginLeft: 250,
-
-
-                                 //justifyContent:'flex-end',
-                                 //alignItems:'flex-end',
-                                 borderColor: '#EAEAEA'
-                                 },
-
-                                 keyText:{
-                                 flex:1,
-                                 height:40,
-                                 textAlign:'center',
-                                 //marginRight: 30,
-                                 //justifyContent:'flex-end',
-                                 //marginright:16,
-                                 borderColor: '#EAEAEA',
-                                 color:'#646464' ,
-                                 },
-
-                                 /*inputIcon:{
-                                  width:30,
-                                  height:30,
-                                  marginLeft:15,
-                                  justifyContent: 'center'
-                                  },*/
-
-
-                                 inputDown:{
-                                 flex:1,
-                                 height:40,
-                                 //flexDirection:'row-reverse',
-                                 //justifyContent:'flex-end',
-                                 //marginright:16,
-
-                                 borderColor: '#EAEAEA',
-
-                                 },
-                                 MainContainer: {
-                                    flex: 1,
-                                    justifyContent: 'center',
-                                    margin: 20
-
-                                  },
-                                 buttonContainer: {
-                                 height:45,
-                                 flexDirection: 'row',
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 top: 20,
-                                 width:250,
-                                 borderRadius:30,
-                                 },
-
-                                 signupButton: {
-                                 //backgroundColor: "#FF4DFF",
-                                 width: 70,
-                                 height:30,
-                                 //top: 120,
-                                 backgroundColor:"#3C68BF",
-                                 //marginBottom: 300,
-                                 },
-
-                                 signUpText: {
-                                 color: 'white',
-                                 }
-
-                                 });
-=======
   }
->>>>>>> b4918aa042c183576e9b1052ff8e0fb6b3e072f9
