@@ -404,6 +404,8 @@ const styles = StyleSheet.create({
                                    height:40,
                                    marginBottom:15,
                                    paddingHorizontal:10,
+                                   fontFamily: tajawal,
+
 
                                  },
 
