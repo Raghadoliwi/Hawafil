@@ -7,6 +7,11 @@
     "web": "expo start --web",
     "eject": "expo eject"
   },
+  "rnpm": {
+    "assets": [
+	"./assets/fonts/"
+    ]
+},
   "dependencies": {
     "expo": "^35.0.0",
     "expo-keep-awake": "^7.0.0",
@@ -33,6 +38,7 @@
     "react-navigation-drawer": "^2.2.2",
     "react-navigation-stack": "^1.8.1",
     "validate.js": "^0.13.1"
+
   },
   "devDependencies": {
     "babel-preset-expo": "^7.0.0",
