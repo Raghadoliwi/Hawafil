@@ -20,8 +20,25 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
+import RNPasswordStrengthMeter from 'react-native-password-strength-meter';
 
 
+
+export default class PasswordInput extends Component {
+  onChange = (password, score, { label, labelColor, activeBarColor }) => {
+    console.log(password, score, { label, labelColor, activeBarColor });
+  }
+  render() {
+  return (
+    <View style={styles.container}>
+      <RNPasswordStrengthMeter
+        onChangeText={this.onChange}
+        meterType="bar"
+      />
+    </View>
+  );
+}
+}
 
 export default class asStudent extends Component {
   UNSAFE_componentWillMount(){
@@ -55,7 +72,7 @@ export default class asStudent extends Component {
     if (!numRegex.test('0'+this.state.phoneNo)) {
       console.log('number bad');
       console.log('0'+this.state.phoneNo);
-      
+
 
       }
       else {
@@ -213,6 +230,94 @@ export default class asStudent extends Component {
                 </KeyboardAwareScrollView>
                 );
     }
+}
+
+  defaultPassword: '',
+  containerWrapperStyle: {},
+  imageWrapperStyle: {},
+  imageStyle: {},
+  inputWrapperStyle: {},
+  inputStyle: {},
+  placeholderStyle: {},
+  meterType: 'bar',
+  inputProps: {
+    placeholder: 'Password',
+    secureTextEntry: true,
+      },
+passwordProps: {
+   touched: false,
+   scoreLimit: 100,
+   variations: {
+     digits: /\d/,
+     lower: /[a-z]/,
+     upper: /[A-Z]/,
+     nonWords: /\W/,
+    },
+   minLength: 5,
+   labelVisible: true,
+   levels: [
+     {
+       label: 'Pathetically weak',
+       labelColor: '#ff2900',
+       activeBarColor: '#ff2900',
+     },
+     {
+       label: 'Extremely weak',
+       labelColor: '#ff3e00',
+       activeBarColor: '#ff3e00',
+     },
+     {
+       label: 'Very weak',
+       labelColor: '#ff5400',
+       activeBarColor: '#ff5400',
+     },
+     {
+       label: 'Weak',
+       labelColor: '#ff6900',
+       activeBarColor: '#ff6900',
+     },
+     {
+       label: 'So-so',
+       labelColor: '#f4d744',
+       activeBarColor: '#f4d744',
+     },
+     {
+       label: 'Average',
+       labelColor: '#f3d331',
+       activeBarColor: '#f3d331',
+     },
+     {
+       label: 'Fair',
+       labelColor: '#f2cf1f',
+       activeBarColor: '#f2cf1f',
+     },
+     {
+       label: 'Strong',
+       labelColor: '#14eb6e',
+       activeBarColor: '#14eb6e',
+     },
+     {
+       label: 'Very strong',
+       labelColor: '#0af56d',
+       activeBarColor: '#0af56d',
+     },
+     {
+       label: 'Unbelievably strong',
+       labelColor: '#00ff6b',
+       activeBarColor: '#00ff6b',
+     },
+   ],
+   wrapperStyle: {},
+   labelStyle: {},
+   width: deviceWidth - 20,
+
+
+   boxContainerStyle: {},
+   boxStyle: {},
+   boxColor: '#f1f3f4',
+   boxSpacing: 2,
+
+
 }
 
 const styles = StyleSheet.create({
