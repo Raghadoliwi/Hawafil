@@ -16,6 +16,7 @@ import * as React from 'react';
   import { createDrawerNavigator } from 'react-navigation-drawer';
   import Icon from 'react-native-vector-icons/Octicons';
   import firebase from 'firebase';
+  import * as Font from 'expo-font';
 
   //import * as Font from 'expo-font';
   import registration from './screens/registration'
@@ -49,7 +50,25 @@ import * as React from 'react';
   }*/
 
   class login extends React.Component {
+    state = {
+              email: '' ,
+              password: '',
+              errorMessage: null,
+              visibilty: 'none',
+              emailBorders:'#EAEAEA',
+              passBorders:'#EAEAEA',
+              fontLoaded: false
 
+
+            }
+    async componentDidMount() {
+    await Font.loadAsync({
+      'Tajawal': require('./assets/fonts/Tajawal.ttf'),
+      'Tajawal-Medium': require('./assets/fonts/Tajawal-Medium.ttf'),
+    });
+
+    this.setState({ fontLoaded: true });
+  }
 
     UNSAFE_componentWillMount(){
       const firebaseConfig = {
@@ -66,15 +85,8 @@ import * as React from 'react';
       firebase.initializeApp(firebaseConfig);
     }
 
-    state = {
-              email: '' ,
-              password: '',
-              errorMessage: null,
-              visibilty: 'none',
-              emailBorders:'#EAEAEA',
-              passBorders:'#EAEAEA',
 
-            }
+
 
       handleLogin = () => {
           if (this.state.email == '') {
@@ -147,13 +159,18 @@ import * as React from 'react';
   		headerTintColor: 'white',
   		      headerStyle: {
   		         backgroundColor: "#4C73CC"
-  		      }
+  		      },
+            headerTitleStyle: {
+         fontFamily:'Tajawal-Medium'
+     },
   	}
   };
 
 
 
     render() {
+      const { fontLoaded } = this.state
+
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
   			<StatusBar
@@ -165,15 +182,20 @@ import * as React from 'react';
   		         />
   						 <SafeAreaView style={styles.scrollArea}>
   						 <ScrollView style={styles.scrollView}>
+               {
+                 this.state.fontLoaded ? (
   						 <View style={styles.container}>
   						 <Image source={require('./assets/logo-white-borders.png')}
   						style={{resizeMode: 'cover',width: 200, height: 144, marginTop:10}}/>
   				 		<View style={styles.smallContainer}>
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
+
+              </View>
   				 			<View style={[styles.inputContainer, {borderColor:this.state.emailBorders}]}>
 
 
-  				 				<TextInput style={styles.email}
+  				 				<TextInput style={[styles.fontStyle,styles.email]}
   				 						placeholder="البريد الإلكتروني"
   				 						keyboardType="email-address"
   				 						underlineColorAndroid='transparent'
@@ -187,7 +209,7 @@ import * as React from 'react';
 
   				 			<View style={[styles.inputContainer, {borderColor:this.state.passBorders}]}>
 
-  				 				<TextInput style={styles.pass}
+  				 				<TextInput style={[styles.pass,styles.fontStyle]}
   				 						placeholder="كلمة المرور"
   				 						secureTextEntry={true}
   				 						underlineColorAndroid='transparent'
@@ -202,33 +224,35 @@ import * as React from 'react';
 
                 <View >
 
-  				 				<Text style={[styles.warning, {display: this.state.visibilty}]}> البريد الإلكتروني أو كلمة المرور غير صحيحة </Text>
+  				 				<Text style={[styles.fontStyle,styles.warning, {display: this.state.visibilty}]}> البريد الإلكتروني أو كلمة المرور غير صحيحة </Text>
   				 			</View>
 
   							<TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
                 onPress={this.handleLogin}>
 
-  			        <Text style={[styles.loginText]}>تسجيل الدخول</Text>
+  			        <Text style={[styles.fontStyle,styles.loginText]}>تسجيل الدخول</Text>
 
 
   			        </TouchableHighlight>
 
   				 			<TouchableHighlight style={styles.forgetPass}
                    onPress={() => this.props.navigation.push('forgetPassword')}>
-  				 					<Text style={[styles.forgetPassText]}> نسيت كلمة المرور؟</Text>
+  				 					<Text style={[styles.fontStyle,styles.forgetPassText]}> نسيت كلمة المرور؟</Text>
   				 			</TouchableHighlight>
 
   				 <View style={{flexDirection: 'row'}}>
       <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginLeft:20}} />
-      <Text style={{ color: 'grey', alignSelf:'center', paddingHorizontal:5}}>أو</Text>
+      <Text style={[{ color: 'grey', alignSelf:'center', paddingHorizontal:5},styles.fontStyle]}>أو</Text>
       <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginRight:20}} />
   </View>
   				 			<TouchableHighlight style={[styles.buttonContainer, styles.registerButton]}
                  onPress={() => this.props.navigation.push('registration')}>
-  				 					<Text style={styles.registerText}>التسجيل كمستخدم جديد</Text>
+  				 					<Text style={[styles.fontStyle,styles.registerText]}>التسجيل كمستخدم جديد</Text>
   				 			</TouchableHighlight>
   				 			</View>
   				 		</View>
+            ) : null
+          }
   						</ScrollView>
   						 </SafeAreaView>
           </View>
@@ -262,7 +286,7 @@ import * as React from 'react';
   	borderRadius:10,
   		width:300,
   		height:300,
-      fontFamily: 'Tajawal',
+      fontFamily: 'Yaseer',
   },
   inputContainer: {
     backgroundColor: '#FFFFFF',
@@ -272,14 +296,14 @@ import * as React from 'react';
     height:40,
     marginBottom:15,
     paddingHorizontal:10,
-    fontFamily: 'Tajawal',
+
   },
   email:{
   		height:45,
   		textAlign:'right',
   		marginRight:20,
   		flex:1,
-      fontFamily: 'Tajawal',
+
 
   },
   pass:{
@@ -298,7 +322,7 @@ import * as React from 'react';
   	marginBottom:10,
   	width:250,
   	borderRadius:30,
-    fontFamily: 'Tajawal',
+
   },
   forgetPass: {
   	flexDirection: 'row-reverse',
@@ -326,13 +350,17 @@ import * as React from 'react';
   	borderWidth :1
   },
   registerText:{
-  	 color: '#EDC51B'
+  	 color: '#EDC51B',
+
   },
   warning:{
     color: 'red',
     fontSize:10,
     textAlign:'right',
     marginBottom:10,
+  },
+  fontStyle:{
+   fontFamily:'Tajawal'
   }
   });
 
