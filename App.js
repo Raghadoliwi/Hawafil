@@ -1,4 +1,8 @@
+<<<<<<< HEAD
   import * as React from 'react';
+=======
+import * as React from 'react';
+>>>>>>> b4918aa042c183576e9b1052ff8e0fb6b3e072f9
   import {
     StyleSheet,
     Text,
@@ -27,6 +31,7 @@
   import asStudent from './screens/asStudent'
   import asManager from './screens/asManager'
   import logout from './screens/logout'
+    import forgetPassword from './screens/forgetPassword'
   //import addBus from './screens/addBus'
 
   const MenuIcon = ({ navigate }) => <Icon
@@ -50,19 +55,22 @@
   class login extends React.Component {
 
 
+    UNSAFE_componentWillMount(){
+      const firebaseConfig = {
+        apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+        authDomain: "hawafildb.firebaseapp.com",
+        databaseURL: "https://hawafildb.firebaseio.com",
+        projectId: "hawafildb",
+        storageBucket: "",
+        messagingSenderId: "932110912763",
+        appId: "1:932110912763:web:68fca60e805543a655b45e",
+        measurementId: "G-G21F8ME7TS"
+      };
 
-  }
-  state = {
-  fullName: '',
-  email   : '',
-  password: '',
-  university:'',
-  busNo:'',
-  neighborhood:'',
-  phoneNo : '',
-  currentColor: '#EAEAEA'
-  }
+      firebase.initializeApp(firebaseConfig);
+    }
 
+<<<<<<< HEAD
   validateNumber = (phoneNo) => {
     //Regex
     const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
@@ -70,47 +78,81 @@
       console.log('number bad');
       console.log('0'+this.state.phoneNo);
 
+=======
+    state = {
+              email: '' ,
+              password: '',
+              errorMessage: null,
+              visibilty: 'none',
+              emailBorders:'#EAEAEA',
+              passBorders:'#EAEAEA',
+>>>>>>> b4918aa042c183576e9b1052ff8e0fb6b3e072f9
 
-      }
-      else {
-      this.setState({currentColor: '#91b804'})
-      }
-}//end inserting a bus
-
-  addStudent = () => {
-    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-    .then( (data) => {
-        firebase.auth().onAuthStateChanged( user => {
-            if (user) {
-              this.userId = user.uid
-              firebase.database().ref('students/'+this.userId).set(
-                {
-                  name: this.state.fullName,
-                  phoneNo: this.state.phoneNo,
-                  busNo: this.state.busNo,
-                  neighborhood: this.state.neighborhood,
-                  university:this.state.university,
-                })
             }
-          });
-    }).then(() => this.props.navigation.navigate('login'))
-    //raghad plz edit the above line to the page you wanna navigate to after insertion
-    .catch(error => console.log(error.message))
-}//end adding a parent
+
+      handleLogin = () => {
+          if (this.state.email == '') {
+            this.setState({emailBorders: 'red'})
+            return;
+          }
+          if (this.state.password == '') {
+            this.setState({passBorders: 'red'})
+              return;
+          }
+        const {email, password} = this.state
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(email,password)
+          .then((data) => {
+            firebase.auth().onAuthStateChanged( user => {
+              if (user) {
+                this.userId = user.uid
+                //Search in managers
+                firebase.database().ref('managers/'+this.userId).once('value').then(function(snapshot) {
+                  //raghad plz change the below line to the page you wanna navigate to
+                  this.props.navigation.navigate('renderManageDrivers')
+                })
+                //Search in parents
+                firebase.database().ref('drivers/'+this.userId).once('value').then(function(snapshot) {
+                  //get any data we what, using for in
+                  //https://stackoverflow.com/questions/37506331/ref-once-not-called-on-firebase
+                })
+                //Search in students
+                firebase.database().ref('parents/'+this.userId).once('value').then(function(snapshot) {
+                    console.log('yay!')
+                  //get any data we what, using for in
+                  //https://stackoverflow.com/questions/37506331/ref-once-not-called-on-firebase
+                })
+                //Search in students
+                firebase.database().ref('students/'+this.userId).once('value').then(function(snapshot) {
+                  //get any data we what, using for in
+                  //https://stackoverflow.com/questions/37506331/ref-once-not-called-on-firebase
+                })
+                //done searching
+              }
+            });
 
 
+          })
+          .catch((error) => {
+            console.log(error.message)
 
-
-
-      forgetPassword = () => {
-        firebase.auth().sendPasswordResetEmail(this.state.email)
-
+<<<<<<< HEAD
+=======
+            this.setState({visibilty: 'flex'})
+          })
 
       }
+>>>>>>> b4918aa042c183576e9b1052ff8e0fb6b3e072f9
+
+
+
+
 
   	static navigationOptions = function(props) {
     return {
-      title: 'التسجيل',
+  		drawerLabel:'الدخول',
+      title: 'الدخول',
       headerLeft: <View style={{paddingLeft:16}}>
   				<Icon
   						name="three-bars"
@@ -188,7 +230,8 @@
 
   			        </TouchableHighlight>
 
-  				 			<TouchableHighlight style={styles.forgetPass} onPress={this.forgetPassword}>
+  				 			<TouchableHighlight style={styles.forgetPass}
+                   onPress={() => this.props.navigation.push('forgetPassword')}>
   				 					<Text style={styles.forgetPassText}> نسيت كلمة المرور؟</Text>
   				 			</TouchableHighlight>
 
@@ -310,6 +353,7 @@
 
   const loginStack = createStackNavigator({
     login: { screen: login },
+    forgetPassword: { screen: forgetPassword },
     registration: { screen: registration },
     renderManageBuses: { screen: renderManageBuses },
     renderManageDrivers: { screen: renderManageDrivers },
@@ -372,110 +416,10 @@
 
   export default class App extends React.Component {
     render() {
-        return (
-                <KeyboardAwareScrollView
-      resetScrollToCoords={{ x: 0, y: 0 }}
-      contentContainerStyle={styles.container}
-      scrollEnabled={false}>
-                <View style={styles.smallContainer}>
-                <Text style={styles.header}>• ﻛ طالب •</Text>
-                <Text style={styles.perInfo}>──── المعلومات الشخصية ────</Text>
-                <View style={styles.inputContainer}>
+  		return <MyApp />;
 
-
-
-                <TextInput style={styles.inputs}
-                placeholder="الاسم"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={(fullName) => this.setState({fullName})}
-                value={this.state.fullName}
-                />
-                </View>
-
-                <View style={styles.inputContainer}>
-
-                <TextInput style={styles.inputs}
-                placeholder="البريد الإلكتروني"
-                keyboardType="email-address"
-                underlineColorAndroid='transparent'
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}
-                />
-                </View>
-
-                <View style={styles.inputContainer}>
-
-                <TextInput style={styles.inputs}
-                placeholder="كلمة المرور"
-                secureTextEntry={true}
-                underlineColorAndroid='transparent'
-                onChangeText={(password) => this.setState({password})}
-                value={this.state.password}
-                />
-                </View>
-                <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
-                >
-
-                <TextInput style={styles.keyText}
-                value="+966"
-                editable={false}
-                />
-
-                <TextInput style={[styles.phoneInput]}
-                placeholder="رقم الجوال"
-                keyboardType="numeric"
-                ref="phoneNumber"
-                underlineColorAndroid='transparent'
-                onChangeText={(phoneNo) => this.setState({phoneNo})}
-                onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
-                value={this.state.phoneNo}
-                />
-                </View>
-
-
-                <View style={styles.inputContainer}>
-                <TextInput style={styles.inputs}
-                placeholder="اسم الجامعة"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={(university) => this.setState({university})}
-                value={this.state.university}
-                />
-                </View>
-
-
-                <View style={styles.inputContainer}>
-                <TextInput style={styles.inputs}
-                placeholder="رقم الحافلة"
-                keyboardType="numeric"
-                underlineColorAndroid='transparent'
-                onChangeText={(busNo) => this.setState({busNo})}
-                value={this.state.busNo}
-
-                />
-
-                </View>
-                <View style={styles.inputContainer}>
-                <TextInput style={styles.inputs}
-                placeholder=" الحي السكني"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={(neighborhood) => this.setState({neighborhood})}
-                  value={this.state.neighborhood}
-                />
-
-                </View>
-
-                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addStudent}>
-                <Text style={styles.signUpText}>تسجيل</Text>
-                </TouchableHighlight>
-
-                </View>
-
-                </KeyboardAwareScrollView>
-                );
     }
+<<<<<<< HEAD
 }
 
 const styles = StyleSheet.create({
@@ -630,3 +574,6 @@ const styles = StyleSheet.create({
                                  }
 
                                  });
+=======
+  }
+>>>>>>> b4918aa042c183576e9b1052ff8e0fb6b3e072f9

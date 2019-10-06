@@ -94,7 +94,6 @@ export default class App extends Component {
            color='white'
            onPress={() => props.navigation.goBack()} />
    </View>,
-
    headerTintColor: 'white',
          headerStyle: {
             backgroundColor: "#4C73CC"

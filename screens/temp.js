@@ -17,15 +17,12 @@ import {
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import DocumentPicker from 'react-native-document-picker';
 
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 
 
 export default class asManager extends React.Component {
-
-
 constructor(props){
     super(props)
     this.state={typeOf:'',
@@ -84,31 +81,6 @@ constructor(props){
     .catch(error => this.setState(error => console.log(error.message)))
   }//end adding a parent
 
-
- async handleDocPicker() {
-   
-// Pick a single file
-// Pick a single file
-try {
-  const res = await DocumentPicker.pick({
-    type: [DocumentPicker.types.images],
-  });
-  console.log(
-    res.uri,
-    res.type, // mime type
-    res.name,
-    res.size
-  );
-} catch (err) {
-  if (DocumentPicker.isCancel(err)) {
-    // User cancelled the picker, exit any dialogs or menus and move on
-  } else {
-    throw err;
-  }
-}
- }
-
-
 static navigationOptions = function(props) {
 return {
   title: 'التسجيل',
@@ -128,15 +100,12 @@ return {
 };
     render() {
         return (
-
-
-          <ScrollView>
           <KeyboardAwareScrollView
 resetScrollToCoords={{ x: 0, y: 0 }}
 contentContainerStyle={styles.container}
 scrollEnabled={false}>
 
-                <View style={styles.smallContainer}>
+                <Div style={styles.smallContainer}>
 
                 <Text style={styles.Main}>• كـ مؤسسة تعليمية •</Text>
 
@@ -246,8 +215,7 @@ scrollEnabled={false}>
 
                 </View>
 
-                <TouchableHighlight style={[styles.attachButtonContainer, styles.attachButton]}
-                onPress={this.handleDocPicker}>
+                <TouchableHighlight style={[styles.attachButtonContainer, styles.attachButton]} onPress={this.handleLogin}>
 
                 <Text style={styles.signupText}>إرفاق الإثبات</Text>
 
@@ -260,9 +228,9 @@ scrollEnabled={false}>
 
                 </TouchableHighlight>
 
-                </View>
+                </Div>
                 </KeyboardAwareScrollView>
-</ScrollView>
+
                 );
     }
 }
@@ -296,13 +264,12 @@ const styles = StyleSheet.create({
                                 },
                                  smallContainer:{
                                  marginTop:30,
-                                  marginBottom:30,
                                  justifyContent: 'center',
                                  alignItems: 'center',
                                  backgroundColor: 'white',
                                  borderRadius:10,
                                  width:300,
-                                 height:700,
+                                 height:800,
                                  overflowY: 'scroll',
                                  paddingVertical:35,
                                  },
