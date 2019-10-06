@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
                                    height:40,
                                    marginBottom:15,
                                    paddingHorizontal:10,
-                                   fontFamily: tajawal,
+                                   fontFamily: 'tajawal',
 
 
                                  },
@@ -419,6 +419,7 @@ const styles = StyleSheet.create({
                                     width:300,
                                     height:700,
                                     marginBottom:30,
+                                    
                                     shadowOpacity: 0.04,
                                             shadowRadius: 5,
                                             shadowColor: 'black',

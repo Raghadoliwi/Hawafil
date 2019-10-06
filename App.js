@@ -208,14 +208,14 @@ import * as React from 'react';
   							<TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
                 onPress={this.handleLogin}>
 
-  			        <Text style={styles.loginText}>تسجيل الدخول</Text>
+  			        <Text style={[styles.loginText]}>تسجيل الدخول</Text>
 
 
   			        </TouchableHighlight>
 
   				 			<TouchableHighlight style={styles.forgetPass}
                    onPress={() => this.props.navigation.push('forgetPassword')}>
-  				 					<Text style={styles.forgetPassText}> نسيت كلمة المرور؟</Text>
+  				 					<Text style={[styles.forgetPassText]}> نسيت كلمة المرور؟</Text>
   				 			</TouchableHighlight>
 
   				 <View style={{flexDirection: 'row'}}>
@@ -261,7 +261,8 @@ import * as React from 'react';
   	backgroundColor: 'white',
   	borderRadius:10,
   		width:300,
-  		height:300
+  		height:300,
+      fontFamily: 'Tajawal',
   },
   inputContainer: {
     backgroundColor: '#FFFFFF',
@@ -271,12 +272,14 @@ import * as React from 'react';
     height:40,
     marginBottom:15,
     paddingHorizontal:10,
+    fontFamily: 'Tajawal',
   },
   email:{
   		height:45,
   		textAlign:'right',
   		marginRight:20,
-  		flex:1
+  		flex:1,
+      fontFamily: 'Tajawal',
 
   },
   pass:{
@@ -295,6 +298,7 @@ import * as React from 'react';
   	marginBottom:10,
   	width:250,
   	borderRadius:30,
+    fontFamily: 'Tajawal',
   },
   forgetPass: {
   	flexDirection: 'row-reverse',
