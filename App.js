@@ -155,14 +155,14 @@ import * as React from 'react';
   						color='white'
   						onPress={() => props.navigation.openDrawer()} />
   		</View>,
-
+      headerTitleStyle: {
+    fontFamily:'Tajawal-Medium'
+    },
   		headerTintColor: 'white',
   		      headerStyle: {
   		         backgroundColor: "#4C73CC"
   		      },
-            headerTitleStyle: {
-         fontFamily:'Tajawal-Medium'
-     },
+
   	}
   };
 
