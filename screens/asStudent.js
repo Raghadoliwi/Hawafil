@@ -22,26 +22,10 @@ import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 
+import * as Font from 'expo-font';
 
 
 export default class asStudent extends Component {
-
-
-
-  UNSAFE_componentWillMount(){
-    const firebaseConfig = {
-      apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
-      authDomain: "hawafildb.firebaseapp.com",
-      databaseURL: "https://hawafildb.firebaseio.com",
-      projectId: "hawafildb",
-      storageBucket: "",
-      messagingSenderId: "932110912763",
-      appId: "1:932110912763:web:68fca60e805543a655b45e",
-      measurementId: "G-G21F8ME7TS"
-    };
-  }
-
-
   state = {
   fullName: '',
   email   : '',
@@ -64,8 +48,32 @@ export default class asStudent extends Component {
   uniBorder:'#EAEAEA',
   busBorder:'#EAEAEA',
   formErrorMsg:'',
-  errorMsgVisibilty:'none'
+  errorMsgVisibilty:'none',
+    fontLoaded: false
   }
+
+  async componentDidMount() {
+  await Font.loadAsync({
+    'Tajawal': require('../assets/fonts/Tajawal.ttf'),
+    'Tajawal-Medium': require('../assets/fonts/Tajawal-Medium.ttf'),
+  });
+
+  this.setState({ fontLoaded: true });
+}
+  UNSAFE_componentWillMount(){
+    const firebaseConfig = {
+      apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+      authDomain: "hawafildb.firebaseapp.com",
+      databaseURL: "https://hawafildb.firebaseio.com",
+      projectId: "hawafildb",
+      storageBucket: "",
+      messagingSenderId: "932110912763",
+      appId: "1:932110912763:web:68fca60e805543a655b45e",
+      measurementId: "G-G21F8ME7TS"
+    };
+  }
+
+
 
   componentDidMount(){ //to fetch data
       firebase.database().ref('managers/').once('value', (snap) => {
@@ -95,7 +103,6 @@ validateEmail = (email) => {
   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
   if(reg.test(this.state.email)== false)
   {
-
   this.setState({emailBorder:'red'})
     }
   else {
@@ -117,9 +124,8 @@ else {
     //Regex
     const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
     if (!numRegex.test('0'+this.state.phoneNo)) {
-      console.log('number bad');
-      console.log('0'+this.state.phoneNo);
 
+this.setState({currentColor: 'red'})
 
       }
       else {
@@ -186,7 +192,11 @@ else {
      headerTintColor: 'white',
            headerStyle: {
               backgroundColor: "#4C73CC"
-           }
+
+           },
+           headerTitleStyle: {
+        fontFamily:'Tajawal-Medium'
+    },
     }
     };
     render() {
@@ -197,18 +207,23 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
 
         return (
           <ScrollView>
+
+
+
           <KeyboardAwareScrollView
 resetScrollToCoords={{ x: 0, y: 0 }}
 contentContainerStyle={styles.container}
 scrollEnabled={false}>
+
                 <View style={styles.smallContainer}>
-                <Text style={styles.header}>• ﻛ طالب •</Text>
-                <Text style={styles.perInfo}>──── المعلومات الشخصية ────</Text>
+
+                <Text style={[{fontFamily:'Tajawal-Medium'},styles.header]}>• ﻛ طالب •</Text>
+                <Text style={[styles.fontStyle,styles.perInfo]}>──── المعلومات الشخصية ────</Text>
                 <View style={[styles.inputContainer, {borderColor: this.state.nameBorder}]}>
 
 
 
-                <TextInput style={styles.inputs}
+                <TextInput style={[styles.fontStyle,styles.inputs]}
                 placeholder="الاسم"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
@@ -222,7 +237,7 @@ scrollEnabled={false}>
 
                 <View style={[styles.inputContainer, {borderColor: this.state.emailBorder}]}>
 
-                <TextInput style={styles.inputs}
+                <TextInput style={[styles.fontStyle,styles.inputs]}
                 placeholder="البريد الإلكتروني"
                 keyboardType="email-address"
                 underlineColorAndroid='transparent'
@@ -238,7 +253,7 @@ scrollEnabled={false}>
 
                 <View style={[styles.inputContainer, {borderColor: this.state.passwordBorder}]}>
 
-                <TextInput style={styles.inputs}
+                <TextInput style={[styles.fontStyle,styles.inputs]}
                 placeholder="كلمة المرور"
                 secureTextEntry={true}
                 underlineColorAndroid='transparent'
@@ -253,7 +268,7 @@ scrollEnabled={false}>
 
                 <View style={[styles.inputContainer, {borderColor: this.state.conPasswordBorder}]}>
 
-                <TextInput style={styles.inputs}
+                <TextInput style={[styles.fontStyle,styles.inputs]}
                 placeholder="تأكيد كلمة المرور"
                 secureTextEntry={true}
                 underlineColorAndroid='transparent'
@@ -270,19 +285,19 @@ scrollEnabled={false}>
 
                 <View >
 
-                  <Text style={[styles.warning, {display: this.state.passError}]}> كلمة المرور غير متطابقة </Text>
+                  <Text style={[styles.warning,styles.fontStyle, {display: this.state.passError}]}> كلمة المرور غير متطابقة </Text>
                 </View>
 
 
                 <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
                 >
 
-                <TextInput style={styles.keyText}
+                <TextInput style={[styles.fontStyle,styles.keyText]}
                 value="+966"
                 editable={false}
                 />
 
-                <TextInput style={[styles.phoneInput]}
+                <TextInput style={[styles.phoneInput,styles.fontStyle]}
                 placeholder="رقم الجوال"
                 keyboardType="numeric"
                 ref="phoneNumber"
@@ -296,18 +311,18 @@ scrollEnabled={false}>
                 />
                 </View>
 
-                <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
+                <View style={[styles.neighborhoodList,styles.fontStyle, {borderColor: this.state.neighborhoodBorder}]}>
                               <Dropdown
                               itemColor='#919191'
                               baseColor='#919191'
                               textColor='#919191'
 
-                              itemTextStyle={{textAlign:'right'}}
-                  style={{textAlign:'right'}}
+                              itemTextStyle={[styles.fontStyle,{textAlign:'right'}]}
+                  style={[styles.fontStyle,{marginTop:5,textAlign:'right'}]}
                   dropdownOffset={{ top: 0, left: 0}}
-                                   inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
-                                  containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
-                                  pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                                   inputContainerStyle={[{textAlign:'right', borderBottomColor: 'transparent'},styles.fontStyle ]}
+                                  containerStyle={[styles.fontStyle,{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}]}
+                                  pickerStyle={[styles.fontStyle,{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}]}
                                   itemPadding={10}
                                   shadeOpacity={0}
                                   rippleInsets={{top: 0, bottom: 0}}
@@ -324,18 +339,18 @@ scrollEnabled={false}>
                 />
               </View>
 
-              <View style={[styles.neighborhoodList, {borderColor: this.state.uniBorder}]}>
+              <View style={[styles.fontStyle,styles.neighborhoodList, {borderColor: this.state.uniBorder}]}>
                             <Dropdown
                             itemColor='#919191'
                             baseColor='#919191'
                             textColor='#919191'
 
-                            itemTextStyle={{textAlign:'right'}}
-                style={{textAlign:'right'}}
+                            itemTextStyle={[styles.fontStyle,{textAlign:'right'}]}
+                style={[styles.fontStyle,{marginTop:5,textAlign:'right'}]}
                 dropdownOffset={{ top: 0, left: 0}}
-                                 inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
-                                containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
-                                pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                                 inputContainerStyle={[{textAlign:'right', borderBottomColor: 'transparent'},styles.fontStyle ]}
+                                containerStyle={[styles.fontStyle,{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}]}
+                                pickerStyle={[styles.fontStyle,{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}]}
                                 itemPadding={10}
                                 shadeOpacity={0}
                                 rippleInsets={{top: 0, bottom: 0}}
@@ -356,7 +371,7 @@ scrollEnabled={false}>
 
 
                 <View style={styles.inputContainer}>
-                <TextInput style={styles.inputs}
+                <TextInput style={[styles.fontStyle,styles.inputs]}
                 placeholder="رقم الحافلة"
                 keyboardType="numeric"
                 underlineColorAndroid='transparent'
@@ -368,7 +383,7 @@ scrollEnabled={false}>
                 </View>
                 <View >
 
-                  <Text style={[styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
+                  <Text style={[styles.fontStyle,styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
                 </View>
 
 
@@ -376,12 +391,13 @@ scrollEnabled={false}>
 
 
                 <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addStudent}>
-                <Text style={styles.signUpText}>تسجيل</Text>
+                <Text style={[styles.fontStyle,styles.signUpText]}>تسجيل</Text>
                 </TouchableHighlight>
 
                 </View>
 
                 </KeyboardAwareScrollView>
+
                 </ScrollView>
                 );
     }
@@ -404,7 +420,7 @@ const styles = StyleSheet.create({
                                    height:40,
                                    marginBottom:15,
                                    paddingHorizontal:10,
-                                   fontFamily: tajawal,
+                                   fontFamily: 'tajawal',
 
 
                                  },
@@ -419,6 +435,7 @@ const styles = StyleSheet.create({
                                     width:300,
                                     height:700,
                                     marginBottom:30,
+
                                     shadowOpacity: 0.04,
                                             shadowRadius: 5,
                                             shadowColor: 'black',
@@ -465,7 +482,7 @@ const styles = StyleSheet.create({
 
                                  phoneInput:{
 
-                                 height:35,
+
                                  width:200,
 
                                  borderColor: '#EAEAEA',
@@ -535,7 +552,7 @@ const styles = StyleSheet.create({
 
                                   },
                                  buttonContainer: {
-                                 height:45,
+
                                  flexDirection: 'row',
                                  justifyContent: 'center',
                                  alignItems: 'center',
@@ -561,6 +578,9 @@ const styles = StyleSheet.create({
                                  fontSize:12,
                                  marginBottom:10,
                                  textAlign:'center'
+                               },
+                               fontStyle:{
+                                fontFamily:'Tajawal'
                                }
 
                                  });

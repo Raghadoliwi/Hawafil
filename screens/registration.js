@@ -77,10 +77,12 @@ const styles = StyleSheet.create({
                                  Main:{
                                  color:'#EDC51B',
                                  flexDirection: 'row',
-                                 marginLeft:140,
+
                                  marginBottom:20,
                                  marginTop:10,
-                                fontSize:25,
+                                fontSize:20,
+            
+                                textAlign:'center'
                                  },
 
                                  container: {
