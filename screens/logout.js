@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
                                  borderRadius:10,
                                  width:300,
                                  height:800,
-                                 overflowY: 'scroll',
+              
                                  paddingVertical:35,
                                  },
 

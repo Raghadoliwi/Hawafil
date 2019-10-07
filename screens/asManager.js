@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
                                  borderRadius:10,
                                  width:300,
                                  height:700,
-                                 overflowY: 'scroll',
+                        
                                  paddingVertical:35,
                                  shadowOpacity: 0.04,
                                          shadowRadius: 5,

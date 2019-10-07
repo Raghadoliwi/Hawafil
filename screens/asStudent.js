@@ -52,14 +52,14 @@ export default class asStudent extends Component {
     fontLoaded: false
   }
 
-  async componentDidMount() {
+  /*async componentDidMount() {
   await Font.loadAsync({
     'Tajawal': require('../assets/fonts/Tajawal.ttf'),
     'Tajawal-Medium': require('../assets/fonts/Tajawal-Medium.ttf'),
   });
 
   this.setState({ fontLoaded: true });
-}
+}*/
   UNSAFE_componentWillMount(){
     const firebaseConfig = {
       apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
@@ -81,15 +81,13 @@ export default class asStudent extends Component {
           snap.forEach((child) => {
             this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
 
-              /*universities.push({
-                  value: child.val().instName ,
-              })*/
+        
           })//end snap for each
           //itm = universities;
           //this.setState({universities: itm});
-          console.log(this.state.universities);
 
-        /*  itm.forEach((itms) => {
+
+          /*itm.forEach((itms) => {
               console.log(itms.name);
           })*/
       })//end on
@@ -195,7 +193,7 @@ this.setState({currentColor: 'red'})
 
            },
            headerTitleStyle: {
-        fontFamily:'Tajawal-Medium'
+        //fontFamily:'Tajawal-Medium'
     },
     }
     };
@@ -217,7 +215,7 @@ scrollEnabled={false}>
 
                 <View style={styles.smallContainer}>
 
-                <Text style={[{fontFamily:'Tajawal-Medium'},styles.header]}>• ﻛ طالب •</Text>
+                <Text style={[styles.header]}>• ﻛ طالب •</Text>
                 <Text style={[styles.fontStyle,styles.perInfo]}>──── المعلومات الشخصية ────</Text>
                 <View style={[styles.inputContainer, {borderColor: this.state.nameBorder}]}>
 
@@ -420,7 +418,7 @@ const styles = StyleSheet.create({
                                    height:40,
                                    marginBottom:15,
                                    paddingHorizontal:10,
-                                   fontFamily: 'tajawal',
+                                  // fontFamily: 'tajawal',
 
 
                                  },
@@ -495,7 +493,7 @@ const styles = StyleSheet.create({
                                  borderWidth: 1,
                                  width:30,
                                  height:35,
-                                 alignItems:'right',
+
                                  // marginLeft: 250,
 
 
@@ -580,7 +578,7 @@ const styles = StyleSheet.create({
                                  textAlign:'center'
                                },
                                fontStyle:{
-                                fontFamily:'Tajawal'
+                                //fontFamily:'Tajawal'
                                }
 
                                  });

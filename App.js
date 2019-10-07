@@ -61,14 +61,14 @@ import * as React from 'react';
 
 
             }
-    async componentDidMount() {
+  /*  async componentDidMount() {
     await Font.loadAsync({
       'Tajawal': require('./assets/fonts/Tajawal.ttf'),
       'Tajawal-Medium': require('./assets/fonts/Tajawal-Medium.ttf'),
     });
 
     this.setState({ fontLoaded: true });
-  }
+  }*/
 
     UNSAFE_componentWillMount(){
       const firebaseConfig = {
@@ -156,7 +156,7 @@ import * as React from 'react';
   						onPress={() => props.navigation.openDrawer()} />
   		</View>,
       headerTitleStyle: {
-    fontFamily:'Tajawal-Medium'
+  //  fontFamily:'Tajawal-Medium'
     },
   		headerTintColor: 'white',
   		      headerStyle: {
@@ -182,8 +182,7 @@ import * as React from 'react';
   		         />
   						 <SafeAreaView style={styles.scrollArea}>
   						 <ScrollView style={styles.scrollView}>
-               {
-                 this.state.fontLoaded ? (
+
   						 <View style={styles.container}>
   						 <Image source={require('./assets/logo-white-borders.png')}
   						style={{resizeMode: 'cover',width: 200, height: 144, marginTop:10}}/>
@@ -251,8 +250,7 @@ import * as React from 'react';
   				 			</TouchableHighlight>
   				 			</View>
   				 		</View>
-            ) : null
-          }
+
   						</ScrollView>
   						 </SafeAreaView>
           </View>
@@ -286,7 +284,7 @@ import * as React from 'react';
   	borderRadius:10,
   		width:300,
   		height:300,
-      fontFamily: 'Yaseer',
+      //fontFamily: 'Yaseer',
   },
   inputContainer: {
     backgroundColor: '#FFFFFF',
@@ -360,7 +358,7 @@ import * as React from 'react';
     marginBottom:10,
   },
   fontStyle:{
-   fontFamily:'Tajawal'
+   //fontFamily:'Tajawal'
   }
   });
 

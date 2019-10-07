@@ -12,7 +12,6 @@
       "./assets/fonts/"
     ]
   },
-
   "dependencies": {
     "expo": "^35.0.0",
     "expo-keep-awake": "^7.0.0",
