@@ -7,15 +7,12 @@
     "web": "expo start --web",
     "eject": "expo eject"
   },
-<<<<<<< HEAD
   "rnpm": {
     "assets": [
       "./assets/fonts/"
     ]
   },
-=======
 
->>>>>>> cef45495c8098408ef3f0d344537b67daacc1840
   "dependencies": {
     "expo": "^35.0.0",
     "expo-keep-awake": "^7.0.0",
