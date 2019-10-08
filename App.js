@@ -86,7 +86,14 @@ import * as React from 'react';
       };
 
       firebase.initializeApp(firebaseConfig);
-    }
+
+      firebase.auth().onAuthStateChanged( user => {
+        if (!user) {//user is not logged in.
+          this.textInput.clear();
+          this.textInput2.clear();
+        }
+      });
+    }//end component will mount.
 
 
 
@@ -201,7 +208,8 @@ import * as React from 'react';
 
 
   				 				<TextInput style={[styles.fontStyle,styles.email]}
-  				 						placeholder="البريد الإلكتروني"
+                      ref={input => { this.textInput = input }}
+                      placeholder="البريد الإلكتروني"
   				 						keyboardType="email-address"
   				 						underlineColorAndroid='transparent'
   				 						onChangeText={(email) => {
@@ -215,6 +223,7 @@ import * as React from 'react';
   				 			<View style={[styles.inputContainer, {borderColor:this.state.passBorders}]}>
 
   				 				<TextInput style={[styles.pass,styles.fontStyle]}
+                      ref={input => { this.textInput2 = input }}
   				 						placeholder="كلمة المرور"
   				 						secureTextEntry={true}
   				 						underlineColorAndroid='transparent'

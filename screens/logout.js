@@ -32,12 +32,9 @@ UNSAFE_componentWillMount(){
   firebase.auth().signOut()
   .then(function() {
   // Sign-out successful.
-  firebase.auth().onAuthStateChanged( user => {
-      if (!user) { //user has logged out successfully
         navigation.navigate('login');
-      }
-    });
-}).catch(function(error) {
+    })
+    .catch(function(error) {
   // An error happened.
   console.log(error.message)
 });
