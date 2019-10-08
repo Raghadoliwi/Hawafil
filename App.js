@@ -28,7 +28,10 @@ import * as React from 'react';
   import asStudent from './screens/asStudent'
   import asManager from './screens/asManager'
   import logout from './screens/logout'
-    import forgetPassword from './screens/forgetPassword'
+  import forgetPassword from './screens/forgetPassword'
+  import driverDashboard from './screens/driverDashboard'
+  import parentDashboard from './screens/parentDashboard'
+  import studentDashboard from './screens/studentDashboard'
   //import addBus from './screens/addBus'
 
   const MenuIcon = ({ navigate }) => <Icon
@@ -98,6 +101,8 @@ import * as React from 'react';
               return;
           }
         const {email, password} = this.state
+        const { navigation } = this.props;
+
         firebase
           .auth()
           .signInWithEmailAndPassword(email,password)
@@ -108,23 +113,22 @@ import * as React from 'react';
                 //Search in managers
                 firebase.database().ref('managers/'+this.userId).once('value').then(function(snapshot) {
                   //raghad plz change the below line to the page you wanna navigate to
-                  this.props.navigation.navigate('renderManageDrivers')
+                  navigation.navigate('renderManageDrivers')
+                })
+                //Search in drivers
+                firebase.database().ref('drivers/'+this.userId).once('value').then(function(snapshot) {
+                  navigation.navigate('driverStack')
                 })
                 //Search in parents
-                firebase.database().ref('drivers/'+this.userId).once('value').then(function(snapshot) {
-                  //get any data we what, using for in
-                  //https://stackoverflow.com/questions/37506331/ref-once-not-called-on-firebase
-                })
-                //Search in students
                 firebase.database().ref('parents/'+this.userId).once('value').then(function(snapshot) {
-                    console.log('yay!')
-                  //get any data we what, using for in
-                  //https://stackoverflow.com/questions/37506331/ref-once-not-called-on-firebase
+
+              navigation.push('parentDashboard')
+
+
                 })
                 //Search in students
                 firebase.database().ref('students/'+this.userId).once('value').then(function(snapshot) {
-                  //get any data we what, using for in
-                  //https://stackoverflow.com/questions/37506331/ref-once-not-called-on-firebase
+                  navigation.navigate('studentStack')
                 })
                 //done searching
               }
@@ -373,7 +377,9 @@ import * as React from 'react';
     asParent: { screen: asParent },
     asStudent: { screen: asStudent },
     asManager: { screen: asManager },
-
+    driverDashboard: { screen: driverDashboard },
+    parentDashboard: { screen: parentDashboard },
+    studentDashboard: { screen: studentDashboard },
   });
 
   const registrationStack = createStackNavigator({
@@ -385,25 +391,26 @@ import * as React from 'react';
   //    asStudent: { screen: RegisterStudent }
   });
 
-  const manageBusesStack = createStackNavigator({
-    renderManageBuses: { screen: renderManageBuses },
-    addBus: { screen: addBus }
-
-  });
-  const manageDriversStack = createStackNavigator({
+  const managerStack = createStackNavigator({
     renderManageBuses: { screen: renderManageDrivers },
       addBusDriver: { screen: addBusDriver }
+  });
+
+  const driverStack = createStackNavigator({
+    driverDashboard: { screen: driverDashboard },
+  });
+
+  const parentStack = createStackNavigator({
+    parentDashboard: { screen: parentDashboard },
+  });
+
+  const studentStack = createStackNavigator({
+    studentDashboard: { screen: studentDashboard },
   });
 
   const MyDrawerNavigator = createDrawerNavigator({
     'الدخول': {
       screen: loginStack,
-    },
-    'إدارة الحافلات': {
-      screen: manageBusesStack,
-    },
-    'إدارة السائقين': {
-      screen: manageDriversStack,
     },
     'تسجيل الخروج': {
       screen: logout,
