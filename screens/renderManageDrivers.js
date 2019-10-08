@@ -95,17 +95,7 @@ return {
 onPress={() => this.props.navigation.push('addBusDriver')}     >
           <Text style={styles.addText}>إضافة قائد حافلة</Text>
         </TouchableHighlight>
-        {
-        this.state.items.map((u, i ) => {
-            return (
-                <Card containerStyle={styles.cards} title={u.name}>
-                    <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: {u.busNo}</Text>
-                    <Text style={styles.paragraph} key={u.neighborhood}>الحي: {u.neighborhood}</Text>
-                    <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: {u.busPlate}</Text>
-                </Card>
-            );
-        })
-        }
+
         {/*
             <Card containerStyle={styles.cards} title="فاروق نور الدين">
 
