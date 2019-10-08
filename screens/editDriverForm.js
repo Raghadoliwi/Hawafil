@@ -102,27 +102,37 @@ else {
       }
 }//end validate phone number
 
-     handleInserting = () => {
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( (data) => {
-            firebase.auth().onAuthStateChanged( user => {
-                if (user) {
-                  this.userId = user.uid
-                  firebase.database().ref('drivers/'+this.userId).set(
-                    {
-                      name: this.state.driverName,
-                      id: this.state.workerId,
-                      phoneNo: this.state.phoneNo,
-                      inst: this.state.inst,
-                      busNo: this.state.busNo,
-                      busPlate: this.state.busPlate,
-                    })
-                }
-              });
-        }).then(() => this.props.navigation.navigate('renderManageDrivers'))
-        //raghad plz edit the above line to the page you wanna navigate to after insertion
-        .catch(error => console.log(error.message ))
-    }//end inserting a driver
+     editProfile = () => {
+       var user = firebase.auth().currentUser;
+       var uid;
+       if (user != null) {
+         uid = user.uid;
+         if (this.state.email != ''){
+           user.updateEmail(this.state.email);
+         }
+         if (this.state.password != ''){
+           user.updatePassword(this.state.password);
+         }
+
+         if (this.state.driverName != ''){
+           firebase.database().ref('drivers/'+uid).update({name : this.state.driverName,})
+         }
+
+         if (this.state.phoneNo != ''){
+           firebase.database().ref('drivers/'+uid).update({phoneNo : this.state.phoneNo,})
+         }
+         if (this.state.workerId != ''){
+           firebase.database().ref('drivers/'+uid).update({id : this.state.workerId,})
+         }
+         if (this.state.busNo != ''){
+           firebase.database().ref('drivers/'+uid).update({busNo : this.state.busNo,})
+         }
+         if (this.state.inst != ''){
+           firebase.database().ref('drivers/'+uid).update({inst : this.state.inst,})
+         }
+
+       }
+    }//end edit driver
 
      static navigationOptions = function(props) {
      return {
@@ -168,7 +178,7 @@ else {
 
                 <TextInput style={styles.email}
                 placeholder="اسم القائد"
-                keyboardType="acii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={ driverName => this.setState({ driverName })}
                 value={this.state.driverName}
@@ -242,7 +252,7 @@ else {
 
                 <TextInput style={styles.email}
                 placeholder="اسم المنشأة"
-                keyboardType="acii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={inst => this.setState({ inst })}
                 value={this.state.inst}
@@ -269,7 +279,7 @@ else {
                 </View>
 
                 <TouchableHighlight style={[styles.buttonContainer, styles.save]}
-                onPress={this.handleInserting}>
+                onPress={this.editProfile}>
 
                 <Text style={styles.saveText}>حفظ</Text>
 
@@ -280,16 +290,16 @@ else {
           <Text style={styles.saveText}>حذف الحافلة </Text>
         </TouchableHighlight>
         </View>
-
+/*
                     <TouchableHighlight style={[styles.buttonContainer, styles.cancel]}
-                onPress={this.handleInserting}>
+                onPress={this.editProfile}>
 
                 <Text style={styles.saveText}>إلغاء</Text>
 
 
                 </TouchableHighlight>
 
-
+*/
 
                 </View>
 
