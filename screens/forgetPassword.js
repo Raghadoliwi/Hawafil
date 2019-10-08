@@ -51,7 +51,12 @@ export default class forgetPassword extends React.Component {
                         }
                         firebase.auth().sendPasswordResetEmail(this.state.email)
                         .then(function() {
+                          Alert.alert('تمت العملية بنجاح',"فضلًا تفقد بريدك الإلكتروني",
+);
+                          /*
+                          Alert('تم إرسال إيميل استعادة المرور بنجاح');
                           this.props.navigation.navigate('login');
+                          */
                           })
                           .catch((error) => {
 
