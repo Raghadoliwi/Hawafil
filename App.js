@@ -121,22 +121,22 @@ import * as React from 'react';
                 //Search in managers
                 firebase.database().ref('managers/'+this.userId).once('value').then(function(snapshot) {
                   //raghad plz change the below line to the page you wanna navigate to
-                  navigation.navigate('renderManageDrivers')
+                  navigation.push('renderManageDrivers')
                 })
                 //Search in drivers
                 firebase.database().ref('drivers/'+this.userId).once('value').then(function(snapshot) {
-                  navigation.navigate('driverStack')
+                //  navigation.navigate('driverStack')
                 })
                 //Search in parents
                 firebase.database().ref('parents/'+this.userId).once('value').then(function(snapshot) {
 
-              navigation.push('parentDashboard')
+            //  navigation.push('parentDashboard')
 
 
                 })
                 //Search in students
                 firebase.database().ref('students/'+this.userId).once('value').then(function(snapshot) {
-                  navigation.navigate('studentStack')
+                //  navigation.navigate('studentStack')
                 })
                 //done searching
               }
@@ -388,9 +388,9 @@ import * as React from 'react';
     asParent: { screen: asParent },
     asStudent: { screen: asStudent },
     asManager: { screen: asManager },
-    driverDashboard: { screen: driverDashboard },
+    /*driverDashboard: { screen: driverDashboard },
     parentDashboard: { screen: parentDashboard },
-    studentDashboard: { screen: studentDashboard },
+    studentDashboard: { screen: studentDashboard },*/
   });
 
   const registrationStack = createStackNavigator({
@@ -412,12 +412,12 @@ import * as React from 'react';
   });
 
   const parentStack = createStackNavigator({
-    parentDashboard: { screen: parentDashboard },
+    //parentDashboard: { screen: parentDashboard },
   });
 
   const studentStack = createStackNavigator({
-    studentDashboard: { screen: studentDashboard },
-  });
+  //  studentDashboard: { screen: studentDashboard },
+});*/
 
   const MyDrawerNavigator = createDrawerNavigator({
     'الدخول': {
