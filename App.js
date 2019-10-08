@@ -121,7 +121,7 @@ import * as React from 'react';
                 //Search in managers
                 firebase.database().ref('managers/'+this.userId).once('value').then(function(snapshot) {
                   //raghad plz change the below line to the page you wanna navigate to
-                  navigation.navigate('renderManageDrivers')
+                  navigation.push('renderManageDrivers')
                 })
                 //Search in drivers
                 firebase.database().ref('drivers/'+this.userId).once('value').then(function(snapshot) {

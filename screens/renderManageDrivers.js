@@ -48,7 +48,7 @@ export default class renderManageDrivers extends React.Component {
                   items.push({
                       name: child.val().name ,
                       busNo: child.val().busNo ,
-                      neighborhood: child.val().phoneNo ,
+                      neighborhood: child.val().district ,
                       busPlate: child.val().busPlate ,
                   })
               })//end snap for each
@@ -84,7 +84,6 @@ return {
         }
 }
 };
-
 	render() {
     return (
 
@@ -95,7 +94,17 @@ return {
 onPress={() => this.props.navigation.push('addBusDriver')}     >
           <Text style={styles.addText}>إضافة قائد حافلة</Text>
         </TouchableHighlight>
-
+        {
+        this.state.items.map((u, i ) => {
+            return (
+                <Card containerStyle={styles.cards} title={u.name}>
+                    <Text style={styles.paragraph} key={u.busNo}>رقم: {u.busNo}</Text>
+                    <Text style={styles.paragraph} key={u.neighborhood}>الحي: {u.neighborhood}</Text>
+                    <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: {u.busPlate}</Text>
+                </Card>
+            );
+        })
+        }
         {/*
             <Card containerStyle={styles.cards} title="فاروق نور الدين">
 
