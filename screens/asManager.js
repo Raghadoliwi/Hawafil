@@ -31,6 +31,7 @@ constructor(props){
                 name: '',
                 email: '',
                 password: '',
+                confirmPassword:'',
                 phoneNo:'',
                 nationalId : '',
                 instName: '',
