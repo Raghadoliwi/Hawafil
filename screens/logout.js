@@ -29,10 +29,14 @@ constructor(props){
 UNSAFE_componentWillMount(){
   const { navigation } = this.props;
 
-  firebase.auth().signOut().then(function() {
+  firebase.auth().signOut()
+  .then(function() {
   // Sign-out successful.
-
-    navigation.navigate('login');
+  firebase.auth().onAuthStateChanged( user => {
+      if (!user) { //user has logged out successfully
+        navigation.navigate('login');
+      }
+    });
 }).catch(function(error) {
   // An error happened.
   console.log(error.message)
