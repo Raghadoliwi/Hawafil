@@ -53,6 +53,7 @@ export default class renderManageDrivers extends React.Component {
                       id: child.val().id ,
                       inst: child.val().inst ,
                       phoneNo: child.val().phoneNo ,
+                      id: child.val().id ,
 
                   })
               })//end snap for each
@@ -100,10 +101,12 @@ onPress={() => this.props.navigation.push('addBusDriver')}     >
         this.state.items.map((u, i ) => {
             return (
                 <Card containerStyle={styles.cards} title={'اسم السائق: '+ u.name}>
+                <Text style={styles.paragraph} key={u.id}>الرقم الوظيفي: {u.id}</Text>
                 <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: {u.busNo}</Text>
                     <Text style={styles.paragraph} key={u.district}>الحي: {u.district}</Text>
                     <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: {u.busPlate}</Text>
                     <Text style={styles.paragraph} key={u.phoneNo}>رقم الجوال: {u.phoneNo}</Text>
+
                 </Card>
             );
         })
