@@ -22,15 +22,17 @@ import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 
 export default class logout extends React.Component {
+
 constructor(props){
   super(props);
 }
 UNSAFE_componentWillMount(){
+  const { navigation } = this.props;
+
   firebase.auth().signOut().then(function() {
   // Sign-out successful.
-    this.state.email = '';
-    this.state.password = '';
-    this.props.navigation.navigate('login');
+
+    navigation.navigate('login');
 }).catch(function(error) {
   // An error happened.
   console.log(error.message)
