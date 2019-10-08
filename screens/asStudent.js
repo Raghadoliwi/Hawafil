@@ -81,15 +81,8 @@ export default class asStudent extends Component {
           snap.forEach((child) => {
             this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
 
-        
-          })//end snap for each
-          //itm = universities;
-          //this.setState({universities: itm});
 
-
-          /*itm.forEach((itms) => {
-              console.log(itms.name);
-          })*/
+          })
       })//end on
 
 
@@ -116,7 +109,7 @@ else {
   this.setState({passError: 'none'})
 }
 
-}//end inserting a bus
+}//end identical check
 
   validateNumber = (phoneNo) => {
     //Regex
@@ -217,10 +210,9 @@ scrollEnabled={false}>
 
                 <Text style={[styles.header]}>• ﻛ طالب •</Text>
                 <Text style={[styles.fontStyle,styles.perInfo]}>──── المعلومات الشخصية ────</Text>
+
+
                 <View style={[styles.inputContainer, {borderColor: this.state.nameBorder}]}>
-
-
-
                 <TextInput style={[styles.fontStyle,styles.inputs]}
                 placeholder="الاسم"
                 keyboardType="TextInput"
