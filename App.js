@@ -110,6 +110,7 @@ import * as React from 'react';
             firebase.auth().onAuthStateChanged( user => {
               if (user) {
                 this.userId = user.uid
+
                 //Search in managers
                 firebase.database().ref('managers/'+this.userId).once('value').then(function(snapshot) {
                   //raghad plz change the below line to the page you wanna navigate to
@@ -174,6 +175,7 @@ import * as React from 'react';
 
     render() {
       const { fontLoaded } = this.state
+
 
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
