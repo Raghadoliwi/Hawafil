@@ -48,8 +48,12 @@ export default class renderManageDrivers extends React.Component {
                   items.push({
                       name: child.val().name ,
                       busNo: child.val().busNo ,
-                      neighborhood: child.val().phoneNo ,
+                      district: child.val().district ,
                       busPlate: child.val().busPlate ,
+                      id: child.val().id ,
+                      inst: child.val().inst ,
+                      phoneNo: child.val().phoneNo ,
+
                   })
               })//end snap for each
               itm = items;
@@ -61,8 +65,6 @@ export default class renderManageDrivers extends React.Component {
                   console.log(itms.name);
               })
           })//end on
-
-
       }
 
 
@@ -95,49 +97,18 @@ return {
 onPress={() => this.props.navigation.push('addBusDriver')}     >
           <Text style={styles.addText}>إضافة قائد حافلة</Text>
         </TouchableHighlight>
-
-        {/*
-            <Card containerStyle={styles.cards} title="فاروق نور الدين">
-
-<Text style={styles.paragraph}>
-  • رقم الحافلة : ٩
-</Text>
-
-<Text style={styles.paragraph}>
-• الحي: الغدير
-</Text>
-<Text style={styles.paragraph}>
- • رقم لوحة الحافلة: ٤٤٤ م ب س
-</Text>
-</Card>
-
-            <Card containerStyle={styles.cards} title="محمد سليمان">
-        react-native-elements Card
-          <Text style={styles.paragraph}>
-          • رقم الحافلة : ٣
-          </Text>
-
-          <Text style={styles.paragraph}>
-         • الحي: الصحافة
-          </Text>
-           <Text style={styles.paragraph}>
-           • رقم لوحة الحافلة: ٦٦٦ ب ي ت
-          </Text>
-        </Card>
-        <Card containerStyle={styles.cards} title="محمود ناصر">
-          <Text style={styles.paragraph}>
-        • رقم الحافلة: ٧
-          </Text>
-
-          <Text style={styles.paragraph}>
-         • الحي: الربيع
-          </Text>
-          <Text style={styles.paragraph}>
-           • رقم لوحة الحافلة: ٥٥٥ ح م د
-          </Text>
-        </Card>
-*/
-}
+        {
+        this.state.items.map((u, i ) => {
+            return (
+                <Card containerStyle={styles.cards} title={'اسم السائق:'+ u.name}>
+                <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: {u.busNo}</Text>
+                    <Text style={styles.paragraph} key={u.district}>الحي: {u.district}</Text>
+                    <Text style={styles.paragraph} key={u.carPlate}>رقم اللوحة: {u.carPlate}</Text>
+                    <Text style={styles.paragraph} key={u.phoneNo}>رقم الجوال: {u.phoneNo}</Text>
+                </Card>
+            );
+        })
+        }
 
       </ScrollView>
       </View>
