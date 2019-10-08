@@ -48,8 +48,16 @@ export default class renderManageDrivers extends React.Component {
                   items.push({
                       name: child.val().name ,
                       busNo: child.val().busNo ,
+<<<<<<< HEAD
                       neighborhood: child.val().district ,
+=======
+                      district: child.val().district ,
+>>>>>>> 8ad50ee96f264ddbaba8051229f548f3e8e11873
                       busPlate: child.val().busPlate ,
+                      id: child.val().id ,
+                      inst: child.val().inst ,
+                      phoneNo: child.val().phoneNo ,
+
                   })
               })//end snap for each
               itm = items;
@@ -61,8 +69,6 @@ export default class renderManageDrivers extends React.Component {
                   console.log(itms.name);
               })
           })//end on
-
-
       }
 
 
@@ -97,14 +103,23 @@ onPress={() => this.props.navigation.push('addBusDriver')}     >
         {
         this.state.items.map((u, i ) => {
             return (
+<<<<<<< HEAD
                 <Card containerStyle={styles.cards} title={u.name}>
                     <Text style={styles.paragraph} key={u.busNo}>رقم: {u.busNo}</Text>
                     <Text style={styles.paragraph} key={u.neighborhood}>الحي: {u.neighborhood}</Text>
                     <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: {u.busPlate}</Text>
+=======
+                <Card containerStyle={styles.cards} title={'اسم السائق:'+ u.name}>
+                <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: {u.busNo}</Text>
+                    <Text style={styles.paragraph} key={u.district}>الحي: {u.district}</Text>
+                    <Text style={styles.paragraph} key={u.carPlate}>رقم اللوحة: {u.carPlate}</Text>
+                    <Text style={styles.paragraph} key={u.phoneNo}>رقم الجوال: {u.phoneNo}</Text>
+>>>>>>> 8ad50ee96f264ddbaba8051229f548f3e8e11873
                 </Card>
             );
         })
         }
+<<<<<<< HEAD
         {/*
             <Card containerStyle={styles.cards} title="فاروق نور الدين">
 
@@ -147,6 +162,8 @@ onPress={() => this.props.navigation.push('addBusDriver')}     >
         </Card>
 */
 }
+=======
+>>>>>>> 8ad50ee96f264ddbaba8051229f548f3e8e11873
 
       </ScrollView>
       </View>
