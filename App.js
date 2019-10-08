@@ -407,8 +407,8 @@ import * as React from 'react';
       addBusDriver: { screen: addBusDriver }
   });
 
-  /*const driverStack = createStackNavigator({
-    //driverDashboard: { screen: driverDashboard },
+  const driverStack = createStackNavigator({
+    driverDashboard: { screen: driverDashboard },
   });
 
   const parentStack = createStackNavigator({
