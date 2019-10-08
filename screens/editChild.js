@@ -24,6 +24,15 @@ import Constants from 'expo-constants';
 import DropdownMenu from 'react-native-dropdown-menu';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+/*
+Children:
+- Name
+- Bus
+- School name (institution)
+- type of school
+- parentPhoneNumber
+- district
+*/
 
 const MenuIcon = ({ navigate }) => <Icon
     name='chevron-left'
@@ -54,9 +63,11 @@ export default class editChild extends React.Component {
      school: '',
      level: '',
      busNo: '',
+     district: '',
      errorMessage: null
      }
 
+     //it's better to use Alert.alert, same one we used in forget password.
      showAlertDialog = () =>{
   Alert.alert(
   'هل أنت متأكد؟',
@@ -72,27 +83,17 @@ export default class editChild extends React.Component {
   {cancelable: false},
 );}
 
-     handleInserting = () => {
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( (data) => {
-            firebase.auth().onAuthStateChanged( user => {
-                if (user) {
-                  this.userId = user.uid
-                  firebase.database().ref('drivers/'+this.userId).set(
-                    {
-                      name: this.state.driverName,
-                      id: this.state.workerId,
-                      phoneNo: this.state.phoneNo,
-                      inst: this.state.inst,
-                      busNo: this.state.busNo,
-                      busPlate: this.state.busPlate,
-                    })
-                }
-              });
-        }).then(() => this.props.navigation.navigate('renderManageDrivers'))
-        //raghad plz edit the above line to the page you wanna navigate to after insertion
-        .catch(error => console.log(error.message ))
-    }//end inserting a driver
+     editChild = () => {
+       var user = firebase.auth().currentUser;
+       var uid;
+       if (user != null){
+         uid = user.uid;
+         return firebase.database().ref('parents/'+uid).once('value')
+         .then(function(snapshot) {
+           var phoneNo = snapshot.val().phoneNo;
+          });
+       }
+    }//end edit child.
 
      static navigationOptions = function(props) {
      return {
@@ -186,7 +187,7 @@ export default class editChild extends React.Component {
 
 
                 <TouchableHighlight style={[styles.buttonContainer, styles.save]}
-                onPress={this.handleInserting}>
+                onPress={this.editChild}>
 
                 <Text style={styles.saveText}>حفظ</Text>
 
@@ -197,14 +198,15 @@ export default class editChild extends React.Component {
                 <Text style={styles.saveText}>حذف الطالب</Text>
 
                 </TouchableHighlight>
+                /*
                     <TouchableHighlight style={[styles.buttonContainer, styles.cancel]}
-                onPress={this.handleInserting}>
+                onPress={this.editChild}>
 
                 <Text style={styles.saveText}>إلغاء</Text>
 
 
                 </TouchableHighlight>
-
+*/
 
 
                 </View>
