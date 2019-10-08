@@ -22,7 +22,7 @@ const MenuIcon = ({ navigate }) => <Icon
 
 
 
-export default class ParentProfile extends React.Component {
+export default class parentProfile extends React.Component {
 
 	static navigationOptions = function(props) {
   return {
