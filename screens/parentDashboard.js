@@ -89,13 +89,29 @@ return {
 	render() {
     return (
 
-      <View style={{padding: 10, flex: 1}, styles.container} >
-      <Text>this is parent dashboard</Text>
-      </View>
+       <View style={{padding: 10, flex: 1}, styles.container} >
+       <ScrollView style={{flex: 1, marginBottom:20}}>
+
+
+         {
+         this.state.items.map((u, i ) => {
+             return (
+                 <Card containerStyle={styles.cards} title={u.name}>
+                     <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: {u.busNo}</Text>
+                     <Text style={styles.paragraph} key={u.neighborhood}>الحي: {u.neighborhood}</Text>
+                     <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: {u.busPlate}</Text>
+                 </Card>
+             );
+         })
+         }
+
+
+       </ScrollView>
+       </View>
 
 
 
-    );
+     );
   }
 }
 const styles = StyleSheet.create({

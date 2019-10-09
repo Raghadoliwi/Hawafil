@@ -31,6 +31,7 @@ import * as React from 'react';
   import driverDashboard from './screens/driverDashboard'
   import parentDashboard from './screens/parentDashboard'
   import studentDashboard from './screens/studentDashboard'
+  import parentProfile from './screens/parentProfile'  
   //import addBus from './screens/addBus'
 
   const MenuIcon = ({ navigate }) => <Icon

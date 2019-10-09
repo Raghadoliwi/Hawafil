@@ -246,6 +246,8 @@ to be added later:
     );
   }
 
+}
+
 
 const styles = StyleSheet.create({
 	container: {
