@@ -20,7 +20,7 @@ const MenuIcon = ({ navigate }) => <Icon
 
 
 
-export default class ParentProfile extends React.Component {
+export default class parentProfile extends React.Component {
   UNSAFE_componentWillMount(){
       const firebaseConfig = {
         apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
@@ -70,6 +70,7 @@ export default class ParentProfile extends React.Component {
             })
         })//end on
     }
+  }
 
 	static navigationOptions = function(props) {
   return {
@@ -125,7 +126,7 @@ to be added later:
      onPress={() => this.props.navigation.push('editParent')}>
           <Text style={styles.editText}>تعديل</Text>
         </TouchableHighlight>
-        </Card>
+
 
 
    <Text style={styles.perInfo}>──────  التابعين ──────</Text>
@@ -241,6 +242,7 @@ to be added later:
     );
   }
 }
+
 const styles = StyleSheet.create({
 	container: {
 	justifyContent: 'center',
