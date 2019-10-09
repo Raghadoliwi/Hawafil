@@ -31,7 +31,8 @@ import * as React from 'react';
   import driverDashboard from './screens/driverDashboard'
   import parentDashboard from './screens/parentDashboard'
   import studentDashboard from './screens/studentDashboard'
-  import parentProfile from './screens/parentProfile'  
+  import parentProfile from './screens/parentProfile'
+  import editParent from './screens/editParent'
   //import addBus from './screens/addBus'
 
   const MenuIcon = ({ navigate }) => <Icon
@@ -85,7 +86,11 @@ import * as React from 'react';
         measurementId: "G-G21F8ME7TS"
       };
 
-      firebase.initializeApp(firebaseConfig);
+      if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+      }
+
+
 
       firebase.auth().onAuthStateChanged( user => {
         if (!user) {//user is not logged in.
@@ -385,6 +390,7 @@ import * as React from 'react';
     registration: { screen: registration },
     driverDashboard: { screen: driverDashboard },
     parentDashboard: { screen: parentDashboard },
+    editParent: { screen: editParent },
     studentDashboard: { screen: studentDashboard },
     renderManageDrivers: { screen: renderManageDrivers },
     asParent: { screen: asParent },

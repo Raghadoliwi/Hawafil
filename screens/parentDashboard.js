@@ -11,7 +11,8 @@ import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
 import parentProfile from './parentProfile';
-//import editParent from './editParent';
+import editParent from './editParent';
+
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
     size={20}
@@ -64,11 +65,28 @@ firebase.database().ref('parents/'+userId).on('value', snapshot => {
 });
 
 
+/*
+RETRIEVE CHILDREN
+firebase.database().ref('children/').on('value', (snap) => {
+    let childrenList = [];
+    snap.forEach((child) => {
+        childrenList.push({
+            name: child.val().name ,
+            busNo: child.val().busNo ,
+            school: child.val().school ,
+            schoolType: child.val().schoolType ,
+            parentPhoneNo: child.val().parentPhoneNo ,
+            district: child.val().district ,
+        })
+    })//end snap for each
 
+    this.setState({children: childrenList[]});
 
-    // User is signed in.
+})//end on
+*/
   }
 });
+
 
 
   }
@@ -110,7 +128,11 @@ firebase.database().ref('parents/'+userId).on('value', snapshot => {
                     <Text style={styles.paragraph} key={this.state.parentIn.phoneNo}>رقم الجوال: {this.state.parentIn.phoneNo}</Text>
                     <Text style={styles.paragraph} key={this.state.parentIn.email}>• البريد الإلكتروني:{this.state.parentIn.email}</Text>
                     <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-                         onPress={() => this.props.navigation.push('editParent')}>
+                         onPress={() => {
+                           try {this.props.navigation.navigate('editParent')}
+                           catch (e) {console.log(e.message);}
+                           }
+                         }>
                               <Text style={styles.editText}>تعديل</Text>
                             </TouchableHighlight>
                 </Card>
@@ -244,6 +266,6 @@ const styles = StyleSheet.create({
 
   const parentStack = createStackNavigator({
     parentDashboard: { screen: parentDashboard },
-   parentProfile: { screen: parentProfile },
-    //editParent: { screen: editParent },
+
+  editParent: { screen: editParent },
   });

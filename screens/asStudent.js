@@ -126,7 +126,7 @@ this.setState({currentColor: 'red'})
 
 
   addStudent = () => {
-    if (this.state.email == ''||this.state.password == ''||this.state.confirmPassword==''||this.state.university==''||this.state.busNo==''||this.state.phoneNo==''||this.state.neighborhood=='') {
+    if (this.state.fullName == ''|| this.state.email == ''||this.state.password == ''||this.state.confirmPassword==''||this.state.university==''||this.state.busNo==''||this.state.phoneNo==''||this.state.neighborhood=='') {
       this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
       this.setState({errorMsgVisibilty: 'flex'})
       return;
