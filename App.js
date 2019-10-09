@@ -123,32 +123,32 @@ import addChild from './screens/addChild'
               if (user) {
                 this.userId = user.uid
 
+                firebase.database().ref('parents/'+user.uid).on('value', snapshot => {
+                  if (snapshot.exists())
+                navigation.navigate('parentDashboard')
+                });
 
-                //Search in drivers
-                firebase.database().ref('drivers/'+this.userId).once('value').then(function(snapshot) {
-                  return;
-                //  navigation.navigate('driverStack')
-                })
-                //Search in parents
-                firebase.database().ref('parents/'+this.userId).once('value').then(function(snapshot) {
-                  if (snapshot!=null) {
-                  navigation.navigate('parentDashboard')
-                  return;}
 
-                })
-                //Search in managers
-                firebase.database().ref('managers/'+this.userId).once('value').then(function(snapshot) {
+                firebase.database().ref('drivers/'+user.uid).on('value', snapshot => {
+                  if (snapshot.exists());
+              //  navigation.navigate('parentDashboard')
+                });
 
-                    navigation.navigate('renderManageDrivers')
 
-                  //raghad plz change the below line to the page you wanna navigate to
-                //  navigation.push('renderManageDrivers')
-                })
-                //Search in students
-                firebase.database().ref('students/'+this.userId).once('value').then(function(snapshot) {
-                //  navigation.navigate('studentStack')
-                return;
-                })
+                firebase.database().ref('managers/'+user.uid).on('value', snapshot => {
+                  if (snapshot.exists())
+                navigation.navigate('renderManageDrivers')
+                });
+
+
+                firebase.database().ref('students/'+user.uid).on('value', snapshot => {
+                  if (snapshot.exists());
+                //navigation.navigate('parentDashboard')
+                });
+
+
+
+
                 //done searching
               }
             });
