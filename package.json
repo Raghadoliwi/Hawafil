@@ -30,6 +30,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-material-menu": "^1.0.0",
+    "react-native-password-strength-meter": "0.0.3",
     "react-native-reanimated": "^1.2.0",
     "react-native-unimodules": "^0.7.0-rc.1",
     "react-native-vector-icons": "^6.6.0",

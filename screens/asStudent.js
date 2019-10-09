@@ -22,6 +22,8 @@ import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 
+import RNPasswordStrengthMeter from 'react-native-password-strength-meter';
+
 import * as Font from 'expo-font';
 
 
@@ -50,6 +52,33 @@ export default class asStudent extends Component {
   formErrorMsg:'',
   errorMsgVisibilty:'none',
     fontLoaded: false
+  }
+
+  import { BarPasswordStrengthDisplay } from 'react-native-password-strength-meter';
+
+  export default class BarComponent extends Component {
+    state = {
+      password: '',
+    }
+
+    onChange = password => this.setState({ password })
+
+    render() {
+      const { password } = this.state;
+      return (
+        <View style={styles.container}>
+          <TextInput style={styles.textInput} onChangeText={this.onChange} />
+          <BarPasswordStrengthDisplay
+            password={password}
+          />
+        </View>
+      );
+    }
+  }
+
+  export default class PasswordInput extends Component {
+  onChange = (password, score, { label, labelColor, activeBarColor }) => {
+    console.log(password, score, { label, labelColor, activeBarColor });
   }
 
   /*async componentDidMount() {
@@ -81,7 +110,7 @@ export default class asStudent extends Component {
           snap.forEach((child) => {
             this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
 
-        
+
           })//end snap for each
           //itm = universities;
           //this.setState({universities: itm});
@@ -255,11 +284,14 @@ scrollEnabled={false}>
                 placeholder="كلمة المرور"
                 secureTextEntry={true}
                 underlineColorAndroid='transparent'
-
+                <RNPasswordStrengthMeter
                 onChangeText={(password) => {
+                  this.onChange
                   this.setState({password})
                   this.setState({passwordBorder: '#EAEAEA'})
                 } }
+                meterType="bar"
+                />
                 value={this.state.password}
                 />
                 </View>
@@ -582,3 +614,87 @@ const styles = StyleSheet.create({
                                }
 
                                  });
+                                 defaultPassword: '',
+containerWrapperStyle: {},
+imageWrapperStyle: {},
+imageStyle: {},
+inputWrapperStyle: {},
+inputStyle: {},
+placeholderStyle: {},
+meterType: 'bar',
+   inputProps: {
+    placeholder: 'Password',
+  secureTextEntry: true,
+},
+passwordProps: {
+   touched: false,
+   scoreLimit: 100,
+   variations: {
+     digits: /\d/,
+     lower: /[a-z]/,
+     upper: /[A-Z]/,
+     nonWords: /\W/,
+   },
+   minLength: 5,
+   labelVisible: true,
+   levels: [
+     {
+       label: 'Pathetically weak',
+       labelColor: '#ff2900',
+       activeBarColor: '#ff2900',
+     },
+     {
+       label: 'Extremely weak',
+       labelColor: '#ff3e00',
+       activeBarColor: '#ff3e00',
+     },
+     {
+       label: 'Very weak',
+       labelColor: '#ff5400',
+       activeBarColor: '#ff5400',
+     },
+     {
+       label: 'Weak',
+       labelColor: '#ff6900',
+       activeBarColor: '#ff6900',
+     },
+     {
+       label: 'So-so',
+       labelColor: '#f4d744',
+       activeBarColor: '#f4d744',
+     },
+     {
+       label: 'Average',
+       labelColor: '#f3d331',
+       activeBarColor: '#f3d331',
+     },
+     {
+       label: 'Fair',
+       labelColor: '#f2cf1f',
+       activeBarColor: '#f2cf1f',
+     },
+     {
+       label: 'Strong',
+       labelColor: '#14eb6e',
+       activeBarColor: '#14eb6e',
+     },
+     {
+       label: 'Very strong',
+       labelColor: '#0af56d',
+       activeBarColor: '#0af56d',
+     },
+     {
+       label: 'Unbelievably strong',
+       labelColor: '#00ff6b',
+       activeBarColor: '#00ff6b',
+     },
+   ],
+   wrapperStyle: {},
+   labelStyle: {},
+   width: deviceWidth - 20,
+
+   // Box
+   boxContainerStyle: {},
+   boxStyle: {},
+   boxColor: '#f1f3f4',
+   boxSpacing: 2,
