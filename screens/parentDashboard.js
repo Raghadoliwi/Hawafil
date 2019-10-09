@@ -21,101 +21,157 @@ const MenuIcon = ({ navigate }) => <Icon
 
 
 export default class parentDashboard extends React.Component {
-    UNSAFE_componentWillMount(){
-        const firebaseConfig = {
-          apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
-          authDomain: "hawafildb.firebaseapp.com",
-          databaseURL: "https://hawafildb.firebaseio.com",
-          projectId: "hawafildb",
-          storageBucket: "",
-          messagingSenderId: "932110912763",
-          appId: "1:932110912763:web:68fca60e805543a655b45e",
-          measurementId: "G-G21F8ME7TS"
-        };
+  UNSAFE_componentWillMount(){
+      const firebaseConfig = {
+        apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+        authDomain: "hawafildb.firebaseapp.com",
+        databaseURL: "https://hawafildb.firebaseio.com",
+        projectId: "hawafildb",
+        storageBucket: "",
+        messagingSenderId: "932110912763",
+        appId: "1:932110912763:web:68fca60e805543a655b45e",
+        measurementId: "G-G21F8ME7TS"
+      };
+
+
+    }
+    constructor(props){
+      super(props)
+      this.state = {
 
 
       }
-      constructor(props){
-        super(props)
-        this.state = {
-          items : []
-        }
-      }
+    }
 
-      componentDidMount(){ //to fetch data
-          firebase.database().ref('drivers/').on('value', (snap) => {
-              let items = [];
-              snap.forEach((child) => {
-                  items.push({
-                      name: child.val().name ,
-                      busNo: child.val().busNo ,
-                      neighborhood: child.val().phoneNo ,
-                      busPlate: child.val().busPlate ,
-                  })
-              })//end snap for each
-              itm = items;
-              this.setState({items: items});
-              console.log(itm);
-              console.log("lama-------");
-              console.log(this.state.items); //This is wrong
-              itm.forEach((itms) => {
-                  console.log(itms.name);
-              })
-          })//end on
+    componentDidMount(){ //to fetch data
+
+      firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+
+var userId = firebase.auth().currentUser.uid;
+email= firebase.auth().currentUser.email;
+firebase.database().ref('parents/'+userId).on('value', snapshot => {
 
 
-      }
+  this.setState({
+    parentIn: {
+      name: snapshot.val().name,
+      email:email,
+      phoneNo: snapshot.val().phoneNo
+    }
+  });
+
+});
 
 
-static navigationOptions = function(props) {
-return {
-  drawerLabel:'إدارة السائقين',
-  title: 'إدارة السائقين',
-  headerLeft: <View style={{paddingLeft:16}}>
-      <Icon
-          name="three-bars"
-          size={25}
-          color='white'
-          onPress={() => props.navigation.openDrawer()} />
-  </View>,
 
-  headerTintColor: 'white',
-        headerStyle: {
-           backgroundColor: "#4C73CC"
-        }
-}
+
+    // User is signed in.
+  }
+});
+
+
+  }
+
+
+
+	static navigationOptions = function(props) {
+  return {
+		drawerLabel:'تعديل الملف الشخصي',
+    title: 'تعديل الملف الشخصي',
+    headerLeft: <View style={{paddingLeft:16}}>
+				<Icon
+						name="three-bars"
+						size={25}
+						color='white'
+						onPress={() => props.navigation.openDrawer()} />
+		</View>,
+
+		headerTintColor: 'white',
+		      headerStyle: {
+		         backgroundColor: "#4C73CC"
+		      }
+	}
 };
 
 	render() {
     return (
 
-       <View style={{padding: 10, flex: 1}, styles.container} >
-       <ScrollView style={{flex: 1, marginBottom:20}}>
+      <View style={{padding: 10, flex: 1}, styles.container} >
 
-
-         {
-         this.state.items.map((u, i ) => {
-             return (
-                 <Card containerStyle={styles.cards} title={u.name}>
-                     <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: {u.busNo}</Text>
-                     <Text style={styles.paragraph} key={u.neighborhood}>الحي: {u.neighborhood}</Text>
-                     <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: {u.busPlate}</Text>
-                 </Card>
-             );
-         })
-         }
-
-
-       </ScrollView>
-       </View>
+      <ScrollView style={{flex: 1, marginBottom:20}}>
 
 
 
-     );
+ {this.state.parentIn ? (
+                <Card containerStyle={styles.cards} title="معلومات ولي الأمر">
+                <Text style={styles.paragraph} key={this.state.parentIn.name}>• اسم ولي الأمر:{this.state.parentIn.name}</Text>
+
+                    <Text style={styles.paragraph} key={this.state.parentIn.phoneNo}>رقم الجوال: {this.state.parentIn.phoneNo}</Text>
+                    <Text style={styles.paragraph} key={this.state.parentIn.email}>• البريد الإلكتروني:{this.state.parentIn.email}</Text>
+                    <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+                         onPress={() => this.props.navigation.push('editParent')}>
+                              <Text style={styles.editText}>تعديل</Text>
+                            </TouchableHighlight>
+                </Card>
+
+) : null}
+
+
+   <Text style={styles.perInfo}>──────  التابعين ──────</Text>
+
+   <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
+ /*onPress={() => this.props.navigation.push('addChild')}*/>
+        <Text style={styles.addText}>إضافة تابع</Text>
+      </TouchableHighlight>
+
+<View style={styles.childrenContainer}>
+        <Card containerStyle={styles.cards} title="معلومات الطالب ">
+        {/*react-native-elements Card*/}
+          <Text style={styles.paragraph}>
+            • اسم الطالب: العنود
+          </Text>
+
+          <Text style={styles.paragraph}>
+         • المدرسة: المناهج
+          </Text>
+           <Text style={styles.paragraph}>
+           • المرحلة: ثانوي
+          </Text>
+          <Text style={styles.paragraph}>
+           • رقم الحافلة: ٧
+          </Text>
+           <Text style={styles.inline}>
+           • الحي : الغدير
+          </Text>
+
+           <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+     /*onPress={() => this.props.navigation.push('editChild')}*/>
+          <Text style={styles.editText}>تعديل</Text>
+        </TouchableHighlight>
+        </Card>
+
+
+
+
+
+
+
+
+
+
+</View>
+
+      </ScrollView>
+      </View>
+
+
+
+    );
   }
 }
 const styles = StyleSheet.create({
-	container: {
+  container: {
 	justifyContent: 'center',
 	alignItems: 'center',
   flex: 1,
@@ -164,6 +220,23 @@ const styles = StyleSheet.create({
   addText: {
     color: 'white',
     fontSize: 18 ,
+		fontWeight:'bold'
+  },
+  editButton:{
+
+ 	  flex: 1,
+		alignSelf:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 90,
+    height:30,
+    bottom: 5,
+    backgroundColor:"#3C68BF",
+    //marginBottom: 300,
+  },
+  editText: {
+    color: 'white',
+    fontSize: 12,
 		fontWeight:'bold'
   }
 });

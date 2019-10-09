@@ -258,7 +258,7 @@ return {
 
 
 
-            <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addStudent}>
+            <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addParent}>
             <Text style={[styles.fontStyle,styles.signUpText]}>تسجيل</Text>
             </TouchableHighlight>
 
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
                                  color: "#8197C6",
                                  fontSize: 20 ,//problema
                                  //fontWeight:900,
-                              
+
                                  bottom: 20,
                                  },
 
