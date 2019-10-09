@@ -10,7 +10,6 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
-import parentProfile from './parentProfile';
 import editParent from './editParent';
 
 const MenuIcon = ({ navigate }) => <Icon
