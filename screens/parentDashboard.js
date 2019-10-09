@@ -1,10 +1,10 @@
 import React from 'react';
 //import react in our code.
 
-import { Text, View, StyleSheet, ScrollView, SafeAreaView,TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet,StatusBar, ScrollView, SafeAreaView,TouchableHighlight } from 'react-native';
 import { Card } from 'react-native-elements';
 import {DrawerNavigator} from 'react-navigation';
-import {createAppContainer } from 'react-navigation';
+import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
@@ -12,15 +12,9 @@ import firebase from 'firebase';
 import Constants from 'expo-constants';
 import editParent from './editParent';
 
-const MenuIcon = ({ navigate }) => <Icon
-    name='three-bars'
-    size={20}
-    color='#fff'
-    onPress={() => this.navigation.openDrawer()}
-/>;
 
 
-export default class parentDashboard extends React.Component {
+  export default class parentDashboard extends React.Component {
   UNSAFE_componentWillMount(){
       const firebaseConfig = {
         apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
@@ -94,15 +88,20 @@ firebase.database().ref('children/').on('value', (snap) => {
 
 	static navigationOptions = function(props) {
   return {
-		drawerLabel:'تعديل الملف الشخصي',
-    title: 'تعديل الملف الشخصي',
+		drawerLabel:'الرئيسية',
+    title: 'الرئيسية',
     headerLeft: <View style={{paddingLeft:16}}>
-				<Icon
-						name="three-bars"
-						size={25}
-						color='white'
-						onPress={() => props.navigation.openDrawer()} />
-		</View>,
+        <Icon
+            name="three-bars"
+            size={25}
+            color='white'
+            onPress={() => props.navigation.navigate('DrawerOpen')} />
+    </View>,
+    headerTintColor: 'white',
+		      headerStyle: {
+		         backgroundColor: "#4C73CC"
+		      },
+
 
 		headerTintColor: 'white',
 		      headerStyle: {
@@ -115,7 +114,13 @@ firebase.database().ref('children/').on('value', (snap) => {
     return (
 
       <View style={{padding: 10, flex: 1}, styles.container} >
-
+      <StatusBar
+             barStyle = "light-content"
+             hidden = {false}
+             backgroundColor = "#00BCD4"
+             translucent = {true}
+             networkActivityIndicatorVisible = {true}
+             />
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
 
@@ -142,7 +147,7 @@ firebase.database().ref('children/').on('value', (snap) => {
    <Text style={styles.perInfo}>──────  التابعين ──────</Text>
 
    <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
- /*onPress={() => this.props.navigation.push('addChild')}*/>
+ onPress={() => this.props.navigation.navigate('openDrawer')}>
         <Text style={styles.addText}>إضافة تابع</Text>
       </TouchableHighlight>
 
@@ -263,8 +268,44 @@ const styles = StyleSheet.create({
 });
 
 
-  const parentStack = createStackNavigator({
-    parentDashboard: { screen: parentDashboard },
+/*
+const parentStack = createStackNavigator(
+  {
+  parentDashboard: { screen: parentDashboard },
+editParent: { screen: editParent },
 
-  editParent: { screen: editParent },
-  });
+});
+
+
+const MyDrawerNavigator = createDrawerNavigator({
+    'الرئيسية': {
+      screen: parentStack,
+    },
+    'تعديل البيانات': {
+      screen: editParent,
+    },
+  },
+  {
+    initialRouteParams: 'الدخول',
+    defaultNavigationOptions: {
+      headerStyle: {
+      backgroundColor:  '#4C73CC',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
+  }
+
+  );
+
+
+const MyApp = createAppContainer(MyDrawerNavigator);
+
+export default class App extends React.Component {
+   render() {
+     return <MyApp />;
+
+   }
+ }*/

@@ -11,7 +11,7 @@ import * as React from 'react';
   	SafeAreaView,
     Image,
     Alert} from 'react-native';
-  import {createAppContainer } from 'react-navigation';
+  import {createSwitchNavigator, createAppContainer } from 'react-navigation';
   import {createStackNavigator } from 'react-navigation-stack';
   import { createDrawerNavigator } from 'react-navigation-drawer';
   import Icon from 'react-native-vector-icons/Octicons';
@@ -135,7 +135,7 @@ import * as React from 'react';
                 //Search in parents
                 firebase.database().ref('parents/'+this.userId).once('value').then(function(snapshot) {
 
-                  navigation.push('parentDashboard')
+                  navigation.navigate('parentDashboard')
 
 
                 })
@@ -165,13 +165,7 @@ import * as React from 'react';
     return {
   		drawerLabel:'الدخول',
       title: 'الدخول',
-      headerLeft: <View style={{paddingLeft:16}}>
-  				<Icon
-  						name="three-bars"
-  						size={25}
-  						color='white'
-  						onPress={() => props.navigation.openDrawer()} />
-  		</View>,
+
       headerTitleStyle: {
   //  fontFamily:'Tajawal-Medium'
     },
@@ -265,7 +259,7 @@ import * as React from 'react';
       <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginRight:20}} />
   </View>
   				 			<TouchableHighlight style={[styles.buttonContainer, styles.registerButton]}
-                 onPress={() => this.props.navigation.push('registration')}>
+                 onPress={() => this.props.navigation.navigate('registration')}>
   				 					<Text style={[styles.fontStyle,styles.registerText]}>التسجيل كمستخدم جديد</Text>
   				 			</TouchableHighlight>
   				 			</View>
@@ -414,8 +408,26 @@ import * as React from 'react';
   const studentStack = createStackNavigator({
   //  studentDashboard: { screen: studentDashboard },
 });*/
+const parentStack = createStackNavigator(
+  {
+  parentDashboard: { screen: parentDashboard },
+editParent: { screen: editParent },
+}
 
-  const MyDrawerNavigator = createDrawerNavigator({
+  );
+
+const registrationStack = createStackNavigator({
+  registration: { screen: registration },
+//  asOrganisation: { screen: RegisterOrganisation },
+    asParent: { screen: asParent },
+    asStudent: { screen: asStudent },
+    asManager: { screen: asManager },
+//    asStudent: { screen: RegisterStudent }
+});
+
+
+
+const MyDrawerNavigator = createDrawerNavigator({
     'الدخول': {
       screen: loginStack,
     },

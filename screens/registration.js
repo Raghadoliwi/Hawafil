@@ -165,11 +165,4 @@ const styles = StyleSheet.create({
 
                                  });
 
-                                 const registrationStack = createStackNavigator({
-                                   registration: { screen: registration },
-                                 //  asOrganisation: { screen: RegisterOrganisation },
-                                     asParent: { screen: asParent },
-                                     asStudent: { screen: asStudent },
-                                     asManager: { screen: asManager },
-                                 //    asStudent: { screen: RegisterStudent }
-                                 });
+                            

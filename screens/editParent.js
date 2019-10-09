@@ -15,7 +15,7 @@ import {
   Alert} from 'react-native';
   import { Card } from 'react-native-elements';
 import {DrawerNavigator} from 'react-navigation';
-import {createAppContainer } from 'react-navigation';
+import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
@@ -193,11 +193,11 @@ this.setState({phoneBorder: 'red'})
            if (this.state.phoneNo != ''){
              firebase.database().ref('parents/'+ this.state.userIdNo).update({phoneNo : this.state.phoneNo,})
            }
-           navigation.push('parentDashboard')
+           navigation.navigate('الرئيسية')
          }
          else {
            user.updatePassword(this.state.password).then(() => {
-             navigation.push('login')
+             navigation.navigate('loginStack')
            }, (error) => {
              // An error happened.
            });
