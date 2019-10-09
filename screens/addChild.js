@@ -27,19 +27,71 @@ import DropdownMenu from 'react-native-dropdown-menu';
 
 
 export default class addChild extends React.Component {
-pro
+  UNSAFE_componentWillMount(){
+    const firebaseConfig = {
+      apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+      authDomain: "hawafildb.firebaseapp.com",
+      databaseURL: "https://hawafildb.firebaseio.com",
+      projectId: "hawafildb",
+      storageBucket: "",
+      messagingSenderId: "932110912763",
+      appId: "1:932110912763:web:68fca60e805543a655b45e",
+      measurementId: "G-G21F8ME7TS"
+    };
+  }
 
    state = {
-
      sName: '',
      level   : '',
      school: '',
    neighborhood: '',
    busNo: '',
- neighborhoodBorder:'#EAEAEA',
 
+ neighborhoodBorder:'#EAEAEA',
+ nameBorder:'',
+ schoolBorder:'',
+ busNoBorder:'',
+
+ formErrorMsg:'',
+ errorMsgVisibilty:'none',
+ busNoError:'',
 
    }
+
+   addChild = () => {
+     const {navigation} = this.props;
+      if (this.state.sName == '' || this.state.level == ''||this.state.school == ''||this.state.neighborhood=='') ||this.state.busNo=='') {
+       this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
+       this.setState({errorMsgVisibilty: 'flex'})
+       return;
+     }
+
+     if (this.state.neighborhoodBorder == 'red'||this.state.nameBorder == 'red'||this.state.schoolBorder=='red'||this.state.busNoBorder=='red' {
+       this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
+       this.setState({errorMsgVisibilty: 'flex'})
+       return;
+     }
+     var uid = firebase.auth().currentUser.uid;
+     var parentPhoneNoDB;
+     firebase.database().ref('parents/'+userId).on('value', snapshot => {
+       parentPhoneNoDB = snapshot.val().phoneNo;
+     });
+     //adding child:
+     firebase.database().ref('children/'+parentPhoneNoDB).set(
+       {
+        name: this.state.sName,
+        level: this.state.level,
+        inst: this.state.school,
+        busNo: this.state.busNo,
+        district: this.state.neighborhood,
+       }
+     ).then(function() {
+       Alert.alert('تمت الإضافة بنجاح');
+       navigation.navigate(parentDashboard);
+     })
+     .catch(error => this.setState({ errorMessage: error.message }))
+     console.log(errorMessage);
+   }//end add child
 
 
  onClickListener = (viewId) => {
@@ -79,18 +131,32 @@ pro
 
          <TextInput style={styles.inputs}
              placeholder="اسم الطالب "
-             keyboardType="acii-capable"
+             keyboardType="TextInput"
              underlineColorAndroid='transparent'
-             onChangeText={(busNo) => this.setState({sName})}/>
+             onChangeText={(sName) => {
+               this.setState({sName})
+               this.setState({nameBorder: '#EAEAEA'})
+             } }
+             value={this.state.sName}
+
+             />
        </View>
 
        <View style={styles.inputContainer}>
 
          <TextInput style={styles.inputs}
              placeholder="المدرسة"
-             keyboardType="acii-capable"
+             keyboardType="TextInput"
              underlineColorAndroid='transparent'
-             onChangeText={(carPlate) => this.setState({school})}/>
+             onChangeText={(school) => {
+               this.setState({school})
+               this.setState({schoolBorder: '#EAEAEA'})
+             } }
+             value={this.state.school}
+
+
+
+             />
        </View>
 
    <Text style={styles.level}> المرحلة:  </Text>
@@ -137,10 +203,11 @@ pro
 
                  data={riyadhDistricts}
 
-                 onChangeText={(value) => {
-                   this.setState({neighborhood:value})
+                 onChangeText={(neighborhood) => {
+                   this.setState({neighborhood})
                    this.setState({neighborhoodBorder: '#EAEAEA'})
                  } }
+                 value={this.state.neighborhood}
                />
              </View>
 
@@ -150,7 +217,14 @@ pro
              placeholder="رقم الحافلة "
              keyboardType="numeric"
              underlineColorAndroid='transparent'
-             onChangeText={(neighborhood) => this.setState({busNo})}/>
+             onChangeText={(busNo) => {
+               this.setState({busNo})
+               this.setState({busNoBorder: '#EAEAEA'})
+               this.setState({busNoError: 'none'})
+             }
+             }
+             value={this.state.busNo}
+             />
        </View>
 
               <View >
@@ -159,13 +233,13 @@ pro
                </View>
 
            <View>
-         <TouchableHighlight style={[styles.buttonContainer, styles.save]} onPress={() => this.onClickListener('save')}>
+         <TouchableHighlight style={[styles.buttonContainer, styles.save]} onPress={this.addChild}>
          <Text style={styles.saveText}>حفظ </Text>
        </TouchableHighlight>
          </View>
 
          <View>
-          <TouchableHighlight style={[styles.buttonContainer, styles.cancel]} onPress={() => this.onClickListener('cancel')}>
+          <TouchableHighlight style={[styles.buttonContainer, styles.cancel]} onPress={() => props.navigation.goBack()}>
          <Text style={styles.saveText}>إلغاء </Text>
        </TouchableHighlight>
        </View>
