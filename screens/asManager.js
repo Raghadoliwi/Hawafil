@@ -65,7 +65,10 @@ constructor(props){
 
 
     validateSAID = (id) => {
-    id = id.trim();
+    try { id = id.toString().trim(); }
+    catch (e){
+      console.log(e.message);
+    }
     if (isNaN(parseInt(id))) {
       this.setState({idBorder:'red'})
     }
@@ -87,7 +90,7 @@ constructor(props){
       }
 
     }
-    this.setState({emailBorder:'#91b804'})
+    this.setState({idBorder:'#91b804'})
   }
 
 
@@ -317,14 +320,14 @@ scrollEnabled={false}>
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
+                <TextInput style={[styles.inputs, {borderColor: this.state.idBorder}]}
                 placeholder="الهوية/الإقامة"
                 keyboardType="numeric"
                 underlineColorAndroid='transparent'
 
                 onChangeText={(nationalId) => {
 
-                  this.setState(Number({nationalId}))
+                  this.setState({nationalId})
                   this.setState({idBorder: '#EAEAEA'})
                 }}
                   onEndEditing={(nationalId) => this.validateSAID(nationalId)}
@@ -367,7 +370,7 @@ scrollEnabled={false}>
                 <Text style={styles.signupText}>إرفاق الإثبات</Text>
 
                 </TouchableHighlight>
-                <Text style={styles.SubSub}>*يسمح بملفات (PNG , PDF , JPG)</Text>
+                <Text style={styles.SubSub}>*يسمح بملفات (PNG , JPG)</Text>
 
                 <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addInstit}>
 
@@ -467,6 +470,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 250,
     marginBottom: 20,
+    height:45,
     flexDirection: 'row',
     //justifyContent:'flex-end',
     justifyContent: 'space-around',

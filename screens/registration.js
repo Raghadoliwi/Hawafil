@@ -17,6 +17,9 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
+import asParent from './asParent'
+import asStudent from './asStudent'
+import asManager from './asManager'
 
 export default class registration extends React.Component {
   static navigationOptions = function(props) {
@@ -160,4 +163,13 @@ const styles = StyleSheet.create({
                                     fontSize:15,
                                  },
 
+                                 });
+
+                                 const registrationStack = createStackNavigator({
+                                   registration: { screen: registration },
+                                 //  asOrganisation: { screen: RegisterOrganisation },
+                                     asParent: { screen: asParent },
+                                     asStudent: { screen: asStudent },
+                                     asManager: { screen: asManager },
+                                 //    asStudent: { screen: RegisterStudent }
                                  });

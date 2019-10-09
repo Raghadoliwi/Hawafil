@@ -20,6 +20,7 @@
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
+    "react-native-dialog-input": "^1.0.7",
     "react-native-document-picker": "^3.2.4",
     "react-native-dropdown": "0.0.6",
     "react-native-dropdown-menu": "^2.0.0",

@@ -63,7 +63,7 @@ export default class App extends Component {
     passwordBorder:'#EAEAEA',
     conPasswordBorder:'#EAEAEA',
     passError:'none',
-
+  formErrorMsg:'',
     errorMsgVisibilty:'none',
     }
 
@@ -105,6 +105,19 @@ export default class App extends Component {
 
 
     addParent = () => {
+      if (this.state.fullName == '' || this.state.email == ''||this.state.password == ''||this.state.confirmPassword=='') {
+        this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
+        this.setState({errorMsgVisibilty: 'flex'})
+        return;
+      }
+      if (this.state.emailBorder == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'||this.state.uniBorder=='red'||this.state.busBorder=='red'||this.state.currentColor=='red'||this.state.neighborhoodBorder=='red'){
+        this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
+        this.setState({errorMsgVisibilty: 'flex'})
+        return;
+      }
+
+
+
       firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then( (data) => {
           firebase.auth().onAuthStateChanged( user => {
@@ -258,7 +271,7 @@ return {
 
 
 
-            <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addStudent}>
+            <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addParent}>
             <Text style={[styles.fontStyle,styles.signUpText]}>تسجيل</Text>
             </TouchableHighlight>
 
@@ -279,6 +292,7 @@ const styles = StyleSheet.create({
                                  justifyContent: 'center',
                                  alignItems: 'center',
                                  backgroundColor: '#F7FAFF',
+                                 height:750
                                  },
 
                                  inputContainer: {
@@ -316,7 +330,7 @@ const styles = StyleSheet.create({
                                  color: "#8197C6",
                                  fontSize: 20 ,//problema
                                  //fontWeight:900,
-                              
+
                                  bottom: 20,
                                  },
 
