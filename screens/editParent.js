@@ -53,6 +53,7 @@ export default class editParent extends React.Component {
      state = {
      pName: '' ,
      phoneNo: '',
+     email: '',
         password: '',
   confirmPassword:'',
      currentColor: '#EAEAEA',
@@ -101,7 +102,7 @@ else {
       }
 }//end validate phone number
 
-
+//it's better to use Alert.alert, same one we used in forget password.
      showAlertDialog = () =>{
   Alert.alert(
   'هل أنت متأكد؟',
@@ -117,27 +118,29 @@ else {
   {cancelable: false},
 );}
 
-     handleInserting = () => {
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( (data) => {
-            firebase.auth().onAuthStateChanged( user => {
-                if (user) {
-                  this.userId = user.uid
-                  firebase.database().ref('drivers/'+this.userId).set(
-                    {
-                      name: this.state.driverName,
-                      id: this.state.workerId,
-                      phoneNo: this.state.phoneNo,
-                      inst: this.state.inst,
-                      busNo: this.state.busNo,
-                      busPlate: this.state.busPlate,
-                    })
-                }
-              });
-        }).then(() => this.props.navigation.navigate('renderManageDrivers'))
-        //raghad plz edit the above line to the page you wanna navigate to after insertion
-        .catch(error => console.log(error.message ))
-    }//end inserting a driver
+     editProfile = () => {
+       var user = firebase.auth().currentUser;
+       var uid;
+       if (user != null) {
+         uid = user.uid;
+         if (this.state.email != ''){
+           user.updateEmail(this.state.email);
+         }
+         if (this.state.password != ''){
+           user.updatePassword(this.state.password);
+         }
+
+         if (this.state.pName != ''){
+           firebase.database().ref('parents/'+uid).update({name : this.state.pName,})
+         }
+
+         if (this.state.phoneNo != ''){
+           firebase.database().ref('parents/'+uid).update({phoneNo : this.state.phoneNo,})
+         }
+
+       }
+    }//end edit profile.
+
 
 
      static navigationOptions = function(props) {
@@ -172,7 +175,7 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
 
                 <TextInput style={styles.input}
                 placeholder="اسم ولي الأمر "
-                keyboardType="acii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={pName => this.setState({ pName })}
                 value={this.state.pName}
@@ -217,6 +220,7 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
                 onEndEditing={(email) => this.validateEmail(email)}
                 value={this.state.email}
                 />
+
                 </View>
 
 
@@ -244,6 +248,8 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
                 />
                 </View>
 
+
+//note, theres no use of choosing the neighborhood here. since we save the child's neighborhood instead of the parent's.
            <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
                               <Dropdown
                               itemColor='#919191'
@@ -274,20 +280,21 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
 
 
                 <TouchableHighlight style={[styles.buttonContainer, styles.save]}
-                onPress={this.handleInserting}>
+                onPress={this.editProfile}>
 
                 <Text style={styles.saveText}>حفظ</Text>
 
                 </TouchableHighlight>
 
+/*
                     <TouchableHighlight style={[styles.buttonContainer, styles.cancel]}
-                onPress={this.handleInserting}>
+                onPress={}>
 
                 <Text style={styles.saveText}>إلغاء</Text>
 
 
                 </TouchableHighlight>
-
+*/
 
 
                 </View>

@@ -11,8 +11,6 @@ import Icon from 'react-native-vector-icons/Octicons';
 import Firebase from 'firebase';
 import Constants from 'expo-constants';
 import DialogInput from 'react-native-dialog-input';
-
-
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
     size={20}
@@ -23,11 +21,60 @@ const MenuIcon = ({ navigate }) => <Icon
 
 
 export default class ParentProfile extends React.Component {
+  UNSAFE_componentWillMount(){
+      const firebaseConfig = {
+        apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+        authDomain: "hawafildb.firebaseapp.com",
+        databaseURL: "https://hawafildb.firebaseio.com",
+        projectId: "hawafildb",
+        storageBucket: "",
+        messagingSenderId: "932110912763",
+        appId: "1:932110912763:web:68fca60e805543a655b45e",
+        measurementId: "G-G21F8ME7TS"
+      };
+
+
+    }
+    constructor(props){
+      super(props)
+      this.state = {
+        items : []
+      }
+    }
+
+    componentDidMount(){ //to fetch data
+      var user = firebase.auth().currentUser;
+      var name, email, phoneNo;
+
+      if (user != null) {
+        name = user.displayName;
+        phoneNo = user.phoneNo;
+        email = user.email;
+        uid = user.uid;
+        firebase.database().ref('parents/'+uid).on('value', (snap) => {
+            let items = [];
+            snap.forEach((child) => {
+                items.push({
+                    name: child.val().name ,
+                    phoneNo: child.val().phoneNo ,
+                    email: child.val().email ,
+                })
+            })//end snap for each
+            itm = items;
+            this.setState({items: items});
+            console.log(itm);
+            console.log("lama-------");
+            console.log(this.state.items); //This is wrong
+            itm.forEach((itms) => {
+                console.log(itms.name);
+            })
+        })//end on
+    }
 
 	static navigationOptions = function(props) {
   return {
-		drawerLabel:'إدارة الحافلات',
-    title: 'إدارة الحافلات',
+		drawerLabel:'تعديل الملف الشخصي',
+    title: 'تعديل الملف الشخصي',
     headerLeft: <View style={{paddingLeft:16}}>
 				<Icon
 						name="three-bars"
@@ -53,33 +100,34 @@ export default class ParentProfile extends React.Component {
      onPress={() => this.props.navigation.push('addChild')}>
           <Text style={styles.addText}>إضافة تابع</Text>
         </TouchableHighlight>
-
-         <Card containerStyle={styles.parentCard} title="معلومات ولي الأمر">
-        {/*react-native-elements Card*/}
-          <Text style={styles.paragraph}>
-            • اسم ولي الأمر: عبدالله
-          </Text>
-
-          <Text style={styles.paragraph}>
-            • البريد الإلكتروني:  abdullah123@gmail.com
-          </Text>
-
-          <Text style={styles.paragraph}>
-           •  رقم الجوال:  ٥٠٥٦٠٤١٥٢ (٩٦٦+)
-          </Text>
-           <Text style={styles.paragraph}>
-           • الحي : الغدير
-          </Text>
+        // render
+        {
+        this.state.items.map((u, i ) => {
+            return (
+                <Card containerStyle={styles.cards} title="معلومات ولي الأمر">
+                <Text style={styles.paragraph} key={u.name}>• اسم ولي الأمر:{u.name}</Text>
+                    <Text style={styles.paragraph} key={u.email}>• البريد الإلكتروني:{u.email}</Text>
+                    <Text style={styles.paragraph} key={u.phoneNo}>رقم الجوال: {u.phoneNo}</Text>
+                </Card>
+            );
+        })
+        }
+        //end render
+/*
+to be added later:
              <Text style={styles.inline}>
            • عدد التابعين: ٤
           </Text>
 
+*/
 
            <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
      onPress={() => this.props.navigation.push('editParent')}>
           <Text style={styles.editText}>تعديل</Text>
         </TouchableHighlight>
         </Card>
+
+
    <Text style={styles.perInfo}>──────  التابعين ──────</Text>
 
 
