@@ -94,7 +94,7 @@ return {
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
      <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
-/*onPress={() => this.props.navigation.push('addBusDriver')} */    >
+onPress={() => this.props.navigation.push('addBusDriver')}     >
           <Text style={styles.addText}>إضافة قائد حافلة</Text>
         </TouchableHighlight>
         {

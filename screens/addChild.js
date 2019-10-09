@@ -51,7 +51,7 @@ export default class addChild extends React.Component {
  nameBorder:'',
  schoolBorder:'',
  busNoBorder:'',
-
+errorMessage:'',
  formErrorMsg:'',
  errorMsgVisibilty:'none',
  busNoError:'',
@@ -91,7 +91,7 @@ export default class addChild extends React.Component {
        navigation.navigate('parentDashboard');
      })
      .catch(error => this.setState({ errorMessage: error.message }))
-     console.log(errorMessage);
+     console.log(this.state.errorMessage);
    }//end add child
 
 
@@ -164,21 +164,21 @@ export default class addChild extends React.Component {
               <View style={styles.typeContainer}>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level1'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level1'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'التمهيدي'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'التمهيدي'})} >
 <Text style={styles.typeText}>تمهيدي</Text>
                </TouchableHighlight>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level2'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level2'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'الابتدائي'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'الابتدائي'})} >
 <Text style={styles.typeText}>ابتدائي</Text>
                </TouchableHighlight>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level3'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level3'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'المتوسط'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'المتوسط'})} >
 <Text style={styles.typeText}>متوسط</Text>
                </TouchableHighlight>
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level4'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level4'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'الثانوي'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'الثانوي'})} >
 <Text style={styles.typeText}>ثانوي</Text>
                </TouchableHighlight>
 

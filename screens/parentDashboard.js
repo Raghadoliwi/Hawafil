@@ -58,25 +58,24 @@ firebase.database().ref('parents/'+userId).on('value', snapshot => {
 });
 
 
-/*
-RETRIEVE CHILDREN
-firebase.database().ref('children/').on('value', (snap) => {
-    let childrenList = [];
-    snap.forEach((child) => {
-        childrenList.push({
-            name: child.val().name ,
-            busNo: child.val().busNo ,
-            school: child.val().school ,
-            schoolType: child.val().schoolType ,
-            parentPhoneNo: child.val().parentPhoneNo ,
-            district: child.val().district ,
-        })
-    })//end snap for each
+console.log (this.state.parentIn.phoneNo);
+let parentPhoneNo=this.state.parentIn.phoneNo;
+firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
 
-    this.setState({children: childrenList[]});
+    this.setState({
+      childrenList: {
+        name: snap.val().name ,
+        busNo: snap.val().busNo ,
+        inst: snap.val().inst ,
+        level: snap.val().level ,
+        district: snap.val().district ,
+      }
+    });
+
+
 
 })//end on
-*/
+
   }
 });
 
@@ -151,42 +150,39 @@ firebase.database().ref('children/').on('value', (snap) => {
         <Text style={styles.addText}>إضافة تابع</Text>
       </TouchableHighlight>
 
-<View style={styles.childrenContainer}>
-        <Card containerStyle={styles.cards} title="معلومات الطالب ">
-        {/*react-native-elements Card*/}
-          <Text style={styles.paragraph}>
-            • اسم الطالب: العنود
-          </Text>
+{this.state.childrenList ? (
 
-          <Text style={styles.paragraph}>
-         • المدرسة: المناهج
-          </Text>
-           <Text style={styles.paragraph}>
-           • المرحلة: ثانوي
-          </Text>
-          <Text style={styles.paragraph}>
-           • رقم الحافلة: ٧
-          </Text>
-           <Text style={styles.paragraph}>
-           • الحي : الغدير
-          </Text>
 
-           <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-     /*onPress={() => this.props.navigation.push('editChild')}*/>
-          <Text style={styles.editText}>تعديل</Text>
-        </TouchableHighlight>
-        </Card>
+              <Card containerStyle={styles.cards} title={this.state.childrenList.name}>
+
+                <Text style={styles.paragraph} key={this.state.childrenList.inst}>
+               • المدرسة: {this.state.childrenList.inst}
+                </Text>
+                 <Text style={styles.paragraph}>
+                 • المرحلة: {this.state.childrenList.level}
+                </Text>
+                <Text style={styles.paragraph}>
+                 • رقم الحافلة: {this.state.childrenList.busNo}
+                </Text>
+                 <Text style={styles.paragraph}>
+                 • الحي : {this.state.childrenList.district}
+                </Text>
+
+                 <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+           /*onPress={() => this.props.navigation.push('editChild')}*/>
+                <Text style={styles.editText}>تعديل</Text>
+              </TouchableHighlight>
+              </Card>
 
 
 
+) : null}
 
 
 
+      <View style={styles.childrenContainer}>
 
-
-
-
-</View>
+      </View>
 
       </ScrollView>
       </View>

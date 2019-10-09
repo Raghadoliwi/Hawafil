@@ -372,7 +372,7 @@ scrollEnabled={false}>
                 </TouchableHighlight>
                 <Text style={styles.SubSub}>*يسمح بملفات (PNG , JPG)</Text>
 
-                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addInstit}>
+                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() => this.props.navigation.navigate('login')}>
 
                 <Text style={styles.signupText}>تسجيل جديد</Text>
 

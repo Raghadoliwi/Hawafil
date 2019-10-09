@@ -394,6 +394,7 @@ import addChild from './screens/addChild'
     addChild: { screen: addChild },
     studentDashboard: { screen: studentDashboard },
     renderManageDrivers: { screen: renderManageDrivers },
+        addBusDriver: { screen: addBusDriver },
     asParent: { screen: asParent },
     asStudent: { screen: asStudent },
     asManager: { screen: asManager },
