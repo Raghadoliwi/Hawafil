@@ -106,7 +106,7 @@ export default class addBusDriver extends React.Component {
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
+                <TextInput style={styles.email, styles.input}
                 placeholder="الرقم الوظيفي"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
@@ -118,7 +118,7 @@ export default class addBusDriver extends React.Component {
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
+                <TextInput style={styles.email, styles.input}
                 placeholder="اسم القائد"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
@@ -129,7 +129,7 @@ export default class addBusDriver extends React.Component {
                 </View>
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
+                <TextInput style={styles.email, styles.input}
                 placeholder="رقم الهاتف"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
@@ -141,7 +141,7 @@ export default class addBusDriver extends React.Component {
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
+                <TextInput style={styles.email, styles.input}
                 placeholder="البريد الإلكتروني"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
@@ -152,7 +152,7 @@ export default class addBusDriver extends React.Component {
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.pass}
+                <TextInput style={styles.pass, styles.input}
                 placeholder="كلمة المرور"
                 secureTextEntry={true}
                 underlineColorAndroid='transparent'
@@ -166,7 +166,7 @@ export default class addBusDriver extends React.Component {
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
+                <TextInput style={styles.email, styles.input}
                 placeholder="اسم المنشأة"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
@@ -177,7 +177,7 @@ export default class addBusDriver extends React.Component {
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
+                <TextInput style={styles.email, styles.input}
                 placeholder="رقم الحافلة"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
@@ -189,7 +189,7 @@ export default class addBusDriver extends React.Component {
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
+                <TextInput style={styles.email, styles.input}
                 placeholder="رقم اللوحة"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
@@ -256,7 +256,18 @@ const styles = StyleSheet.create({
 
 
                                  },
+                                 input:{
+                                   flex:1,
+                                   height:40,
+                                   //flexDirection:'row-reverse',
+                                   //justifyContent:'flex-end',
+                                   //marginright:16,
+                                  textAlign:'right',
+                                   borderColor: '#EAEAEA',
+                                   marginLeft:10,
+                                   marginRight:10,
 
+                                 },
                                  pass:{
                                  height:45,
                                  marginLeft:170,
