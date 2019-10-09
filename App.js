@@ -20,7 +20,6 @@ import * as React from 'react';
 
   //import * as Font from 'expo-font';
   import registration from './screens/registration'
-  import renderManageBuses from './screens/renderManageBuses'
   import renderManageDrivers from './screens/renderManageDrivers'
   import addBusDriver from './screens/addBusDriver'
   import addBus from './screens/addBus'
@@ -121,7 +120,7 @@ import * as React from 'react';
                 //Search in managers
                 firebase.database().ref('managers/'+this.userId).once('value').then(function(snapshot) {
                   //raghad plz change the below line to the page you wanna navigate to
-                  navigation.push('renderManageDrivers')
+                //  navigation.push('renderManageDrivers')
                 })
                 //Search in drivers
                 firebase.database().ref('drivers/'+this.userId).once('value').then(function(snapshot) {
@@ -130,7 +129,7 @@ import * as React from 'react';
                 //Search in parents
                 firebase.database().ref('parents/'+this.userId).once('value').then(function(snapshot) {
 
-            //  navigation.push('parentDashboard')
+                  navigation.push('parentDashboard')
 
 
                 })
@@ -383,33 +382,26 @@ import * as React from 'react';
     login: { screen: login },
     forgetPassword: { screen: forgetPassword },
     registration: { screen: registration },
-    renderManageBuses: { screen: renderManageBuses },
+    driverDashboard: { screen: driverDashboard },
+    parentDashboard: { screen: parentDashboard },
+    studentDashboard: { screen: studentDashboard },
     renderManageDrivers: { screen: renderManageDrivers },
     asParent: { screen: asParent },
     asStudent: { screen: asStudent },
     asManager: { screen: asManager },
-    /*driverDashboard: { screen: driverDashboard },
-    parentDashboard: { screen: parentDashboard },
-    studentDashboard: { screen: studentDashboard },*/
+
   });
 
-  const registrationStack = createStackNavigator({
-    registration: { screen: registration },
-  //  asOrganisation: { screen: RegisterOrganisation },
-      asParent: { screen: asParent },
-      asStudent: { screen: asStudent },
-      asManager: { screen: asManager },
-  //    asStudent: { screen: RegisterStudent }
-  });
 
-  const managerStack = createStackNavigator({
+
+  /*const managerStack = createStackNavigator({
     renderManageBuses: { screen: renderManageDrivers },
       addBusDriver: { screen: addBusDriver }
   });
 
-  const driverStack = createStackNavigator({
-    driverDashboard: { screen: driverDashboard },
-  });
+  //const driverStack = createStackNavigator({
+    //driverDashboard: { screen: driverDashboard },
+  //});
 
   const parentStack = createStackNavigator({
     //parentDashboard: { screen: parentDashboard },
