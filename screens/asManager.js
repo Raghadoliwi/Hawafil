@@ -145,10 +145,10 @@ constructor(props){
             }
 
           });
-    }).then(() => this.props.navigation.navigate('manageBuses'))
+    }).then(() => this.props.navigation.navigate('renderManageDrivers'))
     //raghad plz edit the above line to the page you wanna navigate to after insertion
 
-    .catch(error => this.setState(error => console.log(error.message)))
+    .catch(error =>  console.log(error.message))
   }//end adding a parent
 
 
@@ -233,11 +233,11 @@ scrollEnabled={false}>
                 placeholder="الاسم"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={(fullName) => {
-                  this.setState({fullName})
+                onChangeText={(name) => {
+                  this.setState({name})
                   this.setState({nameBorder: '#EAEAEA'})
                 } }
-                value={this.state.fullName}
+                value={this.state.name}
                 />
                 </View>
 

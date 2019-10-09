@@ -193,11 +193,11 @@ this.setState({phoneBorder: 'red'})
            if (this.state.phoneNo != ''){
              firebase.database().ref('parents/'+ this.state.userIdNo).update({phoneNo : this.state.phoneNo,})
            }
-           navigation.navigate('الرئيسية')
+           navigation.navigate('parentDashboard')
          }
          else {
            user.updatePassword(this.state.password).then(() => {
-             navigation.navigate('loginStack')
+             navigation.navigate('login')
            }, (error) => {
              // An error happened.
            });

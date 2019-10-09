@@ -1,20 +1,34 @@
-import React, { Component } from 'react';
+import React from 'react';
+//import react in our code.
+
 import {
- StyleSheet,
- Text,
- View,
- TextInput,
- Button,
- TouchableHighlight,
- Image,
- Alert,
-} from 'react-native';
- import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
- import { Dropdown } from 'react-native-material-dropdown';
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+	StatusBar,
+  TouchableHighlight,
+	ScrollView,
+	SafeAreaView,
+  Image,
+  Alert} from 'react-native';
+  import { Card } from 'react-native-elements';
+import {DrawerNavigator} from 'react-navigation';
+import {createSwitchNavigator, createAppContainer } from 'react-navigation';
+import {createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import Icon from 'react-native-vector-icons/Octicons';
+import firebase from 'firebase';
+import Constants from 'expo-constants';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Dropdown } from 'react-native-material-dropdown';
 import DropdownMenu from 'react-native-dropdown-menu';
 
-export default class addChild extends Component {
+
+export default class addChild extends React.Component {
 pro
+
    state = {
 
      sName: '',
@@ -31,6 +45,25 @@ pro
  onClickListener = (viewId) => {
    Alert.alert("Alert", "Button pressed "+viewId);
  }
+
+
+      static navigationOptions = function(props) {
+      return {
+        title: 'تعديل البيانات الشخصية',
+        headerLeft: <View style={{paddingLeft:16, }}>
+    				<Icon
+    						name="chevron-left"
+    						size={25}
+    						color='white'
+    						onPress={() => props.navigation.goBack()} />
+    		</View>,
+
+    		headerTintColor: 'white',
+    		      headerStyle: {
+    		         backgroundColor: "#4C73CC"
+    		      }
+    	}
+    };
 
  render() {
    let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'النخيل'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]

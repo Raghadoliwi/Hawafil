@@ -53,7 +53,7 @@ export default class renderManageDrivers extends React.Component {
                       id: child.val().id ,
                       inst: child.val().inst ,
                       phoneNo: child.val().phoneNo ,
-                      id: child.val().id ,
+
 
                   })
               })//end snap for each
@@ -94,7 +94,7 @@ return {
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
      <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
-onPress={() => this.props.navigation.push('addBusDriver')}     >
+/*onPress={() => this.props.navigation.push('addBusDriver')} */    >
           <Text style={styles.addText}>إضافة قائد حافلة</Text>
         </TouchableHighlight>
         {
@@ -111,6 +111,7 @@ onPress={() => this.props.navigation.push('addBusDriver')}     >
             );
         })
         }
+
 
       </ScrollView>
       </View>

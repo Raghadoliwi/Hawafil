@@ -147,7 +147,7 @@ firebase.database().ref('children/').on('value', (snap) => {
    <Text style={styles.perInfo}>──────  التابعين ──────</Text>
 
    <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
- onPress={() => this.props.navigation.navigate('openDrawer')}>
+ onPress={() => this.props.navigation.navigate('addChild')}>
         <Text style={styles.addText}>إضافة تابع</Text>
       </TouchableHighlight>
 

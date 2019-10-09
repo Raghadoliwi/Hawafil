@@ -31,7 +31,7 @@ import * as React from 'react';
   import driverDashboard from './screens/driverDashboard'
   import parentDashboard from './screens/parentDashboard'
   import studentDashboard from './screens/studentDashboard'
-
+import addChild from './screens/addChild'
   import editParent from './screens/editParent'
   //import addBus from './screens/addBus'
 
@@ -123,25 +123,31 @@ import * as React from 'react';
               if (user) {
                 this.userId = user.uid
 
-                //Search in managers
-                firebase.database().ref('managers/'+this.userId).once('value').then(function(snapshot) {
-                  //raghad plz change the below line to the page you wanna navigate to
-                //  navigation.push('renderManageDrivers')
-                })
+
                 //Search in drivers
                 firebase.database().ref('drivers/'+this.userId).once('value').then(function(snapshot) {
+                  return;
                 //  navigation.navigate('driverStack')
                 })
                 //Search in parents
                 firebase.database().ref('parents/'+this.userId).once('value').then(function(snapshot) {
-
+                  if (snapshot!=null) {
                   navigation.navigate('parentDashboard')
+                  return;}
 
+                })
+                //Search in managers
+                firebase.database().ref('managers/'+this.userId).once('value').then(function(snapshot) {
 
+                    navigation.navigate('renderManageDrivers')
+
+                  //raghad plz change the below line to the page you wanna navigate to
+                //  navigation.push('renderManageDrivers')
                 })
                 //Search in students
                 firebase.database().ref('students/'+this.userId).once('value').then(function(snapshot) {
                 //  navigation.navigate('studentStack')
+                return;
                 })
                 //done searching
               }
@@ -385,6 +391,7 @@ import * as React from 'react';
     driverDashboard: { screen: driverDashboard },
     parentDashboard: { screen: parentDashboard },
     editParent: { screen: editParent },
+    addChild: { screen: addChild },
     studentDashboard: { screen: studentDashboard },
     renderManageDrivers: { screen: renderManageDrivers },
     asParent: { screen: asParent },
