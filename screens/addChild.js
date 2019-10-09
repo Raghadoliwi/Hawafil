@@ -60,20 +60,21 @@ export default class addChild extends React.Component {
 
    addChild = () => {
      const {navigation} = this.props;
-      if (this.state.sName == '' || this.state.level == ''||this.state.school == ''||this.state.neighborhood=='') ||this.state.busNo=='') {
+     //note: this code doesnt check on || this.state.level == ''
+      if (this.state.sName == '' || this.state.school == '' || this.state.neighborhood == '' || this.state.busNo == '') {
        this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
        this.setState({errorMsgVisibilty: 'flex'})
        return;
      }
 
-     if (this.state.neighborhoodBorder == 'red'||this.state.nameBorder == 'red'||this.state.schoolBorder=='red'||this.state.busNoBorder=='red' {
+     if (this.state.neighborhoodBorder == 'red'||this.state.nameBorder == 'red'||this.state.schoolBorder=='red'||this.state.busNoBorder=='red') {
        this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
        this.setState({errorMsgVisibilty: 'flex'})
        return;
      }
      var uid = firebase.auth().currentUser.uid;
      var parentPhoneNoDB;
-     firebase.database().ref('parents/'+userId).on('value', snapshot => {
+     firebase.database().ref('parents/'+uid).on('value', snapshot => {
        parentPhoneNoDB = snapshot.val().phoneNo;
      });
      //adding child:
@@ -87,7 +88,7 @@ export default class addChild extends React.Component {
        }
      ).then(function() {
        Alert.alert('تمت الإضافة بنجاح');
-       navigation.navigate(parentDashboard);
+       navigation.navigate('parentDashboard');
      })
      .catch(error => this.setState({ errorMessage: error.message }))
      console.log(errorMessage);
@@ -129,7 +130,7 @@ export default class addChild extends React.Component {
      <Text style={styles.header}>• إضافة تابع جديد •</Text>
      <View style={styles.inputContainer}>
 
-         <TextInput style={styles.inputs}
+         <TextInput style={styles.inputs, styles.input}
              placeholder="اسم الطالب "
              keyboardType="TextInput"
              underlineColorAndroid='transparent'
@@ -144,7 +145,7 @@ export default class addChild extends React.Component {
 
        <View style={styles.inputContainer}>
 
-         <TextInput style={styles.inputs}
+         <TextInput style={styles.inputs, styles.input}
              placeholder="المدرسة"
              keyboardType="TextInput"
              underlineColorAndroid='transparent'
@@ -213,7 +214,7 @@ export default class addChild extends React.Component {
 
   <View style={styles.busInput}>
 
-         <TextInput style={styles.inputs}
+         <TextInput style={styles.inputs, styles.input}
              placeholder="رقم الحافلة "
              keyboardType="numeric"
              underlineColorAndroid='transparent'
@@ -251,6 +252,18 @@ export default class addChild extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  input:{
+    flex:1,
+    height:40,
+    //flexDirection:'row-reverse',
+    //justifyContent:'flex-end',
+    //marginright:16,
+   textAlign:'right',
+    borderColor: '#EAEAEA',
+    //marginLeft:10,
+    marginRight: 10,
+  },
+
  container: {
    flex: 1,
    justifyContent: 'center',
@@ -288,7 +301,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
    alignItems: 'center',
    backgroundColor: 'white',
-   borderRadius:'10',
+   borderRadius:10,
      width:300,
      height:500
  },
@@ -296,7 +309,7 @@ const styles = StyleSheet.create({
  header:{
    color: "#8197C6",
    fontSize: 15 ,//problema
-   fontWeight:900,
+   fontWeight:"900",
    bottom: -40,
  },
  level:{
@@ -316,7 +329,7 @@ const styles = StyleSheet.create({
      //justifyContent:'flex-end',
      //marginright:16,
      borderColor: '#EAEAEA',
-
+     marginRight: 10,
  },
  neighborhoodList: {
   borderColor: '#EAEAEA',

@@ -127,10 +127,10 @@ firebase.database().ref('children/').on('value', (snap) => {
 
  {this.state.parentIn ? (
                 <Card containerStyle={styles.cards} title="معلومات ولي الأمر">
-                <Text style={styles.paragraph} key={this.state.parentIn.name}>• اسم ولي الأمر:{this.state.parentIn.name}</Text>
+                <Text style={styles.paragraph} key={this.state.parentIn.name}>• اسم ولي الأمر: {this.state.parentIn.name}</Text>
 
-                    <Text style={styles.paragraph} key={this.state.parentIn.phoneNo}>رقم الجوال: {this.state.parentIn.phoneNo}</Text>
-                    <Text style={styles.paragraph} key={this.state.parentIn.email}>• البريد الإلكتروني:{this.state.parentIn.email}</Text>
+                    <Text style={styles.paragraph} key={this.state.parentIn.phoneNo}>رقم الجوال: 0{this.state.parentIn.phoneNo}</Text>
+                    <Text style={styles.paragraph} key={this.state.parentIn.email}>• البريد الإلكتروني: {this.state.parentIn.email}</Text>
                     <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
                          onPress={() => {
                            try {this.props.navigation.navigate('editParent')}
@@ -167,7 +167,7 @@ firebase.database().ref('children/').on('value', (snap) => {
           <Text style={styles.paragraph}>
            • رقم الحافلة: ٧
           </Text>
-           <Text style={styles.inline}>
+           <Text style={styles.paragraph}>
            • الحي : الغدير
           </Text>
 
