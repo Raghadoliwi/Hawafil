@@ -10,8 +10,8 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
-//import parentProfile from './parentProfile'
-
+import parentProfile from './parentProfile';
+//import editParent from './editParent';
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
     size={20}
@@ -155,5 +155,6 @@ const styles = StyleSheet.create({
 
   const parentStack = createStackNavigator({
     parentDashboard: { screen: parentDashboard },
-    //parentProfile: { screen: parentProfile },
+   parentProfile: { screen: parentProfile },
+    //editParent: { screen: editParent },
   });

@@ -403,9 +403,6 @@ import * as React from 'react';
     //driverDashboard: { screen: driverDashboard },
   //});
 
-  const parentStack = createStackNavigator({
-    //parentDashboard: { screen: parentDashboard },
-  });
 
   const studentStack = createStackNavigator({
   //  studentDashboard: { screen: studentDashboard },

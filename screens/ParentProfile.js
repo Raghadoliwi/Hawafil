@@ -64,7 +64,7 @@ export default class parentProfile extends React.Component {
             this.setState({items: items});
             console.log(itm);
             console.log("lama-------");
-            console.log(this.state.items); //This is wrong
+            //console.log(this.state.items); //This is wrong
             itm.forEach((itms) => {
                 console.log(itms.name);
             })
@@ -95,12 +95,15 @@ export default class parentProfile extends React.Component {
     return (
 
       <View style={{padding: 10, flex: 1}, styles.container} >
+
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
      <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
-     onPress={() => this.props.navigation.push('addChild')}>
+   /*onPress={() => this.props.navigation.push('addChild')}*/>
           <Text style={styles.addText}>إضافة تابع</Text>
         </TouchableHighlight>
+
+
         // render
         {
         this.state.items.map((u, i ) => {
@@ -122,10 +125,11 @@ to be added later:
 
 */
 
-           <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+<TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
      onPress={() => this.props.navigation.push('editParent')}>
           <Text style={styles.editText}>تعديل</Text>
         </TouchableHighlight>
+
 
 
 
@@ -241,7 +245,7 @@ to be added later:
 
     );
   }
-}
+
 
 const styles = StyleSheet.create({
 	container: {
