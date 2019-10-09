@@ -267,6 +267,13 @@ const styles = StyleSheet.create({
   }
 });
 
+const parentStack = createStackNavigator(
+  {
+  parentDashboard: { screen: parentDashboard },
+editParent: { screen: editParent },
+}
+
+  );
 
 /*
 const parentStack = createStackNavigator(
