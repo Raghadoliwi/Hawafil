@@ -21,6 +21,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const MenuIcon = ({ navigate }) => <Icon
     name='chevron-left'
@@ -99,10 +100,12 @@ export default class addBusDriver extends React.Component {
     render() {
 
         return (
-          <View style={{padding: 10, flex: 1}, styles.container} >
-          <ScrollView style={{flex: 1, marginBottom:20}}>
+          <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
+          contentContainerStyle={styles.container}
+            scrollEnabled={false}>
 
-                <Text style={styles.Main}> إضافة قائد مركبة</Text>
+          <View style={styles.smallContainer}>
+          <Text style={styles.header}>• إضافة قائد مركبة •</Text>
 
                 <View style={styles.inputContainer}>
 
@@ -213,8 +216,8 @@ export default class addBusDriver extends React.Component {
 
 
 
-                </ScrollView>
                 </View>
+              </KeyboardAwareScrollView>
 
                 );
     }
@@ -229,19 +232,25 @@ const styles = StyleSheet.create({
                                  marginBottom:50,
                                  },
                                  container: {
-                                 flex: 1,
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 backgroundColor: '#F7FAFF',
+                                   flex: 1,
+                                   justifyContent: 'center',
+                                   alignItems: 'center',
+                                   backgroundColor: '#F7FAFF',
                                  },
                                  smallContainer:{
-                                 marginTop:100,
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 backgroundColor: 'white',
-                                 borderRadius:10,
-                                 width:300,
-                                 height:600,
+                                    marginTop:40,
+                                    justifyContent: 'center',
+                                   alignItems: 'center',
+                                   backgroundColor: 'white',
+                                   borderRadius:10,
+                                     width:300,
+                                     height:600
+                                 },
+                                 header:{
+                                   color: "#8197C6",
+                                   fontSize: 15 ,//problema
+                                   fontWeight:"900",
+                                   bottom: 15,
                                  },
 
                                  inputContainer: {
