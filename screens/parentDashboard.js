@@ -57,11 +57,21 @@ firebase.database().ref('parents/'+userId).on('value', snapshot => {
 
 });
 
+this.setState({
+  childrenList: {
+    name: '' ,
+    busNo: '' ,
+    inst: '' ,
+    level: '' ,
+    district: '' ,
+  }
+});
 
+console.log (this.state.parentIn.name);
 console.log (this.state.parentIn.phoneNo);
 let parentPhoneNo=this.state.parentIn.phoneNo;
 firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
-
+    if (snap.val()){//check if it's null
     this.setState({
       childrenList: {
         name: snap.val().name ,
@@ -71,7 +81,7 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
         district: snap.val().district ,
       }
     });
-
+}
 
 
 })//end on
@@ -141,8 +151,6 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
                 </Card>
 
 ) : null}
-
-
    <Text style={styles.perInfo}>──────  التابعين ──────</Text>
 
    <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
@@ -150,7 +158,7 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
         <Text style={styles.addText}>إضافة تابع</Text>
       </TouchableHighlight>
 
-{this.state.childrenList ? (
+{this.state.childrenList && this.state.childrenList.name != '' ? (
 
 
               <Card containerStyle={styles.cards} title={this.state.childrenList.name}>
@@ -218,9 +226,18 @@ const styles = StyleSheet.create({
 
   }
   ,
+
+  perInfo:{
+  color: "#9F9F9F",
+  fontSize: 12 ,
+  //fontWeight:100,
+  bottom: 10,
+  marginTop: 40,
+  alignSelf: 'center',
+  },
   buttonContainer: {
     height:45,
-    top:25,
+    top:20,
     flexDirection: 'row-reverse',
     justifyContent: 'center',
     alignItems: 'center',
@@ -244,8 +261,8 @@ const styles = StyleSheet.create({
     fontSize: 18 ,
 		fontWeight:'bold'
   },
-  editButton:{
 
+  editButton:{
  	  flex: 1,
 		alignSelf:'center',
     justifyContent: 'center',
