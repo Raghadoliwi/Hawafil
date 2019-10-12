@@ -122,7 +122,10 @@ import addChild from './screens/addChild'
             firebase.auth().onAuthStateChanged( user => {
               if (user) {
                 this.userId = user.uid
-
+                if (!user.emailVerified){
+                  Alert.alert("يرجى تفعيل حسابك أولا!","فضلًا تفقد بريدك الإلكتروني");
+                }
+                else{
                 firebase.database().ref('parents/'+user.uid).on('value', snapshot => {
                   if (snapshot.exists())
                 navigation.navigate('parentDashboard')
@@ -148,9 +151,9 @@ import addChild from './screens/addChild'
 
 
 
-
+              }//end else
                 //done searching
-              }
+              }//end if the user registered in the db.
             });
 
 

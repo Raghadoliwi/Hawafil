@@ -60,8 +60,9 @@ errorMessage:'',
 
    addChild = () => {
      const {navigation} = this.props;
-     //note: this code doesnt check on || this.state.level == ''
-      if (this.state.sName == '' || this.state.school == '' || this.state.neighborhood == '' || this.state.busNo == '') {
+     //note: this code is not tested when i added || this.state.level == ''
+     //idk how to check this. or get its data.
+      if (this.state.sName == '' || this.state.school == '' || this.state.neighborhood == '' || this.state.busNo == '' || this.state.level == '' ) {
        this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
        this.setState({errorMsgVisibilty: 'flex'})
        return;
@@ -119,7 +120,7 @@ errorMessage:'',
     };
 
  render() {
-   let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'النخيل'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]
+   let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]
 
    return (
      <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}

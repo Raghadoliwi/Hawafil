@@ -144,13 +144,17 @@ constructor(props){
                   instName:this.state.instName,
                 })
             }
+            Alert.alert("تم التسجيل بنجاح")
+            this.props.navigation.navigate('login')
+          })
+        })
+    .catch((error) => {
+      console.log(error.message)
 
-          });
-    }).then(() => this.props.navigation.navigate('renderManageDrivers'))
-    //raghad plz edit the above line to the page you wanna navigate to after insertion
+    })
 
-    .catch(error =>  console.log(error.message))
-  }//end adding a parent
+
+  }//end adding an institution
 
 
 
@@ -373,7 +377,7 @@ scrollEnabled={false}>
                 </TouchableHighlight>
                 <Text style={styles.SubSub}>*يسمح بملفات (PNG , JPG)</Text>
 
-                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() => this.props.navigation.navigate('login')}>
+                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addInstit}>
 
                 <Text style={styles.signupText}>تسجيل جديد</Text>
 
