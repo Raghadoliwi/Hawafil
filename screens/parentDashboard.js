@@ -184,7 +184,12 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
 
 
 
-) : null}
+) : (
+  // if there are no children
+  <View>
+  <Text style={styles.perText}> لا يوجد لديك تابعين</Text>
+  </View>
+)}
 
 
 
@@ -234,6 +239,21 @@ const styles = StyleSheet.create({
   bottom: 10,
   marginTop: 40,
   alignSelf: 'center',
+  },
+
+  perText:{
+    marginTop: 20,
+    alignSelf:'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#3C68BF',
+    /*
+    marginTop: 10,
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'right',
+    borderRadius: 550,
+    */
   },
   buttonContainer: {
     height:45,
