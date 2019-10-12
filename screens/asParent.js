@@ -122,7 +122,8 @@ export default class App extends Component {
       .then( (data) => {
           firebase.auth().onAuthStateChanged( user => {
               if (user) {
-                this.userId = user.uid
+                this.userId = user.uid;
+                user.sendEmailVerification();
                 firebase.database().ref('parents/'+this.userId).set(
                   {
                     name: this.state.fullName,

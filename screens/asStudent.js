@@ -142,6 +142,7 @@ this.setState({currentColor: 'red'})
         firebase.auth().onAuthStateChanged( user => {
             if (user) {
               this.userId = user.uid
+              user.sendEmailVerification();
               firebase.database().ref('students/'+this.userId).set(
                 {
                   name: this.state.fullName,

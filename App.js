@@ -114,7 +114,7 @@ import addChild from './screens/addChild'
           }
         const {email, password} = this.state
         const { navigation } = this.props;
-
+        //we need to add code to check if user's account is verified or not.
         firebase
           .auth()
           .signInWithEmailAndPassword(email,password)

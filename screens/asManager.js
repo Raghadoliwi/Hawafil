@@ -135,6 +135,7 @@ constructor(props){
         firebase.auth().onAuthStateChanged( user => {
             if (user) {
               this.userId = user.uid
+              user.sendEmailVerification();
               firebase.database().ref('managers/'+this.userId).set(
                 {
                   name: this.state.name,
