@@ -143,14 +143,14 @@ constructor(props){
                   nationalId: this.state.nationalId,
                   instName:this.state.instName,
                 })
+                Alert.alert("تم التسجيل بنجاح")
+                this.props.navigation.navigate('login')
             }
-            Alert.alert("تم التسجيل بنجاح")
-            this.props.navigation.navigate('login')
           })
         })
     .catch((error) => {
       console.log(error.message)
-
+      this.setState({ errorMessage: error.message })
     })
 
 

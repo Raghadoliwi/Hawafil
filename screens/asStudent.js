@@ -151,13 +151,13 @@ this.setState({currentColor: 'red'})
                   neighborhood: this.state.neighborhood,
                   university:this.state.university,
                 })
+                Alert.alert("تم التسجيل بنجاح")
+                this.props.navigation.navigate('login')
             }
-          });
-    }).then(() => this.props.navigation.navigate('login'))
-    //raghad plz edit the above line to the page you wanna navigate to after insertion
+          })
     .catch((error) => {
       console.log(error.message)
-
+      //or password, the below msg shows for both. which doesnt make sense
       this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
       this.setState({errorMsgVisibilty: 'flex'})
     })

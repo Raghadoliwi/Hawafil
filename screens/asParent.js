@@ -129,11 +129,16 @@ export default class App extends Component {
                     name: this.state.fullName,
                     phoneNo: this.state.phoneNo,
                   })
+                  Alert.alert("تم التسجيل بنجاح")
+                  this.props.navigation.navigate('login')
               }
             });
-      }).then(() => this.props.navigation.navigate('login'))
-      //raghad plz edit the above line to the page you wanna navigate to after insertion
-      .catch(error => this.setState({ errorMessage: error.message }))
+      })
+      .catch((error) => {
+        console.log(error.message)
+        this.setState({ errorMessage: error.message })
+      })
+
   }//end adding a parent
 
 
