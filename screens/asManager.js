@@ -220,6 +220,7 @@ return {
        }
 }
 };
+
     render() {
         return (
 
@@ -229,165 +230,164 @@ return {
 resetScrollToCoords={{ x: 0, y: 0 }}
 contentContainerStyle={styles.container}
 scrollEnabled={false}>
+<View style={styles.smallContainer}>
 
-                <View style={styles.smallContainer}>
+<Text style={styles.header}>• كـ مؤسسة تعليمية •</Text>
 
-                <Text style={styles.header}>• كـ مؤسسة تعليمية •</Text>
-
-                <Text style={styles.perInfo}>── معلومات ممثل المنشأة ──</Text>
-
-
-                <View style={[styles.inputContainer, {borderColor: this.state.nameBorder}]}>
-                <TextInput style={[styles.fontStyle,styles.inputs]}
-                placeholder="الاسم"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={(name) => {
-                  this.setState({name})
-                  this.setState({nameBorder: '#EAEAEA'})
-                } }
-                value={this.state.name}
-                />
-                </View>
+<Text style={styles.perInfo}>── معلومات ممثل المنشأة ──</Text>
 
 
-                <View style={[styles.inputContainer, {borderColor: this.state.emailBorder}]}>
-
-                <TextInput style={[styles.fontStyle,styles.inputs]}
-                placeholder="البريد الإلكتروني"
-                keyboardType="email-address"
-                underlineColorAndroid='transparent'
-                onChangeText={(email) => {
-                  this.setState({email})
-                  this.setState({emailBorder: '#EAEAEA'})
-                }
-              }
-                onEndEditing={(email) => this.validateEmail(email)}
-                value={this.state.email}
-                />
-                </View>
+<View style={[styles.inputContainer, {borderColor: this.state.nameBorder}]}>
+<TextInput style={[styles.fontStyle,styles.inputs]}
+placeholder="الاسم"
+keyboardType="TextInput"
+underlineColorAndroid='transparent'
+onChangeText={(name) => {
+  this.setState({name})
+  this.setState({nameBorder: '#EAEAEA'})
+} }
+value={this.state.name}
+/>
+</View>
 
 
-                <View style={[styles.inputContainer, {borderColor: this.state.passwordBorder}]}>
+<View style={[styles.inputContainer, {borderColor: this.state.emailBorder}]}>
 
-                <TextInput style={[styles.fontStyle,styles.inputs]}
-                placeholder="كلمة المرور"
-                secureTextEntry={true}
-                underlineColorAndroid='transparent'
-
-                onChangeText={(password) => {
-                  this.setState({password})
-                  this.setState({passwordBorder: '#EAEAEA'})
-                } }
-                value={this.state.password}
-                />
-                </View>
-
-                <View style={[styles.inputContainer, {borderColor: this.state.conPasswordBorder}]}>
-
-                <TextInput style={[styles.fontStyle,styles.inputs]}
-                placeholder="تأكيد كلمة المرور"
-                secureTextEntry={true}
-                underlineColorAndroid='transparent'
-
-                onChangeText={(confirmPassword) => {
-                  this.setState({confirmPassword})
-                  this.setState({conPasswordBorder: '#EAEAEA'})
-                  this.setState({passError: 'none'})
-                } }
-                  onEndEditing={(confirmPassword) =>{this.identicalPass(confirmPassword)} }
-                value={this.state.confirmPassword}
-                />
-                </View>
-
-                <View >
-
-                  <Text style={[styles.warning,styles.fontStyle, {display: this.state.passError}]}> كلمة المرور غير متطابقة </Text>
-                </View>
-
-                <View style={[styles.phoneContainer, {borderColor: this.state.phoneBorder}]}
-                >
-
-                <TextInput style={[styles.fontStyle,styles.keyText]}
-                value="+966"
-                editable={false}
-                />
-
-                <TextInput style={[styles.phoneInput,styles.fontStyle]}
-                placeholder="رقم الجوال"
-                keyboardType="numeric"
-                ref="phoneNumber"
-                underlineColorAndroid='transparent'
-                onChangeText={(phoneNo) => {
-                  this.setState({phoneNo})
-                  this.setState({phoneBorder: '#EAEAEA'})
-                } }
-                onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
-                value={this.state.phoneNo}
-                />
-                </View>
-
-                <View style={styles.inputContainer}>
-
-                <TextInput style={[styles.inputs, {borderColor: this.state.idBorder}]}
-                placeholder="الهوية/الإقامة"
-                keyboardType="numeric"
-                underlineColorAndroid='transparent'
-
-                onChangeText={(nationalId) => {
-
-                  this.setState({nationalId})
-                  this.setState({idBorder: '#EAEAEA'})
-                }}
-                  onEndEditing={(nationalId) => this.validateSAID(nationalId)}
-                value={this.state.nationalId}
-                />
-                </View>
+<TextInput style={[styles.fontStyle,styles.inputs]}
+placeholder="البريد الإلكتروني"
+keyboardType="email-address"
+underlineColorAndroid='transparent'
+onChangeText={(email) => {
+  this.setState({email})
+  this.setState({emailBorder: '#EAEAEA'})
+}
+}
+onEndEditing={(email) => this.validateEmail(email)}
+value={this.state.email}
+/>
+</View>
 
 
+<View style={[styles.inputContainer, {borderColor: this.state.passwordBorder}]}>
 
-                <Text style={styles.Sub}>معلومات المنشأة</Text>
-                <View style={styles.typeContainer}>
-                <TouchableHighlight style={[styles.typeButtonContainer, this.state.typeOf === 'school'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'school'})} >
+<TextInput style={[styles.fontStyle,styles.inputs]}
+placeholder="كلمة المرور"
+secureTextEntry={true}
+underlineColorAndroid='transparent'
 
-                <Text style={styles.typeText}>مدرسة</Text>
-                </TouchableHighlight>
+onChangeText={(password) => {
+  this.setState({password})
+  this.setState({passwordBorder: '#EAEAEA'})
+} }
+value={this.state.password}
+/>
+</View>
 
-                <TouchableHighlight style={[styles.typeButtonContainer, this.state.typeOf === 'university'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'university'})}>
+<View style={[styles.inputContainer, {borderColor: this.state.conPasswordBorder}]}>
 
-                <Text style={styles.typeText}>جامعة</Text>
-                </TouchableHighlight>
-                </View>
+<TextInput style={[styles.fontStyle,styles.inputs]}
+placeholder="تأكيد كلمة المرور"
+secureTextEntry={true}
+underlineColorAndroid='transparent'
+
+onChangeText={(confirmPassword) => {
+  this.setState({confirmPassword})
+  this.setState({conPasswordBorder: '#EAEAEA'})
+  this.setState({passError: 'none'})
+} }
+  onEndEditing={(confirmPassword) =>{this.identicalPass(confirmPassword)} }
+value={this.state.confirmPassword}
+/>
+</View>
+
+<View >
+
+  <Text style={[styles.warning,styles.fontStyle, {display: this.state.passError}]}> كلمة المرور غير متطابقة </Text>
+</View>
+
+<View style={[styles.phoneContainer, {borderColor: this.state.phoneBorder}]}
+>
+
+<TextInput style={[styles.fontStyle,styles.keyText]}
+value="+966"
+editable={false}
+/>
+
+<TextInput style={[styles.phoneInput,styles.fontStyle]}
+placeholder="رقم الجوال"
+keyboardType="numeric"
+ref="phoneNumber"
+underlineColorAndroid='transparent'
+onChangeText={(phoneNo) => {
+  this.setState({phoneNo})
+  this.setState({phoneBorder: '#EAEAEA'})
+} }
+onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
+value={this.state.phoneNo}
+/>
+</View>
+
+<View style={styles.inputContainer}>
+
+<TextInput style={[styles.inputs, {borderColor: this.state.idBorder}]}
+placeholder="الهوية/الإقامة"
+keyboardType="numeric"
+underlineColorAndroid='transparent'
+
+onChangeText={(nationalId) => {
+
+  this.setState({nationalId})
+  this.setState({idBorder: '#EAEAEA'})
+}}
+  onEndEditing={(nationalId) => this.validateSAID(nationalId)}
+value={this.state.nationalId}
+/>
+</View>
+
+
+<Text style={styles.Sub}>معلومات المنشأة</Text>
+<View style={styles.typeContainer}>
+<TouchableHighlight style={[styles.typeButtonContainer, this.state.typeOf === 'school'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'school'})} >
+
+<Text style={styles.typeText}>مدرسة</Text>
+</TouchableHighlight>
+
+<TouchableHighlight style={[styles.typeButtonContainer, this.state.typeOf === 'university'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'university'})}>
+
+<Text style={styles.typeText}>جامعة</Text>
+</TouchableHighlight>
+</View>
 
 
 
-                <View style={styles.inputContainertwo}>
+<View style={styles.inputContainertwo}>
 
-                <TextInput style={styles.email}
-                placeholder="اسم المنشأة"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={instName => this.setState({ instName })}
-                value={this.state.instName}
-                />
+<TextInput style={styles.email}
+placeholder="اسم المنشأة"
+keyboardType="TextInput"
+underlineColorAndroid='transparent'
+onChangeText={instName => this.setState({ instName })}
+value={this.state.instName}
+/>
 
-                </View>
+</View>
 
-                <TouchableHighlight style={[styles.attachButtonContainer, styles.attachButton]}
-                onPress={this.handleDocPicker}>
+<TouchableHighlight style={[styles.attachButtonContainer, styles.attachButton]}
+onPress={this.handleDocPicker}>
 
-                <Text style={styles.signupText}>إرفاق الإثبات</Text>
+<Text style={styles.signupText}>إرفاق الإثبات</Text>
 
-                </TouchableHighlight>
-                <Text style={styles.SubSub}>*يسمح بملفات (PNG , JPG)</Text>
-                //                  <Text style={[styles.fontStyle,styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
-                <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addInstit}>
+</TouchableHighlight>
+<Text style={styles.SubSub}> *يسمح بملفات (PNG , JPG) </Text>
+<TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addInstit}>
 
-                <Text style={styles.signupText}>تسجيل جديد</Text>
+<Text style={styles.signupText}>تسجيل جديد</Text>
 
-                </TouchableHighlight>
+</TouchableHighlight>
 
-                </View>
+
+</View>
+
                 </KeyboardAwareScrollView>
 </ScrollView>
                 );

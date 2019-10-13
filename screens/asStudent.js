@@ -154,22 +154,21 @@ this.setState({currentColor: 'red'})
                 Alert.alert("تم التسجيل بنجاح")
                 this.props.navigation.navigate('login')
             }
-          })
+          });
+        }
+        )
     .catch((error) => {
       console.log(error.message)
       //or password is less than 6 characters, the below msg shows for both. which doesnt make sense
       this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
       this.setState({errorMsgVisibilty: 'flex'})
     })
-}//end adding a parent
+
+}
+//end adding a parent
 
 
 
-/*
-    onClickListener = (viewId) => {
-        Alert.alert("Alert", "Button pressed "+viewId);
-    }
-*/
     static navigationOptions = function(props) {
     return {
       title: 'التسجيل',
