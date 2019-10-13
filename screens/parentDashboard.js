@@ -177,7 +177,7 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
                 </Text>
 
                  <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-           /*onPress={() => this.props.navigation.push('editChild')}*/>
+                 onPress={() => this.props.navigation.navigate('editChild') }>
                 <Text style={styles.editText}>تعديل</Text>
               </TouchableHighlight>
               </Card>

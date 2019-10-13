@@ -59,15 +59,15 @@ export default class editChild extends React.Component {
 
       }
      state = {
+    parentPhoneNo:'',
      sName: '' ,
-     school: '',
+     inst: '',
      level: '',
      busNo: '',
      district: '',
      errorMessage: null
      }
 
-     //it's better to use Alert.alert, same one we used in forget password.
      showAlertDialog = () =>{
   Alert.alert(
   'هل أنت متأكد؟',
@@ -83,15 +83,42 @@ export default class editChild extends React.Component {
   {cancelable: false},
 );}
 
+componentDidMount(){
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user){
+      var userId = firebase.auth().currentUser.uid;
+      var phoneNo;
+      return firebase.database().ref('parents/'+uid).once('value')
+      .then(function(snapshot) {
+        this.state.parentPhoneNo = snapshot.val().phoneNo;
+        return firebase.database().ref('children/'+this.state.parentPhoneNo).once('value')
+        .then(function(snapshot) {
+          this.setState({
+            sName: snapshot.val().name,
+            inst: snapshot.val().inst,
+            busNo: snapshot.val().busNo,
+            level: snapshot.val().level,
+            district: snapshot.val().district,
+          })
+        })
+       });
+
+    }//end if
+  })
+}
+
      editChild = () => {
-       var user = firebase.auth().currentUser;
-       var uid;
-       if (user != null){
-         uid = user.uid;
-         return firebase.database().ref('parents/'+uid).once('value')
-         .then(function(snapshot) {
-           var phoneNo = snapshot.val().phoneNo;
-          });
+       var phoneNo = this.state.parentPhoneNo;
+       if (phoneNo != null){
+         return firebase.database().ref('children/'+phoneNo).update({
+           sName: this.state.name,
+           inst: this.state.inst,
+           busNo: this.state.busNo,
+           level: this.state.level,
+           district: this.state.district,
+         })
+         Alert.alert('تم تحديث البيانات بنجاح');
+         this.props.navigation.navigate('parentDashboard');
        }
     }//end edit child.
 
@@ -129,8 +156,8 @@ export default class editChild extends React.Component {
                 placeholder="اسم الطالب "
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={workerId => this.setState({ sName })}
-                value={this.state.workerId}
+                onChangeText={sName => this.setState({ sName })}
+                value={this.state.sName}
                 />
                 </View>
 
@@ -141,8 +168,8 @@ export default class editChild extends React.Component {
                 placeholder="المدرسة"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={ driverName => this.setState({ school })}
-                value={this.state.driverName}
+                onChangeText={ inst => this.setState({ inst })}
+                value={this.state.inst}
                 />
 
                 </View>
@@ -151,21 +178,21 @@ export default class editChild extends React.Component {
                <View style={styles.typeContainer}>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level1'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level1'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level1'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'التمهيدي'})} >
 <Text style={styles.typeText}>تمهيدي</Text>
                 </TouchableHighlight>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level2'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level2'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level2'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'الابتدائي'})} >
 <Text style={styles.typeText}>ابتدائي</Text>
                 </TouchableHighlight>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level3'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level3'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level3'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'المتوسط'})} >
 <Text style={styles.typeText}>متوسط</Text>
                 </TouchableHighlight>
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level4'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level4'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level4'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'الثانوي'})} >
 <Text style={styles.typeText}>ثانوي</Text>
                 </TouchableHighlight>
 
