@@ -157,7 +157,7 @@ this.setState({currentColor: 'red'})
           })
     .catch((error) => {
       console.log(error.message)
-      //or password, the below msg shows for both. which doesnt make sense
+      //or password is less than 6 characters, the below msg shows for both. which doesnt make sense
       this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
       this.setState({errorMsgVisibilty: 'flex'})
     })

@@ -44,6 +44,7 @@ constructor(props){
                 passError:'none',
                 instBorder:'#EAEAEA',
                 errorMsgVisibilty:'none',
+                formErrorMsg:'',
               }
 
 }
@@ -151,6 +152,9 @@ constructor(props){
     .catch((error) => {
       console.log(error.message)
       this.setState({ errorMessage: error.message })
+      //or password is less than 6 characters, the below msg shows for both. which doesnt make sense
+      this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
+      this.setState({errorMsgVisibilty: 'flex'})
     })
 
 
@@ -376,7 +380,7 @@ scrollEnabled={false}>
 
                 </TouchableHighlight>
                 <Text style={styles.SubSub}>*يسمح بملفات (PNG , JPG)</Text>
-
+                //                  <Text style={[styles.fontStyle,styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
                 <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addInstit}>
 
                 <Text style={styles.signupText}>تسجيل جديد</Text>

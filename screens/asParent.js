@@ -137,6 +137,9 @@ export default class App extends Component {
       .catch((error) => {
         console.log(error.message)
         this.setState({ errorMessage: error.message })
+        //or password is less than 6 characters, the below msg shows for both. which doesnt make sense
+        this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
+        this.setState({errorMsgVisibilty: 'flex'})
       })
 
   }//end adding a parent
