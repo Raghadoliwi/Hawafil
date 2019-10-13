@@ -123,7 +123,7 @@ import addChild from './screens/addChild'
               if (user) {
                 this.userId = user.uid
                 if (!user.emailVerified){
-                  Alert.alert("يرجى تفعيل حسابك أولا!","فضلًا تفقد بريدك الإلكتروني");
+                  Alert.alert("يرجى تفعيل البريد الإلكتروني");
                 }
                 else{
                 firebase.database().ref('parents/'+user.uid).on('value', snapshot => {

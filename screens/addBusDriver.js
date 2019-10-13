@@ -55,9 +55,12 @@ export default class addBusDriver extends React.Component {
      phoneNo: '',
      inst:'',
      busNo: '',
+     //district:'',
      errorMessage: null
      }
      handleInserting = () => {
+       //keep the previously signed in user
+       //var prevUser = firebase.auth().currentUser;
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then( (data) => {
             firebase.auth().onAuthStateChanged( user => {
@@ -71,12 +74,19 @@ export default class addBusDriver extends React.Component {
                       inst: this.state.inst,
                       busNo: this.state.busNo,
                       busPlate: this.state.busPlate,
+                      //district: this.state.district,
                     })
+                    Alert.alert("تم التسجيل بنجاح")
+                    this.props.navigation.navigate('renderManageDrivers')
                 }
               });
-        }).then(() => this.props.navigation.navigate('renderManageDrivers'))
-        //raghad plz edit the above line to the page you wanna navigate to after insertion
-        .catch(error => console.log(error.message ))
+        })
+        .catch((error) => {
+          console.log(error.message)
+          //or password is less than 6 characters, the below msg shows for both. which doesnt make sense
+          //this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
+          //this.setState({errorMsgVisibilty: 'flex'})
+        })
     }//end inserting a driver
 
      static navigationOptions = function(props) {
