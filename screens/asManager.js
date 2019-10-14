@@ -65,22 +65,33 @@ constructor(props){
   }
 
 
-    validateSAID = (id) => {
-    try { id = id.toString().trim(); }
+    validateIdentity = (id) => {
+
+  console.log(id);
+console.log(this.state.nationalId);
+    try { id = this.state.nationalId.toString().trim();
+      console.log(id);
+    }
     catch (e){
       console.log(e.message);
+      console.log(id);
     }
-    if (isNaN(parseInt(id))) {
-      this.setState({idBorder:'red'})
-    }
+
     if (id.length !== 10) {
         this.setState({idBorder:'red'})
+        console.log(id);
+          console.log(id.length);
+          console.log('length');
+        return;
     }
     var type = id.substr(0, 1);
     if (type !== '2' && type !== '1') {
         this.setState({idBorder:'red'})
-    }
+          console.log('initial');
+        return;
 
+    }
+  console.log('hello');
     var sum = 0;
     for (var i = 0; i < 10; i++) {
       if (i % 2 === 0) {
@@ -92,11 +103,12 @@ constructor(props){
 
     }
     this.setState({idBorder:'#91b804'})
+    return;
+
   }
 
 
   validateEmail = (email) => {
-
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
     if(reg.test(this.state.email)== false)
     {
@@ -119,6 +131,7 @@ constructor(props){
 
     validateNumber = (phoneNo) => {
       //Regex
+        console.log(phoneNo);
       const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
       if (!numRegex.test('0'+this.state.phoneNo)) {
 
@@ -327,19 +340,19 @@ value={this.state.phoneNo}
 />
 </View>
 
-<View style={styles.inputContainer}>
+<View style={[styles.inputContainer, {borderColor: this.state.idBorder}]}>
 
-<TextInput style={[styles.inputs, {borderColor: this.state.idBorder}]}
+<TextInput style={[styles.inputs]}
 placeholder="الهوية/الإقامة"
 keyboardType="numeric"
 underlineColorAndroid='transparent'
 
 onChangeText={(nationalId) => {
-
   this.setState({nationalId})
   this.setState({idBorder: '#EAEAEA'})
+
 }}
-  onEndEditing={(nationalId) => this.validateSAID(nationalId)}
+  onEndEditing={(nationalId) => this.validateIdentity(nationalId)}
 value={this.state.nationalId}
 />
 </View>
