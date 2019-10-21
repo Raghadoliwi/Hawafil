@@ -34,6 +34,7 @@ import * as React from 'react';
   import addChild from './screens/addChild'
   import editChild from './screens/editChild'
   import editParent from './screens/editParent'
+  import editChild from './screens/editChild'
   //import addBus from './screens/addBus'
 
   const MenuIcon = ({ navigate }) => <Icon
@@ -63,8 +64,6 @@ import * as React from 'react';
               emailBorders:'#EAEAEA',
               passBorders:'#EAEAEA',
               fontLoaded: false
-
-
             }
   /*  async componentDidMount() {
     await Font.loadAsync({
@@ -408,6 +407,7 @@ import * as React from 'react';
     driverDashboard: { screen: driverDashboard },
     parentDashboard: { screen: parentDashboard },
     editParent: { screen: editParent },
+    editChild: { screen: editChild },
     addChild: { screen: addChild },
     editChild: { screen: editChild },
     studentDashboard: { screen: studentDashboard },

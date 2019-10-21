@@ -71,10 +71,9 @@ export default class addBusDriver extends React.Component {
                       name: this.state.driverName,
                       id: this.state.workerId,
                       phoneNo: this.state.phoneNo,
-                      inst: this.state.inst,
                       busNo: this.state.busNo,
                       busPlate: this.state.busPlate,
-                      //district: this.state.district,
+                      district: this.state.district,
                     })
                     Alert.alert("تم التسجيل بنجاح")
                     this.props.navigation.navigate('renderManageDrivers')
@@ -180,11 +179,11 @@ export default class addBusDriver extends React.Component {
                 <View style={styles.inputContainer}>
 
                 <TextInput style={styles.email, styles.input}
-                placeholder="اسم المنشأة"
+                placeholder="الحي"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={inst => this.setState({ inst })}
-                value={this.state.inst}
+                onChangeText={dirstrict => this.setState({ dirstrict })}
+                value={this.state.dirstrict}
                 />
                 </View>
 
@@ -200,20 +199,11 @@ export default class addBusDriver extends React.Component {
                 />
                 </View>
 
-                <View style={styles.inputContainer}>
-
-                <TextInput style={styles.email, styles.input}
-                placeholder="رقم اللوحة"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={busPlate => this.setState({ busPlate })}
-                //line below is added new by lama:
-                value={this.state.busPlate}
-                />
-                </View>
 
 
 
+
+                //button:
                 <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
                 onPress={this.handleInserting}>
 
