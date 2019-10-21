@@ -124,7 +124,7 @@ componentDidMount(){
 
      static navigationOptions = function(props) {
      return {
-       title: 'إضافة قائد مركبة',
+       title: 'تعديل بيانات الطفل',
        headerLeft: <View style={{paddingLeft:16, }}>
    				<Icon
    						name="chevron-left"
@@ -215,25 +215,15 @@ componentDidMount(){
 
                 <TouchableHighlight style={[styles.buttonContainer, styles.save]}
                 onPress={this.editChild}>
-
                 <Text style={styles.saveText}>حفظ</Text>
-
                 </TouchableHighlight>
+
                 <TouchableHighlight style={[styles.buttonContainer, styles.delete]}
-                onPress=  {this.showAlertDialog}>
-
+                onPress={this.showAlertDialog}>
                 <Text style={styles.saveText}>حذف الطالب</Text>
-
                 </TouchableHighlight>
-                /*
-                    <TouchableHighlight style={[styles.buttonContainer, styles.cancel]}
-                onPress={this.editChild}>
-
-                <Text style={styles.saveText}>إلغاء</Text>
 
 
-                </TouchableHighlight>
-*/
 
 
                 </View>

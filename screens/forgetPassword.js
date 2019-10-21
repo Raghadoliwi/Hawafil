@@ -48,8 +48,9 @@ export default class forgetPassword extends React.Component {
                           const { navigation } = this.props;
                         if (this.state.email == '') {
                           this.setState({emailBorders: 'red'})
-                            navigation.navigate('login')
                           return;
+                          
+
                         }
                         firebase.auth().sendPasswordResetEmail(this.state.email)
                         .then(function() {

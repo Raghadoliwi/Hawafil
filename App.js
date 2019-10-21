@@ -31,7 +31,8 @@ import * as React from 'react';
   import driverDashboard from './screens/driverDashboard'
   import parentDashboard from './screens/parentDashboard'
   import studentDashboard from './screens/studentDashboard'
-import addChild from './screens/addChild'
+  import addChild from './screens/addChild'
+  import editChild from './screens/editChild'
   import editParent from './screens/editParent'
   //import addBus from './screens/addBus'
 
@@ -167,6 +168,17 @@ import addChild from './screens/addChild'
       }
 
 
+      validateEmail = (email) => {
+
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+        if(reg.test(this.state.email)== false)
+        {
+        this.setState({emailBorders:'red'})
+          }
+        else {
+          this.setState({emailBorders:'#91b804'})
+        }
+      }//end validate phone number
 
 
 
@@ -225,7 +237,9 @@ import addChild from './screens/addChild'
                         this.setState({visibilty: 'none'})
                         this.setState({emailBorders: '#EAEAEA'})
                         this.setState({passBorders: '#EAEAEA'})
-                      } }/>
+                      } }
+                  onEndEditing={(email) => this.validateEmail(email)}
+                      />
   				 			</View>
 
   				 			<View style={[styles.inputContainer, {borderColor:this.state.passBorders}]}>
@@ -395,6 +409,7 @@ import addChild from './screens/addChild'
     parentDashboard: { screen: parentDashboard },
     editParent: { screen: editParent },
     addChild: { screen: addChild },
+    editChild: { screen: editChild },
     studentDashboard: { screen: studentDashboard },
     renderManageDrivers: { screen: renderManageDrivers },
         addBusDriver: { screen: addBusDriver },
