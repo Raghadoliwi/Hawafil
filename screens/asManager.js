@@ -144,6 +144,19 @@ console.log(this.state.nationalId);
   }//end validate phone number
 
     addInstit = () => {
+      if (this.state.name == '' || this.state.email == ''||this.state.password == ''||this.state.confirmPassword=='') {
+        this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
+        this.setState({errorMsgVisibilty: 'flex'})
+        return;
+      }
+      if (this.state.emailBorder == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'||this.state.nameBorder=='red'||this.state.idBorder=='red'||this.state.instBorder=='red'){
+        this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
+        this.setState({errorMsgVisibilty: 'flex'})
+        return;
+      }
+
+
+
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then( (data) => {
         firebase.auth().onAuthStateChanged( user => {
@@ -392,6 +405,12 @@ onPress={this.handleDocPicker}>
 
 </TouchableHighlight>
 <Text style={styles.SubSub}> *يسمح بملفات (PNG , JPG) </Text>
+
+<View >
+
+  <Text style={[styles.fontStyle,styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
+</View>
+
 <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.addInstit}>
 
 <Text style={styles.signupText}>تسجيل جديد</Text>
@@ -451,6 +470,12 @@ const styles = StyleSheet.create({
     //fontWeight:900,
     marginTop: 30,
     bottom: 20,
+  },
+  warning:{
+    color: 'red',
+    fontSize:12,
+    marginBottom:10,
+    textAlign:'center'
   },
 
   perInfo: {

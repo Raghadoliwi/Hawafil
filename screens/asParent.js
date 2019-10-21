@@ -115,8 +115,9 @@ export default class App extends Component {
         this.setState({errorMsgVisibilty: 'flex'})
         return;
       }
-
-
+  if (this.state.passError != 'none')  {
+      return;
+  }
 
       firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then( (data) => {
@@ -408,6 +409,7 @@ const styles = StyleSheet.create({
                                    marginBottom:-40,
                                    marginTop:5
                                  },
+
 
                                  keyText:{
                                  flex:1,

@@ -103,6 +103,14 @@ else {
 }//end validate phone number
 
      editProfile = () => {
+
+       if (this.state.fullName == '' || this.state.email == ''|| this.state.phoneNo == ''|| this.state.password == ''|| this.state.confirmPassword == ''|| this.state.busNo == '') {
+         this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
+
+
        var user = firebase.auth().currentUser;
        var uid;
        if (user != null) {
