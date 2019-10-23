@@ -1,7 +1,7 @@
 import React from 'react';
 //import react in our code.
 
-import { Text, View, StyleSheet,StatusBar, ScrollView, SafeAreaView,TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet,StatusBar, ScrollView, SafeAreaView,TouchableHighlight, Alert } from 'react-native';
 import { Card } from 'react-native-elements';
 import {DrawerNavigator} from 'react-navigation';
 import {createSwitchNavigator, createAppContainer } from 'react-navigation';
@@ -11,7 +11,8 @@ import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
 import editParent from './editParent';
-
+import editChild from './editChild';
+import addChild from './addChild';
 
 
   export default class parentDashboard extends React.Component {
@@ -36,6 +37,18 @@ import editParent from './editParent';
 
       }
     }
+    editAttendance = (attendance) => {
+      this.state.childrenList.attendance=attendance;
+      console.log(this.state.childrenList.attendance);
+      var phoneNo = this.state.parentIn.phoneNo;
+
+      if (phoneNo != null){
+       firebase.database().ref('children/'+phoneNo).update({
+          attendance:attendance
+        })
+        Alert.alert('تم تحديث حالة الحضور');
+      }
+   }//end edit child.
 
     componentDidMount(){ //to fetch data
 
@@ -79,12 +92,15 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
         inst: snap.val().inst ,
         level: snap.val().level ,
         district: snap.val().district ,
+      attendance: snap.val().attendance
       }
     });
 }
 
 
 })//end on
+
+
 
   }
 });
@@ -93,31 +109,24 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
 
   }
 
-
-
-	static navigationOptions = function(props) {
+  static navigationOptions = function(props) {
   return {
-		drawerLabel:'الرئيسية',
+    drawerLabel:'الرئيسية',
     title: 'الرئيسية',
     headerLeft: <View style={{paddingLeft:16}}>
         <Icon
             name="three-bars"
             size={25}
             color='white'
-            onPress={() => props.navigation.navigate('DrawerOpen')} />
+            onPress={() => props.navigation.openDrawer()} />
     </View>,
+
     headerTintColor: 'white',
-		      headerStyle: {
-		         backgroundColor: "#4C73CC"
-		      },
-
-
-		headerTintColor: 'white',
-		      headerStyle: {
-		         backgroundColor: "#4C73CC"
-		      }
-	}
-};
+          headerStyle: {
+             backgroundColor: "#4C73CC"
+          }
+  }
+  };
 
 	render() {
     return (
@@ -142,12 +151,14 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
                     <Text style={styles.paragraph} key={this.state.parentIn.email}>• البريد الإلكتروني: {this.state.parentIn.email}</Text>
                     <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
                          onPress={() => {
-                           try {this.props.navigation.navigate('editParent')}
+                           try {this.props.navigation.push('editParent')}
                            catch (e) {console.log(e.message);}
                            }
                          }>
                               <Text style={styles.editText}>تعديل</Text>
                             </TouchableHighlight>
+
+
                 </Card>
 
 ) : null}
@@ -176,10 +187,29 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
                  • الحي : {this.state.childrenList.district}
                 </Text>
 
+<View style={styles.typeContainer}>
+                <TouchableHighlight style={[styles.typeButtonContainer, this.state.childrenList.attendance === '1'?styles.pressedButton:styles.typeButton]} onPress ={() => this.editAttendance('1')} >
+
+                <Text style={styles.typeText}>حضور</Text>
+                </TouchableHighlight>
+
+                <TouchableHighlight style={[styles.typeButtonContainer, this.state.childrenList.attendance === '0'?styles.pressedButton:styles.typeButton]} onPress ={() => this.editAttendance('0')}>
+
+                <Text style={styles.typeText}>غياب</Text>
+                </TouchableHighlight>
+</View>
+
                  <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-                 onPress={() => this.props.navigation.navigate('editChild') }>
+                 onPress={() => this.props.navigation.push('editChild',{parentNo:this.state.parentIn.phoneNo})} >
                 <Text style={styles.editText}>تعديل</Text>
               </TouchableHighlight>
+
+
+
+
+
+
+
               </Card>
 
 
@@ -231,7 +261,10 @@ const styles = StyleSheet.create({
 
   }
   ,
+  pressedButton: {
+    backgroundColor: "#7597DB",
 
+  },
   perInfo:{
   color: "#9F9F9F",
   fontSize: 12 ,
@@ -255,6 +288,32 @@ const styles = StyleSheet.create({
     borderRadius: 550,
     */
   },
+
+  typeText: {
+    color: 'white',
+  },
+  typeButton: {
+    backgroundColor: "#DFE8FB",
+
+  },
+    typeContainer: {
+      justifyContent: 'center',
+      width:'100%',
+      backgroundColor: 'white',
+      borderRadius: 10,
+      flex: 1,
+      flexDirection: 'row-reverse',
+    },
+    typeButtonContainer: {
+      height: 40,
+      width:55,
+justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 5,
+      borderRadius: 30,
+      marginLeft:5,
+      marginRight:5,
+    },
   buttonContainer: {
     height:45,
     top:20,
@@ -300,13 +359,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const parentStack = createStackNavigator(
-  {
-  parentDashboard: { screen: parentDashboard },
-editParent: { screen: editParent },
-}
 
-  );
 
 /*
 const parentStack = createStackNavigator(

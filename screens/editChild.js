@@ -105,6 +105,44 @@ componentDidMount(){
 
     }//end if
   })
+
+
+
+  const { navigation } = this.props;
+        var parentNo = navigation.getParam('parentNo', 'NO-NUM');
+        console.log(parentNo);
+  if (parentNo !== 'NO-NUM'){
+
+    firebase.database().ref('children/').on('value', (snap) => {
+
+  snap.forEach((child) => {
+
+    if (child.key === parentNo){
+    this.setState({
+
+        sName: child.val().name,
+        level: child.val().level,
+        inst: child.val().inst,
+        busNo: child.val().busNo,
+        district: child.val().district,
+
+
+      });
+  }
+
+
+  })//end snap for each
+
+
+    });
+
+
+
+
+
+  }
+
+
 }
 
      editChild = () => {
@@ -178,21 +216,21 @@ componentDidMount(){
                <View style={styles.typeContainer}>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level1'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'التمهيدي'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'التمهيدي'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'التمهيدي'})} >
 <Text style={styles.typeText}>تمهيدي</Text>
                 </TouchableHighlight>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level2'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'الابتدائي'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'الابتدائي'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'الابتدائي'})} >
 <Text style={styles.typeText}>ابتدائي</Text>
                 </TouchableHighlight>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level3'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'المتوسط'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'المتوسط'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'المتوسط'})} >
 <Text style={styles.typeText}>متوسط</Text>
                 </TouchableHighlight>
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level4'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'الثانوي'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'الثانوي'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'الثانوي'})} >
 <Text style={styles.typeText}>ثانوي</Text>
                 </TouchableHighlight>
 

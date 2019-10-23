@@ -22,7 +22,8 @@ import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import { Dropdown } from 'react-native-material-dropdown';
+import DropdownMenu from 'react-native-dropdown-menu';
 const MenuIcon = ({ navigate }) => <Icon
     name='chevron-left'
     size={20}
@@ -52,49 +53,85 @@ export default class addBusDriver extends React.Component {
      password: '',
      workerId: '',
      driverName: '',
+       currentColor: '#EAEAEA',
      phoneNo: '',
      inst:'',
      busNo: '',
+     district:'',
+      busPlate: '',
+     nameBorders:'#EAEAEA',
+ neighborhoodBorder:'#EAEAEA',
+   passwordBorder:'#EAEAEA',
+   conPasswordBorder:'#EAEAEA',
      //district:'',
      errorMessage: null
      }
+
+     validateNumber = (phoneNo) => {
+       //Regex
+         console.log(phoneNo);
+       const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
+       if (!numRegex.test('0'+this.state.phoneNo)) {
+
+   this.setState({phoneBorder: 'red'})
+
+         }
+         else {
+         this.setState({phoneBorder: '#91b804'})
+         }
+   }//end validate phone number
+
      handleInserting = () => {
        //keep the previously signed in user
        //var prevUser = firebase.auth().currentUser;
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( (data) => {
-            firebase.auth().onAuthStateChanged( user => {
-                if (user) {
-                  this.userId = user.uid
+const {navigation} = this.props;
+              var instName = navigation.getParam('inst', 'NO-INST');
+              var driverName= this.state.driverName;
+              var workerId = this.state.workerId;
+              var phoneNo= this.state.phoneNo;
+              var busNo= this.state.busNo;
+              var busPlate = this.state.busPlate;
+              var district= this.state.district;
+
+
+                  firebase.auth().onAuthStateChanged( user => {
+                      if (user) {
+                        this.userId = user.uid +'5'
+                        if (instName === 'NO-INST'){return;}
+                    }
+                  });
                   firebase.database().ref('drivers/'+this.userId).set(
                     {
-                      name: this.state.driverName,
-                      id: this.state.workerId,
-                      phoneNo: this.state.phoneNo,
-                      busNo: this.state.busNo,
-                      busPlate: this.state.busPlate,
-                      district: this.state.district,
+                      name: driverName,
+                      id: workerId,
+                      phoneNo: phoneNo,
+                      busNo: busNo,
+                      busPlate: busPlate,
+                      district: district,
+                      inst: instName,
+                    }
+                  ).then(function() {
+                      Alert.alert('تمت الإضافة بنجاح');
+                      navigation.navigate('renderManageDrivers');
                     })
-                    Alert.alert("تم التسجيل بنجاح")
-                    this.props.navigation.navigate('renderManageDrivers')
-                }
-              });
-        })
-        .catch((error) => {
-          console.log(error.message)
-          //or password is less than 6 characters, the below msg shows for both. which doesnt make sense
-          //this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
-          //this.setState({errorMsgVisibilty: 'flex'})
-        })
-    }//end inserting a driver
+                    .catch(error => this.setState({ errorMessage: error.message }))
+                    console.log(this.state.errorMessage);
+                    }//end
+
+
+
+
+
+
 
      static navigationOptions = function(props) {
      return {
+       drawerLabel:'إضافة قائد مركبة',
        title: 'إضافة قائد مركبة',
-       headerLeft: <View style={{paddingLeft:16}}>
+       headerLeft: <View style={{paddingLeft:16, }}>
    				<Icon
    						name="chevron-left"
-   						size={25}
+   						size={30}
    						color='white'
    						onPress={() => props.navigation.goBack()} />
    		</View>,
@@ -107,8 +144,10 @@ export default class addBusDriver extends React.Component {
    };
 
     render() {
+      let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]
 
         return (
+            <View style={{padding: 10, flex: 1}, styles.container} >
           <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
           contentContainerStyle={styles.container}
             scrollEnabled={false}>
@@ -139,28 +178,28 @@ export default class addBusDriver extends React.Component {
                 />
 
                 </View>
-                <View style={styles.inputContainer}>
+                <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
+                    >
 
-                <TextInput style={styles.email, styles.input}
-                placeholder="رقم الهاتف"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={phoneNo => this.setState({ phoneNo })}
-                //line below is added new by lama:
-                value={this.state.phoneNo}
-                />
-                </View>
+                    <TextInput style={styles.keyText}
+                    value="+966"
+                    editable={false}
+                    />
 
-                <View style={styles.inputContainer}>
+                    <TextInput style={styles.phoneInput}
+                    placeholder="رقم الجوال"
+                    keyboardType="numeric"
+                    ref="phoneNumber"
+                    underlineColorAndroid='transparent'
+                    onChangeText={(phoneNo) => {
+                      this.setState({phoneNo})
+                      this.setState({currentColor: '#EAEAEA'})
+                    } }
+                    onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
+                    value={this.state.phoneNo}
+                    />
+                    </View>
 
-                <TextInput style={styles.email, styles.input}
-                placeholder="البريد الإلكتروني"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={email => this.setState({ email })}
-                value={this.state.email}
-                />
-                </View>
 
                 <View style={styles.inputContainer}>
 
@@ -176,22 +215,40 @@ export default class addBusDriver extends React.Component {
                 />
                 </View>
 
-                <View style={styles.inputContainer}>
+                <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
+                                      <Dropdown
+                                      itemColor='#919191'
+                                      baseColor='#919191'
+                                      textColor='#919191'
 
-                <TextInput style={styles.email, styles.input}
-                placeholder="الحي"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={dirstrict => this.setState({ dirstrict })}
-                value={this.state.dirstrict}
-                />
-                </View>
+                                      itemTextStyle={{textAlign:'right'}}
+                          style={{textAlign:'right'}}
+                          dropdownOffset={{ top: 0, left: 0}}
+                                           inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
+                                          containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                                          pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                                          itemPadding={10}
+                                          shadeOpacity={0}
+                                          rippleInsets={{top: 0, bottom: 0}}
+                                          dropdownMargins	={{min: 0, max: 0}}
+                                          dropdownPosition ={0}
+                          label='الحي السكني'
+
+                          data={riyadhDistricts}
+
+                          onChangeText={(district) => {
+                            this.setState({district})
+                            this.setState({neighborhoodBorder: '#EAEAEA'})
+                          } }
+                          value={this.state.district}
+                        />
+                      </View>
 
                 <View style={styles.inputContainer}>
 
                 <TextInput style={styles.email, styles.input}
                 placeholder="رقم الحافلة"
-                keyboardType="TextInput"
+                keyboardType="numeric"
                 underlineColorAndroid='transparent'
                 onChangeText={busNo => this.setState({ busNo })}
                 //line below is added new by lama:
@@ -203,27 +260,34 @@ export default class addBusDriver extends React.Component {
 
 
 
-                //button:
-                <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
-                onPress={this.handleInserting}>
 
-                <Text style={styles.loginText}>إضافة</Text>
+<TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
+onPress={this.handleInserting}>
+
+<Text style={styles.loginText}>إضافة</Text>
 
 
-                </TouchableHighlight>
-
+</TouchableHighlight>
 
 
 
 
                 </View>
               </KeyboardAwareScrollView>
+              </View>
 
                 );
     }
 }
 
 const styles = StyleSheet.create({
+  container: {
+  justifyContent: 'center',
+  alignItems: 'center',
+  flex: 1,
+  backgroundColor: '#F7FAFF',
+},
+
                                  Main:{
                                  color:'#4C73CC',
                                  flexDirection: 'row',
@@ -299,8 +363,59 @@ const styles = StyleSheet.create({
                                  width:250,
                                  borderRadius:30,
                                  },
+                                 phoneContainer:{
+                                 backgroundColor: '#FFFFFF',
+                                 borderRadius:25,
+                                 borderWidth: 1,
+                                 width:250,
+                                 marginBottom:20,
+                                 flexDirection: 'row',
+                                 //justifyContent:'flex-end',
+                                 justifyContent:'space-around',
+                                 },
+                                 phoneInput:{
 
 
+                                 width:200,
+
+                                 borderColor: '#EAEAEA',
+
+                                 },
+                                 keyNo:{
+                                   backgroundColor: '#FFFFFF',
+                                     borderRadius:30,
+                                     borderWidth: 1,
+                                     width:60,
+                                     height:35,
+                                     marginBottom:25,
+                                    // marginLeft: 250,
+                                    left:205,
+                                     flexDirection: 'row-reverse',
+                                      //justifyContent:'flex-end',
+                                     //alignItems:'flex-end',
+                                     borderColor: '#EAEAEA'
+                                 },
+                                 keyText:{
+                                 flex:1,
+                                 height:40,
+                                 textAlign:'center',
+                                 //marginRight: 30,
+                                 //justifyContent:'flex-end',
+                                 //marginright:16,
+                                 borderColor: '#EAEAEA',
+                                 color:'#646464' ,
+                                 },
+                                 neighborhoodList: {
+                                  borderColor: '#EAEAEA',
+                                   backgroundColor: 'white',
+                                    width:250,
+                                   height:100,
+                                top:30   },
+                                warning:{
+                                   color: 'red',
+                                   fontSize:12,
+                                   marginBottom:10,
+                                       },
                                  loginButton: {
                                  backgroundColor: "#4C73CC",
                                  },

@@ -24,11 +24,11 @@ import asManager from './asManager'
 export default class registration extends React.Component {
   static navigationOptions = function(props) {
   return {
-    title: '',
-    headerLeft: <View style={{paddingLeft:16}}>
+    title: 'التسجيل',
+    headerLeft: <View style={{paddingLeft:16, }}>
        <Icon
            name="chevron-left"
-           size={25}
+           size={30}
            color='white'
            onPress={() => props.navigation.goBack()} />
    </View>,
@@ -52,19 +52,19 @@ export default class registration extends React.Component {
 
 
                 <TouchableHighlight style={[styles.firstButtonContainer, styles.typeButton]}
-                onPress={() => this.props.navigation.push('asManager')}>
+             onPress={() => this.props.navigation.navigate('asManager')}  >
 
                 <Text style={styles.firstText}>منشأة تعليمية</Text>
                 </TouchableHighlight>
 
                 <TouchableHighlight style={[styles.secondButtonContainer, styles.typeButton]}
-                onPress={() => this.props.navigation.push('asParent')}>
+               onPress={() => this.props.navigation.navigate('asParent')}>
 
                 <Text style={styles.secondText}>ولي أمر طالب</Text>
                 </TouchableHighlight>
 
                 <TouchableHighlight style={[styles.thirdButtonContainer, styles.typeButton]}
-                onPress={() => this.props.navigation.push('asStudent')}>
+               onPress={() => this.props.navigation.navigate('asStudent')}>
 
                 <Text style={styles.thirdText}>طالب</Text>
                 </TouchableHighlight>
@@ -172,4 +172,4 @@ const styles = StyleSheet.create({
                                      asStudent: { screen: asStudent },
                                      asManager: { screen: asManager },
                                  //    asStudent: { screen: RegisterStudent }
-                                 });          
+                                 });

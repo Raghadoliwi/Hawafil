@@ -79,6 +79,7 @@ export default class asStudent extends Component {
       firebase.database().ref('managers/').once('value', (snap) => {
 
           snap.forEach((child) => {
+          
             this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
 
 
@@ -168,28 +169,24 @@ this.setState({currentColor: 'red'})
 //end adding a parent
 
 
+static navigationOptions = function(props) {
+return {
+  title: 'التسجيل',
+  headerLeft: <View style={{paddingLeft:16, }}>
+     <Icon
+         name="chevron-left"
+         size={30}
+         color='white'
+         onPress={() => props.navigation.goBack()} />
+ </View>,
 
-    static navigationOptions = function(props) {
-    return {
-      title: 'التسجيل',
-      headerLeft: <View style={{paddingLeft:16}}>
-         <Icon
-             name="chevron-left"
-             size={25}
-             color='white'
-             onPress={() => props.navigation.goBack()} />
-     </View>,
+ headerTintColor: 'white',
+       headerStyle: {
+          backgroundColor: "#4C73CC"
+       }
+}
+};
 
-     headerTintColor: 'white',
-           headerStyle: {
-              backgroundColor: "#4C73CC"
-
-           },
-           headerTitleStyle: {
-        //fontFamily:'Tajawal-Medium'
-    },
-    }
-    };
     render() {
 
 let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'النخيل'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]

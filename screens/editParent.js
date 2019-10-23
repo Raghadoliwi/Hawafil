@@ -215,10 +215,10 @@ this.setState({phoneBorder: 'red'})
        title: 'تعديل البيانات الشخصية',
        headerLeft: <View style={{paddingLeft:16, }}>
    				<Icon
-   						name="chevron-left"
+   						name="three-bars"
    						size={25}
    						color='white'
-   						onPress={() => props.navigation.goBack()} />
+   						onPress={() => props.navigation.openDrawer()}  />
    		</View>,
 
    		headerTintColor: 'white',

@@ -229,24 +229,23 @@ console.log(this.state.nationalId);
  }
 
 
-static navigationOptions = function(props) {
-return {
-  title: 'التسجيل',
-  headerLeft: <View style={{paddingLeft:16}}>
-     <Icon
-         name="chevron-left"
-         size={25}
-         color='white'
-         onPress={() => props.navigation.goBack()} />
- </View>,
+ static navigationOptions = function(props) {
+ return {
+   title: 'التسجيل',
+   headerLeft: <View style={{paddingLeft:16, }}>
+      <Icon
+          name="chevron-left"
+          size={30}
+          color='white'
+          onPress={() => props.navigation.goBack()} />
+  </View>,
 
- headerTintColor: 'white',
-       headerStyle: {
-          backgroundColor: "#4C73CC"
-       }
+  headerTintColor: 'white',
+        headerStyle: {
+           backgroundColor: "#4C73CC"
+        }
 }
 };
-
     render() {
         return (
 
