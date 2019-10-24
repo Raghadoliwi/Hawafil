@@ -1,168 +1,315 @@
-import React from 'react';
-//import react in our code.
 
-import { Text, View, StyleSheet, ScrollView, SafeAreaView,TouchableHighlight } from 'react-native';
-import { Card } from 'react-native-elements';
-import {DrawerNavigator} from 'react-navigation';
+import React , {Component} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+StatusBar,
+  KeyboardAvoidingView,
+  TouchableHighlight,
+ScrollView,
+SafeAreaView,
+  Picker,
+  Image,
+  Alert} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+import { Dropdown } from 'react-native-material-dropdown';
+
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
-import Constants from 'expo-constants';
-
-const MenuIcon = ({ navigate }) => <Icon
-    name='three-bars'
-    size={20}
-    color='#fff'
-    onPress={() => this.navigation.openDrawer()}
-/>;
-
 
 export default class studentDashboard extends React.Component {
+
+
+constructor(props){
+    super(props)
+    this.state={departure:'6:00',
+                arrival:'1:00'
+              }
+
+}
+
     UNSAFE_componentWillMount(){
-        const firebaseConfig = {
-          apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
-          authDomain: "hawafildb.firebaseapp.com",
-          databaseURL: "https://hawafildb.firebaseio.com",
-          projectId: "hawafildb",
-          storageBucket: "",
-          messagingSenderId: "932110912763",
-          appId: "1:932110912763:web:68fca60e805543a655b45e",
-          measurementId: "G-G21F8ME7TS"
-        };
+    const firebaseConfig = {
+      apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+      authDomain: "hawafildb.firebaseapp.com",
+      databaseURL: "https://hawafildb.firebaseio.com",
+      projectId: "hawafildb",
+      storageBucket: "",
+      messagingSenderId: "932110912763",
+      appId: "1:932110912763:web:68fca60e805543a655b45e",
+      measurementId: "G-G21F8ME7TS"
+    };
 
 
-      }
-      constructor(props){
-        super(props)
-        this.state = {
-          items : []
-        }
-      }
-
-      componentDidMount(){ //to fetch data
-          firebase.database().ref('drivers/').on('value', (snap) => {
-              let items = [];
-              snap.forEach((child) => {
-                  items.push({
-                      name: child.val().name ,
-                      busNo: child.val().busNo ,
-                      neighborhood: child.val().phoneNo ,
-                      busPlate: child.val().busPlate ,
-                  })
-              })//end snap for each
-              itm = items;
-              this.setState({items: items});
-              console.log(itm);
-              console.log("lama-------");
-              console.log(this.state.items); //This is wrong
-              itm.forEach((itms) => {
-                  console.log(itms.name);
-              })
-          })//end on
-
-
-      }
-
+  }
 
 static navigationOptions = function(props) {
 return {
-  drawerLabel:'إدارة السائقين',
-  title: 'إدارة السائقين',
+  title: 'صفحة الطالب',
   headerLeft: <View style={{paddingLeft:16}}>
-      <Icon
-          name="three-bars"
-          size={25}
-          color='white'
-          onPress={() => props.navigation.openDrawer()} />
-  </View>,
+     <Icon
+         name="chevron-left"
+         size={25}
+         color='white'
+         onPress={() => props.navigation.goBack()} />
+ </View>,
 
-  headerTintColor: 'white',
-        headerStyle: {
-           backgroundColor: "#4C73CC"
-        }
+ headerTintColor: 'white',
+       headerStyle: {
+          backgroundColor: "#4C73CC"
+       }
 }
 };
 
-	render() {
-    return (
+    render() {
+        return (
 
-      <View style={{padding: 10, flex: 1}, styles.container} >
-      <ScrollView style={{flex: 1, marginBottom:20}}>
+          <ScrollView>
+          <KeyboardAwareScrollView
+resetScrollToCoords={{ x: 0, y: 0 }}
+contentContainerStyle={styles.container}
+scrollEnabled={false}>
+<View style={styles.smallContainer}>
 
+<Text style={styles.SubSub}>ــــــ وقت الذهاب ــــــ</Text>
 
-        {
-        this.state.items.map((u, i ) => {
-            return (
-                <Card containerStyle={styles.cards} title={u.name}>
-                    <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: {u.busNo}</Text>
-                    <Text style={styles.paragraph} key={u.neighborhood}>الحي: {u.neighborhood}</Text>
-                    <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: {u.busPlate}</Text>
-                </Card>
-            );
-        })
-        }
+                <View style={styles.typeContainer}>
 
+                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.departure === '6:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({departure:'6:00'})} ></TouchableHighlight>
+                </View>
 
-      </ScrollView>
-      </View>
+            <Text style={styles.SubSub}>ــــــ وقت الإياب ــــــ</Text>
 
+                <View style={styles.typeContainer}>
 
+                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '1:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({arrival:'1:00'})} >
+                    </TouchableHighlight>
+                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '3:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({arrival:'3:00'})} >
+                        </TouchableHighlight>
+                </View>
 
-    );
-  }
+</View>
+
+                </KeyboardAwareScrollView>
+</ScrollView>
+                );
+    }
 }
+
 const styles = StyleSheet.create({
-	container: {
-	justifyContent: 'center',
-	alignItems: 'center',
-  flex: 1,
-	backgroundColor: '#F7FAFF',
-},
 
+  Sub: {
+    color: '#9F9F9F',
+    fontSize: 12,
+    marginBottom: 10,
 
-
-  paragraph: {
-    marginTop: 10,
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'right',
-    color: '#3C68BF',
-    borderRadius: 550,
   },
-  cards:{
-    borderRadius: 25, width: 250, marginTop: 20, borderWidth: 0.5, shadowOpacity: 0.04,
-            shadowRadius: 5,
-            shadowColor: 'black',
-            shadowOffset: { height: 0, width: 0 },
-
-  }
-  ,
-  buttonContainer: {
-    height:45,
-    top:25,
-    flexDirection: 'row-reverse',
+  SubSub: {
+    color: '#9F9F9F',
+    fontSize: 10,
+    marginBottom: 30,
+  },
+  container: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
-    width:250,
-    borderRadius:30,
+    backgroundColor: '#F7FAFF',
   },
-  addButton: {
-		flex: 1,
-		alignSelf:'center',
-      justifyContent: 'center',
+  smallContainer: {
+    marginTop: 30,
+    marginBottom: 30,
+    justifyContent: 'center',
     alignItems: 'center',
-    width: 180,
-    height:40,
-    bottom: 5,
-    backgroundColor:"#EDC51B",
-    //marginBottom: 300,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    width: 300,
+
+
+    paddingVertical: 35,
+    shadowOpacity: 0.04,
+    shadowRadius: 5,
+    shadowColor: 'black',
+    shadowOffset: {
+      height: 0,
+      width: 0
+    }
   },
-  addText: {
+  header: {
+    color: "#8197C6",
+    fontSize: 20, //problema
+    //fontWeight:900,
+    marginTop: 30,
+    bottom: 20,
+  },
+  warning:{
+    color: 'red',
+    fontSize:12,
+    marginBottom:10,
+    textAlign:'center'
+  },
+
+  perInfo: {
+    color: "#9F9F9F",
+    fontSize: 12,
+    //fontWeight:100,
+    bottom: 30,
+    marginTop: 20,
+
+  },
+
+  typeContainer: {
+    justifyContent: 'center',
+
+    backgroundColor: 'white',
+    borderRadius: 10,
+
+    flex: 1,
+    flexDirection: 'row',
+  },
+
+  inputContainer: {
+    borderColor: '#EAEAEA',
+    backgroundColor: 'white',
+    borderRadius:25,
+    borderWidth: 1,
+    width:250,
+    height:40,
+    marginBottom:15,
+    paddingHorizontal:10,
+   // fontFamily: 'tajawal',
+
+
+
+  },
+  phoneContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 25,
+    borderWidth: 1,
+    width: 250,
+    marginBottom: 20,
+    height:45,
+    flexDirection: 'row',
+    //justifyContent:'flex-end',
+    justifyContent: 'space-around',
+    borderColor: '#EAEAEA'
+  },
+  phoneInput: {
+
+    height: 40,
+    width: 200,
+
+    borderColor: '#EAEAEA',
+
+  },
+
+  keyNo: {
+
+    color: 'grey',
+
+  },
+
+  inputContainertwo: {
+    borderColor: '#EAEAEA',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 25,
+    borderWidth: 1,
+    width: 250,
+    height: 40,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+  },
+  inputs:{
+flex:1,
+height:40,
+//flexDirection:'row-reverse',
+//justifyContent:'flex-end',
+//marginright:16,
+textAlign:'right',
+borderColor: '#EAEAEA',
+marginLeft:10,
+
+},
+
+  pass: {
+    borderBottomColor: '#FFFFFF',
+    flex: 1,
+    textAlign: 'right',
+  },
+  email: {
+    borderBottomColor: '#FFFFFF',
+    flex: 1,
+    textAlign: 'right',
+
+  },
+
+  buttonContainer: {
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    width: '40%',
+    borderRadius: 30,
+
+  },
+  typeButtonContainer: {
+    height: 40,
+
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
+    width: '38%',
+    borderRadius: 30,
+  },
+
+  attachButtonContainer: {
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    width: '30%',
+    borderRadius: 30,
+
+
+  },
+
+
+  signupButton: {
+    backgroundColor: "#4C73CC",
+  },
+
+  typeButton: {
+    backgroundColor: "#DFE8FB",
+    marginLeft: 10,
+    marginRight: 10,
+
+  },
+
+  pressedButton: {
+    backgroundColor: "#7597DB",
+    marginLeft: 10,
+    marginRight: 10,
+
+  },
+  attachButton: {
+    backgroundColor: "#8BC8E4",
+
+
+  },
+  signupText: {
     color: 'white',
-    fontSize: 18 ,
-		fontWeight:'bold'
-  }
+  },
+
+  typeText: {
+    color: 'white',
+  },
+
+
 });

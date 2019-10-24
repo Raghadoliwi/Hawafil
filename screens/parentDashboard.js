@@ -1,109 +1,201 @@
 import React from 'react';
 //import react in our code.
 
-import { Text, View, StyleSheet, ScrollView, SafeAreaView,TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet,StatusBar, ScrollView, SafeAreaView,TouchableHighlight } from 'react-native';
 import { Card } from 'react-native-elements';
 import {DrawerNavigator} from 'react-navigation';
-import {createAppContainer } from 'react-navigation';
+import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
-
-const MenuIcon = ({ navigate }) => <Icon
-    name='three-bars'
-    size={20}
-    color='#fff'
-    onPress={() => this.navigation.openDrawer()}
-/>;
+import editParent from './editParent';
 
 
-export default class parentDashboard extends React.Component {
-    UNSAFE_componentWillMount(){
-        const firebaseConfig = {
-          apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
-          authDomain: "hawafildb.firebaseapp.com",
-          databaseURL: "https://hawafildb.firebaseio.com",
-          projectId: "hawafildb",
-          storageBucket: "",
-          messagingSenderId: "932110912763",
-          appId: "1:932110912763:web:68fca60e805543a655b45e",
-          measurementId: "G-G21F8ME7TS"
-        };
+
+  export default class parentDashboard extends React.Component {
+  UNSAFE_componentWillMount(){
+      const firebaseConfig = {
+        apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+        authDomain: "hawafildb.firebaseapp.com",
+        databaseURL: "https://hawafildb.firebaseio.com",
+        projectId: "hawafildb",
+        storageBucket: "",
+        messagingSenderId: "932110912763",
+        appId: "1:932110912763:web:68fca60e805543a655b45e",
+        measurementId: "G-G21F8ME7TS"
+      };
 
 
-      }
-      constructor(props){
-        super(props)
-        this.state = {
-          items : []
-        }
-      }
-
-      componentDidMount(){ //to fetch data
-          firebase.database().ref('drivers/').on('value', (snap) => {
-              let items = [];
-              snap.forEach((child) => {
-                  items.push({
-                      name: child.val().name ,
-                      busNo: child.val().busNo ,
-                      neighborhood: child.val().phoneNo ,
-                      busPlate: child.val().busPlate ,
-                  })
-              })//end snap for each
-              itm = items;
-              this.setState({items: items});
-              console.log(itm);
-              console.log("lama-------");
-              console.log(this.state.items); //This is wrong
-              itm.forEach((itms) => {
-                  console.log(itms.name);
-              })
-          })//end on
+    }
+    constructor(props){
+      super(props)
+      this.state = {
 
 
       }
+    }
+
+    componentDidMount(){ //to fetch data
+
+      firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+
+var userId = firebase.auth().currentUser.uid;
+email= firebase.auth().currentUser.email;
+firebase.database().ref('parents/'+userId).on('value', snapshot => {
 
 
-static navigationOptions = function(props) {
-return {
-  drawerLabel:'إدارة السائقين',
-  title: 'إدارة السائقين',
-  headerLeft: <View style={{paddingLeft:16}}>
-      <Icon
-          name="three-bars"
-          size={25}
-          color='white'
-          onPress={() => props.navigation.openDrawer()} />
-  </View>,
+  this.setState({
+    parentIn: {
+      name: snapshot.val().name,
+      email:email,
+      phoneNo: snapshot.val().phoneNo
+    }
+  });
 
-  headerTintColor: 'white',
-        headerStyle: {
-           backgroundColor: "#4C73CC"
-        }
+});
+
+this.setState({
+  childrenList: {
+    name: '' ,
+    busNo: '' ,
+    inst: '' ,
+    level: '' ,
+    district: '' ,
+  }
+});
+
+console.log (this.state.parentIn.name);
+console.log (this.state.parentIn.phoneNo);
+let parentPhoneNo=this.state.parentIn.phoneNo;
+firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
+    if (snap.val()){//check if it's null
+    this.setState({
+      childrenList: {
+        name: snap.val().name ,
+        busNo: snap.val().busNo ,
+        inst: snap.val().inst ,
+        level: snap.val().level ,
+        district: snap.val().district ,
+      }
+    });
 }
+
+
+})//end on
+
+  }
+});
+
+
+
+  }
+
+
+
+	static navigationOptions = function(props) {
+  return {
+		drawerLabel:'الرئيسية',
+    title: 'الرئيسية',
+    headerLeft: <View style={{paddingLeft:16}}>
+        <Icon
+            name="three-bars"
+            size={25}
+            color='white'
+            onPress={() => props.navigation.navigate('DrawerOpen')} />
+    </View>,
+    headerTintColor: 'white',
+		      headerStyle: {
+		         backgroundColor: "#4C73CC"
+		      },
+
+
+		headerTintColor: 'white',
+		      headerStyle: {
+		         backgroundColor: "#4C73CC"
+		      }
+	}
 };
 
 	render() {
     return (
 
       <View style={{padding: 10, flex: 1}, styles.container} >
+      <StatusBar
+             barStyle = "light-content"
+             hidden = {false}
+             backgroundColor = "#00BCD4"
+             translucent = {true}
+             networkActivityIndicatorVisible = {true}
+             />
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
 
-        {
-        this.state.items.map((u, i ) => {
-            return (
-                <Card containerStyle={styles.cards} title={u.name}>
-                    <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: {u.busNo}</Text>
-                    <Text style={styles.paragraph} key={u.neighborhood}>الحي: {u.neighborhood}</Text>
-                    <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: {u.busPlate}</Text>
-                </Card>
-            );
-        })
-        }
 
+ {this.state.parentIn ? (
+                <Card containerStyle={styles.cards} title="معلومات ولي الأمر">
+                <Text style={styles.paragraph} key={this.state.parentIn.name}>• اسم ولي الأمر: {this.state.parentIn.name}</Text>
+
+                    <Text style={styles.paragraph} key={this.state.parentIn.phoneNo}>رقم الجوال: 0{this.state.parentIn.phoneNo}</Text>
+                    <Text style={styles.paragraph} key={this.state.parentIn.email}>• البريد الإلكتروني: {this.state.parentIn.email}</Text>
+                    <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+                         onPress={() => {
+                           try {this.props.navigation.navigate('editParent')}
+                           catch (e) {console.log(e.message);}
+                           }
+                         }>
+                              <Text style={styles.editText}>تعديل</Text>
+                            </TouchableHighlight>
+                </Card>
+
+) : null}
+   <Text style={styles.perInfo}>──────  التابعين ──────</Text>
+
+   <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
+ onPress={() => this.props.navigation.navigate('addChild')}>
+        <Text style={styles.addText}>إضافة تابع</Text>
+      </TouchableHighlight>
+
+{this.state.childrenList && this.state.childrenList.name != '' ? (
+
+
+              <Card containerStyle={styles.cards} title={this.state.childrenList.name}>
+
+                <Text style={styles.paragraph} key={this.state.childrenList.inst}>
+               • المدرسة: {this.state.childrenList.inst}
+                </Text>
+                 <Text style={styles.paragraph}>
+                 • المرحلة: {this.state.childrenList.level}
+                </Text>
+                <Text style={styles.paragraph}>
+                 • رقم الحافلة: {this.state.childrenList.busNo}
+                </Text>
+                 <Text style={styles.paragraph}>
+                 • الحي : {this.state.childrenList.district}
+                </Text>
+
+                 <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+                 onPress={() => this.props.navigation.navigate('editChild') }>
+                <Text style={styles.editText}>تعديل</Text>
+              </TouchableHighlight>
+              </Card>
+
+
+
+) : (
+  // if there are no children
+  <View>
+  <Text style={styles.perText}> لا يوجد لديك تابعين</Text>
+  </View>
+)}
+
+
+
+      <View style={styles.childrenContainer}>
+
+      </View>
 
       </ScrollView>
       </View>
@@ -114,7 +206,7 @@ return {
   }
 }
 const styles = StyleSheet.create({
-	container: {
+  container: {
 	justifyContent: 'center',
 	alignItems: 'center',
   flex: 1,
@@ -139,9 +231,33 @@ const styles = StyleSheet.create({
 
   }
   ,
+
+  perInfo:{
+  color: "#9F9F9F",
+  fontSize: 12 ,
+  //fontWeight:100,
+  bottom: 10,
+  marginTop: 40,
+  alignSelf: 'center',
+  },
+
+  perText:{
+    marginTop: 20,
+    alignSelf:'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#3C68BF',
+    /*
+    marginTop: 10,
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'right',
+    borderRadius: 550,
+    */
+  },
   buttonContainer: {
     height:45,
-    top:25,
+    top:20,
     flexDirection: 'row-reverse',
     justifyContent: 'center',
     alignItems: 'center',
@@ -164,5 +280,64 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18 ,
 		fontWeight:'bold'
+  },
+
+  editButton:{
+ 	  flex: 1,
+		alignSelf:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 90,
+    height:30,
+    bottom: 5,
+    backgroundColor:"#3C68BF",
+    //marginBottom: 300,
+  },
+  editText: {
+    color: 'white',
+    fontSize: 12,
+		fontWeight:'bold'
   }
 });
+
+const parentStack = createStackNavigator(
+  {
+  parentDashboard: { screen: parentDashboard },
+editParent: { screen: editParent },
+}
+
+  );
+
+/*
+const parentStack = createStackNavigator(
+  {
+  parentDashboard: { screen: parentDashboard },
+editParent: { screen: editParent },
+});
+const MyDrawerNavigator = createDrawerNavigator({
+    'الرئيسية': {
+      screen: parentStack,
+    },
+    'تعديل البيانات': {
+      screen: editParent,
+    },
+  },
+  {
+    initialRouteParams: 'الدخول',
+    defaultNavigationOptions: {
+      headerStyle: {
+      backgroundColor:  '#4C73CC',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
+  }
+  );
+const MyApp = createAppContainer(MyDrawerNavigator);
+export default class App extends React.Component {
+   render() {
+     return <MyApp />;
+   }
+ }*/
