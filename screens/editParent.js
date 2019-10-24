@@ -342,7 +342,7 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
                                  header:{
     color: "#8197C6",
     fontSize: 15 ,//problema
-    fontWeight:900,
+    fontWeight:'bold',
     bottom:-15 ,
   },
 
@@ -400,7 +400,7 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
       marginRight: 40,
       flexDirection: 'row-reverse',
       //justifyContent:'flex-end',
-      alignItems:'felx-end',
+      alignItems:'flex-end',
       borderColor: '#EAEAEA'
   },
   phoneInput:{
