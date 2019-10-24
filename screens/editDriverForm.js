@@ -65,6 +65,53 @@ export default class editDriverForm extends React.Component {
   passwordBorder:'#EAEAEA',
   conPasswordBorder:'#EAEAEA',
      }
+
+
+          componentDidMount(){ //to fetch data
+
+
+const { navigation } = this.props;
+      var driverId = navigation.getParam('id', 'NO-ID');
+      console.log(driverId);
+if (driverId !== 'NO-ID'){
+
+  firebase.database().ref('drivers/').on('value', (snap) => {
+
+snap.forEach((child) => {
+
+  if (child.val().id === driverId){
+  this.setState({
+      driverKey:child.key,
+      workerId: child.val().id,
+      driverName: child.val().name,
+      phoneNo: child.val().phoneNo,
+      busNo: child.val().busNo,
+      busPlate:child.val().busPlate
+    });
+}
+
+
+})//end snap for each
+
+
+  });
+
+
+
+
+
+}
+
+
+
+
+
+
+        }
+
+
+
+
      validateEmail = (email) => {
 
   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
@@ -102,31 +149,52 @@ else {
       }
 }//end validate phone number
 
-     handleInserting = () => {
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( (data) => {
-            firebase.auth().onAuthStateChanged( user => {
-                if (user) {
-                  this.userId = user.uid
-                  firebase.database().ref('drivers/'+this.userId).set(
-                    {
-                      name: this.state.driverName,
-                      id: this.state.workerId,
-                      phoneNo: this.state.phoneNo,
-                      inst: this.state.inst,
-                      busNo: this.state.busNo,
-                      busPlate: this.state.busPlate,
-                    })
-                }
-              });
-        }).then(() => this.props.navigation.navigate('renderManageDrivers'))
-        //raghad plz edit the above line to the page you wanna navigate to after insertion
-        .catch(error => console.log(error.message ))
-    }//end inserting a driver
+     editProfile = () => {
+const { navigation } = this.props;
+       if (this.state.workerId == '' || this.state.driverName == ''|| this.state.phoneNo == ''|| this.state.busNo == ''|| this.state.busPlate == '') {
+         this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
+
+
+       var driverKey=this.state.driverKey;
+
+   if (this.state.password == '') {
+         if (this.state.driverName != ''){
+           firebase.database().ref('drivers/'+driverKey).update({name : this.state.driverName,})
+         }
+
+         if (this.state.phoneNo != ''){
+           firebase.database().ref('drivers/'+driverKey).update({phoneNo : this.state.phoneNo,})
+         }
+         if (this.state.workerId != ''){
+           firebase.database().ref('drivers/'+driverKey).update({id : this.state.workerId,})
+         }
+         if (this.state.busNo != ''){
+           firebase.database().ref('drivers/'+driverKey).update({busNo : this.state.busNo,})
+         }
+         if (this.state.busPlate != ''){
+           firebase.database().ref('drivers/'+driverKey).update({busPlate : this.state.busPlate,})
+         }
+  navigation.navigate('renderManageDrivers')
+       }
+       else {
+          firebase.database().ref('drivers/'+driverKey).updatePassword(this.state.password).then(() => {
+          navigation.navigate('login')
+         }, (error) => {
+           // An error happened.
+         });
+       }
+
+
+    }//end edit driver
 
      static navigationOptions = function(props) {
+
+
      return {
-       title: 'إضافة قائد مركبة',
+        title: 'تعديل بيانات القائد',
        headerLeft: <View style={{paddingLeft:16, }}>
    				<Icon
    						name="chevron-left"
@@ -143,156 +211,134 @@ else {
    };
 
     render() {
+      let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]
 
         return (
 <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
       contentContainerStyle={styles.container}
         scrollEnabled={false}>
                 <ScrollView style={{flex: 1, marginBottom:20}}>
-                <View style={styles.smallContainer}>
-                <Text style={styles.Main}> • تعديل البيانات الشخصية •</Text>
+                  <View style={styles.smallContainer}>
 
-                <View style={styles.inputContainer}>
+                        <Text style={styles.Main}> • تعديل البيانات الشخصية • </Text>
+                        <View style={styles.inputContainer}>
 
-                <TextInput style={styles.email}
-                placeholder="الرقم الوظيفي"
-                keyboardType="numeric"
-                underlineColorAndroid='transparent'
-                onChangeText={workerId => this.setState({ workerId })}
-                value={this.state.workerId}
-                />
-                </View>
+                        <TextInput style={styles.email, styles.input}
+                        placeholder="الرقم الوظيفي"
+                        keyboardType="numeric"
+                        underlineColorAndroid='transparent'
+                        onChangeText={workerId => this.setState({ workerId })}
+                        value={this.state.workerId}
+                        />
+                        </View>
+                        <View style={styles.inputContainer}>
 
+                        <TextInput style={styles.email, styles.input}
+                        placeholder="اسم القائد"
+                        keyboardType="TextInput"
+                        underlineColorAndroid='transparent'
+                        onChangeText={ driverName => this.setState({ driverName })}
+                        value={this.state.driverName}
+                        />
 
-                <View style={styles.inputContainer}>
+                        </View>
+                    <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
+                        >
 
-                <TextInput style={styles.email}
-                placeholder="اسم القائد"
-                keyboardType="acii-capable"
-                underlineColorAndroid='transparent'
-                onChangeText={ driverName => this.setState({ driverName })}
-                value={this.state.driverName}
-                />
+                        <TextInput style={styles.keyText}
+                        value="+966"
+                        editable={false}
+                        />
 
-                </View>
-            <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
-                >
-
-                <TextInput style={styles.keyText}
-                value="+966"
-                editable={false}
-                />
-
-                <TextInput style={[styles.phoneInput]}
-                placeholder="رقم الجوال"
-                keyboardType="numeric"
-                ref="phoneNumber"
-                underlineColorAndroid='transparent'
-                onChangeText={(phoneNo) => {
-                  this.setState({phoneNo})
-                  this.setState({currentColor: '#EAEAEA'})
-                } }
-                onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
-                value={this.state.phoneNo}
-                />
-                </View>
+                        <TextInput style={styles.phoneInput}
+                        placeholder="رقم الجوال"
+                        keyboardType="numeric"
+                        ref="phoneNumber"
+                        underlineColorAndroid='transparent'
+                        onChangeText={(phoneNo) => {
+                          this.setState({phoneNo})
+                          this.setState({currentColor: '#EAEAEA'})
+                        } }
+                        onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
+                        value={this.state.phoneNo}
+                        />
+                        </View>
 
 
-                   <View style={[styles.inputContainer]}>
+                       <View style={styles.inputContainer}>
 
-                <TextInput style={styles.inputs}
-                placeholder="البريد الإلكتروني"
-                keyboardType="email-address"
-                underlineColorAndroid='transparent'
-                onChangeText={(email) => {
-                  this.setState({email})
-                  this.setState({emailBorder: '#EAEAEA'})
-                }
-              }
-                onEndEditing={(email) => this.validateEmail(email)}
-                value={this.state.email}
-                />
-                </View>
+                     <TextInput style={styles.pass, styles.input}
+                     placeholder="كلمة المرور"
+                     secureTextEntry={true}
+                     underlineColorAndroid='transparent'
+                     autoCapitalize="none"
+                     onChangeText={password => this.setState({ password })}
+                     value={this.state.password}
+                     />
+                     </View>
+                     <View style={styles.inputContainer}>
 
-                  <View style={styles.inputContainer}>
+                     <TextInput style={styles.pass, styles.input}
+                     placeholder="تأكيد كلمة المرور"
+                     secureTextEntry={true}
+                     underlineColorAndroid='transparent'
+                     autoCapitalize="none"
+                     onChangeText={password => this.setState({ password })}
+                     value={this.state.password}
+                     />
+                     </View>
 
-                <TextInput style={styles.pass}
-                placeholder="كلمة المرور"
-                secureTextEntry={true}
-                underlineColorAndroid='transparent'
-                autoCapitalize="none"
-                onChangeText={password => this.setState({ password })}
-                value={this.state.password}
-                />
-                </View>
+                     <View style={styles.inputContainer}>
 
-                <View style={styles.inputContainer}>
+                     <TextInput style={styles.email, styles.input}
+                     placeholder="رقم الحافلة"
+                     keyboardType="numeric"
+                     underlineColorAndroid='transparent'
+                     onChangeText={busNo => this.setState({ busNo })}
+                     //line below is added new by lama:
+                     value={this.state.busNo}
+                     />
+                     </View>
 
-                <TextInput style={styles.pass}
-                placeholder="تأكيد كلمة المرور"
-                secureTextEntry={true}
-                underlineColorAndroid='transparent'
-                autoCapitalize="none"
-                onChangeText={password => this.setState({ password })}
-                value={this.state.password}
-                />
-                </View>
+                     <View style={styles.inputContainer}>
 
-                <View style={styles.inputContainer}>
+                     <TextInput style={styles.email, styles.input}
+                     placeholder="رقم اللوحة"
+                     keyboardType="numeric"
+                     underlineColorAndroid='transparent'
+                     onChangeText={busPlate => this.setState({ busPlate })}
+                     //line below is added new by lama:
+                     value={this.state.busPlate}
+                     />
+                     </View>
 
-                <TextInput style={styles.email}
-                placeholder="اسم المنشأة"
-                keyboardType="acii-capable"
-                underlineColorAndroid='transparent'
-                onChangeText={inst => this.setState({ inst })}
-                value={this.state.inst}
-                />
-                </View>
+                     
 
-                <View style={styles.inputContainer}>
+                     <View>
 
-                <TextInput style={styles.email}
-                placeholder="رقم الحافلة"
-                keyboardType="numeric"
-                underlineColorAndroid='transparent'
-                onChangeText={busNo => this.setState({ busNo })}
-                //line below is added new by lama:
-                value={this.state.busNo}
-                />
-                </View>
+                        <Text style={[styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
+                                   </View>
+<View style={styles.typeContainer}>
+<TouchableHighlight style={[styles.buttonContainer, styles.delete]}
+onPress={this.showAlertDialog}>
+
+<Text style={styles.saveText}>حذف الحافلة </Text>
 
 
+</TouchableHighlight>
+                                   <TouchableHighlight style={[styles.buttonContainer, styles.save]}
+                                   onPress={this.editProfile}>
 
-  <View >
-
-     <Text style={[styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
-                </View>
-
-                <TouchableHighlight style={[styles.buttonContainer, styles.save]}
-                onPress={this.handleInserting}>
-
-                <Text style={styles.saveText}>حفظ</Text>
-
-                </TouchableHighlight>
-                 <View>
-           <TouchableHighlight style={[styles.buttonContainer, styles.delete]} onPress=  {this.showAlertDialog}>
-
-          <Text style={styles.saveText}>حذف الحافلة </Text>
-        </TouchableHighlight>
-        </View>
-
-                    <TouchableHighlight style={[styles.buttonContainer, styles.cancel]}
-                onPress={this.handleInserting}>
-
-                <Text style={styles.saveText}>إلغاء</Text>
+                                   <Text style={styles.saveText}>حفظ</Text>
 
 
-                </TouchableHighlight>
+                                   </TouchableHighlight>
 
 
 
-                </View>
 
+</View>
+</View>
                 </ScrollView>
                 </KeyboardAwareScrollView>
 
@@ -302,6 +348,7 @@ else {
 
                     const styles = StyleSheet.create({
                                  Main:{
+                                   marginTop:100,
                                  color:'#4C73CC',
                                  flexDirection: 'row',
                                  justifyContent: 'center',
@@ -315,13 +362,22 @@ else {
                                  backgroundColor: '#F7FAFF',
                                  },
                                  smallContainer:{
-                                 marginTop:100,
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 backgroundColor: 'white',
-                                 borderRadius:10,
-                                 width:300,
-                                 height:600,
+                                   marginTop: 30,
+                                   marginBottom: 30,
+                                   justifyContent: 'center',
+                                   alignItems: 'center',
+                                   backgroundColor: 'white',
+                                   borderRadius: 10,
+                                   width: 300,
+
+
+                                   paddingVertical: 35,
+                                   shadowOpacity: 0.04,
+                                   shadowRadius: 5,
+                                   shadowColor: 'black',
+                                   shadowOffset: {
+                                     height: 0,
+                                     width: 0}
 
 
                                  },
@@ -340,48 +396,116 @@ else {
 
 
                                  },
-
-                                 pass:{
-                                 height:45,
-                                 borderBottomColor: '#FFFFFF',
-                                 flex:1,
-                                width:250,
-                                 alignSelf: 'flex-end'
-
-                                 },
-                                 email:{
-                                 height:45,
-                                 borderBottomColor: '#FFFFFF',
-                                 flex:1,
-                                 width:250,
-                                 alignSelf: 'flex-end'
+                                 container: {
+                                 justifyContent: 'center',
+                                 alignItems: 'center',
+                                 flex: 1,
+                                 backgroundColor: '#F7FAFF',
                                  },
 
-                                 buttonContainer: {
-                                  height:45,
-                                   flexDirection: 'row',
-                                  justifyContent: 'center',
-                                   alignItems: 'center',
-    //marginBottom:20,
-                                 width:250,
-                                  borderRadius:30,
-    //top: -10
-  },
+                                                                Main:{
+                                                                color:'#4C73CC',
+                                                                marginTop:30,
+                                                                flexDirection: 'row',
+                                                                justifyContent: 'center',
+                                                                alignItems: 'center',
+                                                                marginBottom:50,
+                                                                },
+                                                                container: {
+                                                                  flex: 1,
+                                                                  justifyContent: 'center',
+                                                                  alignItems: 'center',
+                                                                  backgroundColor: '#F7FAFF',
+                                                                },
+                                                                smallContainer:{
+                                                                   marginTop:40,
+                                                                   justifyContent: 'center',
+                                                                  alignItems: 'center',
+                                                                  backgroundColor: 'white',
+                                                                  borderRadius:10,
+                                                                    width:300,
+                                                                    height:600
+                                                                },
+                                                                header: {
+                                                                  color: "#8197C6",
+                                                                  fontSize: 20, //problema
+                                                                  //fontWeight:900,
+                                                                  marginTop: 30,
+                                                                  bottom: 20,
+                                                                },
+
+                                                                inputContainer: {
+                                                                  borderColor: '#EAEAEA',
+                                                                  backgroundColor: '#FFFFFF',
+                                                                  borderRadius:25,
+                                                                  borderWidth: 1,
+                                                                  width:250,
+                                                                  height:40,
+                                                                  marginBottom:15,
+                                                                  paddingHorizontal:10,
+
+
+                                                                },
+                                                                input:{
+                                                                  flex:1,
+                                                                  height:40,
+                                                                  //flexDirection:'row-reverse',
+                                                                  //justifyContent:'flex-end',
+                                                                  //marginright:16,
+                                                                 textAlign:'right',
+                                                                  borderColor: '#EAEAEA',
+                                                                  marginLeft:10,
+                                                                  marginRight:10,
+
+                                                                },
+                                                                pass:{
+                                                                height:45,
+                                                                marginLeft:170,
+                                                                borderBottomColor: '#FFFFFF',
+                                                                flex:1,
+                                                                },
+                                                                email:{
+                                                                height:45,
+                                                                marginLeft:170,
+                                                                borderBottomColor: '#FFFFFF',
+                                                                flex:1,
+                                                                },
+
+                                                                buttonContainer: {
+
+                                                                flexDirection: 'row',
+                                                                justifyContent: 'center',
+                                                                alignItems: 'center',
+                                                                top: 20,
+                                                                width:250,
+                                                                borderRadius:30,
+                                                                },
+
+
+                                                                loginButton: {
+                                                                backgroundColor: "#4C73CC",
+                                                                },
+                                                                loginText: {
+                                                                color: 'white',
+                                                                },
+
+
+
   save: {
     //backgroundColor: "#FF4DFF",
-    width: 60,
+    width: 70,
     height:30,
-    top: 70,
-    left:110,
+    //top: 120,
+
     backgroundColor:"#3C68BF",
-   //alignSelf:'flex-end'
     //marginBottom: 300,
   },
   delete:{
-      width: 100,
+marginRight:10,
+    width: 140,
     height:30,
-    top: 40,
-    left:25,
+    //top: 120,
+
     backgroundColor:"#DC143C",
    //alignSelf:'flex-end'
     //marginBottom: 300,
@@ -398,28 +522,22 @@ else {
     fontSize: 15
   },
   phoneContainer:{
-     backgroundColor: '#FFFFFF',
-      borderRadius:30,
-      borderWidth: 1,
-      width:200,
-      height:35,
-      bottom: 20,
-      marginBottom:20,
-      marginRight: 40,
-      flexDirection: 'row-reverse',
-      //justifyContent:'flex-end',
-      alignItems:'felx-end',
-      borderColor: '#EAEAEA'
+  backgroundColor: '#FFFFFF',
+  borderRadius:25,
+  borderWidth: 1,
+  width:250,
+  marginBottom:20,
+  flexDirection: 'row',
+  //justifyContent:'flex-end',
+  justifyContent:'space-around',
   },
   phoneInput:{
- flex:1,
-      height:40,
-     //flexDirection:'row-reverse',
-      //justifyContent:'flex-end',
-      //marginright:16,
-      alignSelf:'flex-end',
-      borderColor: '#EAEAEA',
-      marginLeft:10,
+
+
+  width:200,
+
+  borderColor: '#EAEAEA',
+
   },
   keyNo:{
     backgroundColor: '#FFFFFF',
@@ -436,15 +554,21 @@ else {
       borderColor: '#EAEAEA'
   },
   keyText:{
-                                 flex:1,
-                                 height:40,
-                                 textAlign:'center',
-                                 //marginRight: 30,
-                                 //justifyContent:'flex-end',
-                                 //marginright:16,
-                                 borderColor: '#EAEAEA',
-                                 color:'#646464' ,
-
+  flex:1,
+  height:40,
+  textAlign:'center',
+  //marginRight: 30,
+  //justifyContent:'flex-end',
+  //marginright:16,
+  borderColor: '#EAEAEA',
+  color:'#646464' ,
+  },
+  typeContainer: {
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    flex: 1,
+    flexDirection: 'row',
   },
    warning:{
                                  color: 'red',

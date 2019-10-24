@@ -79,17 +79,11 @@ export default class asStudent extends Component {
       firebase.database().ref('managers/').once('value', (snap) => {
 
           snap.forEach((child) => {
+          
             this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
 
-        
-          })//end snap for each
-          //itm = universities;
-          //this.setState({universities: itm});
 
-
-          /*itm.forEach((itms) => {
-              console.log(itms.name);
-          })*/
+          })
       })//end on
 
 
@@ -116,7 +110,7 @@ else {
   this.setState({passError: 'none'})
 }
 
-}//end inserting a bus
+}//end identical check
 
   validateNumber = (phoneNo) => {
     //Regex
@@ -133,7 +127,7 @@ this.setState({currentColor: 'red'})
 
 
   addStudent = () => {
-    if (this.state.email == ''||this.state.password == ''||this.state.confirmPassword==''||this.state.university==''||this.state.busNo==''||this.state.phoneNo==''||this.state.neighborhood=='') {
+    if (this.state.fullName == ''|| this.state.email == ''||this.state.password == ''||this.state.confirmPassword==''||this.state.university==''||this.state.busNo==''||this.state.phoneNo==''||this.state.neighborhood=='') {
       this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
       this.setState({errorMsgVisibilty: 'flex'})
       return;
@@ -149,54 +143,50 @@ this.setState({currentColor: 'red'})
         firebase.auth().onAuthStateChanged( user => {
             if (user) {
               this.userId = user.uid
+              user.sendEmailVerification();
               firebase.database().ref('students/'+this.userId).set(
                 {
                   name: this.state.fullName,
-                  phoneNo: this.state.phoneNo,
+                  phoneNo: '0'+this.state.phoneNo,
                   busNo: this.state.busNo,
                   neighborhood: this.state.neighborhood,
                   university:this.state.university,
                 })
+                Alert.alert("تم التسجيل بنجاح")
+                this.props.navigation.navigate('login')
             }
           });
-    }).then(() => this.props.navigation.navigate('login'))
-    //raghad plz edit the above line to the page you wanna navigate to after insertion
+        }
+        )
     .catch((error) => {
       console.log(error.message)
-
+      //or password is less than 6 characters, the below msg shows for both. which doesnt make sense
       this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
       this.setState({errorMsgVisibilty: 'flex'})
     })
-}//end adding a parent
+
+}
+//end adding a parent
 
 
+static navigationOptions = function(props) {
+return {
+  title: 'التسجيل',
+  headerLeft: <View style={{paddingLeft:16, }}>
+     <Icon
+         name="chevron-left"
+         size={30}
+         color='white'
+         onPress={() => props.navigation.goBack()} />
+ </View>,
 
-/*
-    onClickListener = (viewId) => {
-        Alert.alert("Alert", "Button pressed "+viewId);
-    }
-*/
-    static navigationOptions = function(props) {
-    return {
-      title: 'التسجيل',
-      headerLeft: <View style={{paddingLeft:16}}>
-         <Icon
-             name="chevron-left"
-             size={25}
-             color='white'
-             onPress={() => props.navigation.goBack()} />
-     </View>,
+ headerTintColor: 'white',
+       headerStyle: {
+          backgroundColor: "#4C73CC"
+       }
+}
+};
 
-     headerTintColor: 'white',
-           headerStyle: {
-              backgroundColor: "#4C73CC"
-
-           },
-           headerTitleStyle: {
-        //fontFamily:'Tajawal-Medium'
-    },
-    }
-    };
     render() {
 
 let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'النخيل'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]
@@ -217,10 +207,9 @@ scrollEnabled={false}>
 
                 <Text style={[styles.header]}>• ﻛ طالب •</Text>
                 <Text style={[styles.fontStyle,styles.perInfo]}>──── المعلومات الشخصية ────</Text>
+
+
                 <View style={[styles.inputContainer, {borderColor: this.state.nameBorder}]}>
-
-
-
                 <TextInput style={[styles.fontStyle,styles.inputs]}
                 placeholder="الاسم"
                 keyboardType="TextInput"

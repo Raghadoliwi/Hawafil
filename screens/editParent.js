@@ -15,7 +15,7 @@ import {
   Alert} from 'react-native';
   import { Card } from 'react-native-elements';
 import {DrawerNavigator} from 'react-navigation';
-import {createAppContainer } from 'react-navigation';
+import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
@@ -51,8 +51,10 @@ export default class editParent extends React.Component {
 
       }
      state = {
+       userIdNo:'',
      pName: '' ,
      phoneNo: '',
+     email: '',
         password: '',
   confirmPassword:'',
      currentColor: '#EAEAEA',
@@ -61,21 +63,64 @@ export default class editParent extends React.Component {
       errorMessage: null,
     nameBorders:'#EAEAEA',
     emailBorders:'#EAEAEA',
+    phoneBorder:'#EAEAEA',
   passwordBorder:'#EAEAEA',
   conPasswordBorder:'#EAEAEA',
+  passError:'none',
+  formErrorMsg:'',
+  errorMsgVisibilty:'none',
      }
+
+
+     componentDidMount(){ //to fetch data
+
+       firebase.auth().onAuthStateChanged((user) => {
+   if (user) {
+
+ var userId = firebase.auth().currentUser.uid;
+ this.state.userIdNo=userId;
+ email= firebase.auth().currentUser.email;
+ firebase.database().ref('parents/'+userId).on('value', snapshot => {
+
+
+   this.setState({
+     pName: snapshot.val().name ,
+     phoneNo: snapshot.val().phoneNo,
+     email: email
+   });
+
+ });
+
+
+
+   }
+ });
+
+
+
+   }
+
+
+
+
       validateEmail = (email) => {
 
   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
   if(reg.test(this.state.email)== false)
   {
 
-  this.setState({emailBorder:'red'})
+  this.setState({emailBorders:'red'})
     }
   else {
-    this.setState({emailBorder:'#91b804'})
+    this.setState({emailBorders:'#91b804'})
   }
 }//end validate phone number
+
+
+
+
+
+
 
 identicalPass = (password) => {
 if (this.state.password != this.state.confirmPassword){
@@ -87,21 +132,20 @@ else {
 
 }//end inserting a bus
 
-  validateNumber = (phoneNo) => {
-    //Regex
-    const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
-    if (!numRegex.test('0'+this.state.phoneNo)) {
-      console.log('number bad');
-      console.log('0'+this.state.phoneNo);
+validateNumber = (phoneNo) => {
+  //Regex
+  const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
+  if (!numRegex.test('0'+this.state.phoneNo)) {
 
+this.setState({phoneBorder: 'red'})
 
-      }
-      else {
-      this.setState({currentColor: '#91b804'})
-      }
+    }
+    else {
+    this.setState({phoneBorder: '#91b804'})
+    }
 }//end validate phone number
 
-
+//it's better to use Alert.alert, same one we used in forget password.
      showAlertDialog = () =>{
   Alert.alert(
   'هل أنت متأكد؟',
@@ -117,38 +161,64 @@ else {
   {cancelable: false},
 );}
 
-     handleInserting = () => {
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( (data) => {
-            firebase.auth().onAuthStateChanged( user => {
-                if (user) {
-                  this.userId = user.uid
-                  firebase.database().ref('drivers/'+this.userId).set(
-                    {
-                      name: this.state.driverName,
-                      id: this.state.workerId,
-                      phoneNo: this.state.phoneNo,
-                      inst: this.state.inst,
-                      busNo: this.state.busNo,
-                      busPlate: this.state.busPlate,
-                    })
-                }
-              });
-        }).then(() => this.props.navigation.navigate('renderManageDrivers'))
-        //raghad plz edit the above line to the page you wanna navigate to after insertion
-        .catch(error => console.log(error.message ))
-    }//end inserting a driver
+     editProfile = () => {
+         const { navigation } = this.props;
+       if (this.state.fullName == '' || this.state.email == ''|| this.state.phoneNo == '') {
+         this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
+       if (this.state.emailBorder == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'||this.state.uniBorder=='red'||this.state.busBorder=='red'||this.state.currentColor=='red'||this.state.neighborhoodBorder=='red'){
+         this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
+
+
+
+
+       var user = firebase.auth().currentUser;
+       var uid;
+       if (user != null) {
+         uid = user.uid;
+         if (this.state.password == '') {
+           if (this.state.email != ''){
+             user.updateEmail(this.state.email);
+           }
+
+           if (this.state.pName != ''){
+             firebase.database().ref('parents/'+ this.state.userIdNo).update({name : this.state.pName,})
+           }
+
+           if (this.state.phoneNo != ''){
+             firebase.database().ref('parents/'+ this.state.userIdNo).update({phoneNo : this.state.phoneNo,})
+           }
+           navigation.navigate('parentDashboard')
+         }
+         else {
+           user.updatePassword(this.state.password).then(() => {
+             navigation.navigate('login')
+           }, (error) => {
+             // An error happened.
+           });
+         }
+
+
+
+       }
+    }//end edit profile.
+
 
 
      static navigationOptions = function(props) {
      return {
-       title: 'إضافة قائد مركبة',
+       title: 'تعديل البيانات الشخصية',
        headerLeft: <View style={{paddingLeft:16, }}>
    				<Icon
-   						name="chevron-left"
+   						name="three-bars"
    						size={25}
    						color='white'
-   						onPress={() => props.navigation.goBack()} />
+   						onPress={() => props.navigation.openDrawer()}  />
    		</View>,
 
    		headerTintColor: 'white',
@@ -159,7 +229,6 @@ else {
    };
 
     render() {
-let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'النخيل'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]
         return (
           <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
       contentContainerStyle={styles.container}
@@ -168,11 +237,11 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
                 <View style={styles.smallContainer}>
                 <Text style={styles.header}>•  تعديل البيانات الشخصية • </Text>
 
-                <View style={styles.inputContainer}>
+                <View style={[styles.inputContainer, {borderColor: this.state.nameBorders}]}>
 
                 <TextInput style={styles.input}
                 placeholder="اسم ولي الأمر "
-                keyboardType="acii-capable"
+                keyboardType="TextInput"
                 underlineColorAndroid='transparent'
                 onChangeText={pName => this.setState({ pName })}
                 value={this.state.pName}
@@ -180,7 +249,7 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
                 </View>
 
 
-                  <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
+                  <View style={[styles.phoneContainer, {borderColor: this.state.phoneBorder}]}
                 >
 
                 <TextInput style={styles.keyText}
@@ -203,9 +272,9 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
                 </View>
 
 
-                   <View style={[styles.inputContainer,]}>
+                   <View style={[styles.inputContainer, {borderColor: this.state.emailBorders}]}>
 
-                <TextInput style={styles.inputs}
+                <TextInput style={styles.input}
                 placeholder="البريد الإلكتروني"
                 keyboardType="email-address"
                 underlineColorAndroid='transparent'
@@ -217,76 +286,59 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
                 onEndEditing={(email) => this.validateEmail(email)}
                 value={this.state.email}
                 />
+
                 </View>
 
 
                  <View style={styles.inputContainer}>
 
-                <TextInput style={styles.pass}
+                <TextInput style={styles.input}
                 placeholder="كلمة المرور"
                 secureTextEntry={true}
                 underlineColorAndroid='transparent'
                 autoCapitalize="none"
-                onChangeText={password => this.setState({ password })}
+                onChangeText={(password) => {
+                  this.setState({password})
+                  this.setState({passwordBorder: '#EAEAEA'})
+                } }
                 value={this.state.password}
                 />
                 </View>
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.pass}
+                <TextInput style={styles.input}
                 placeholder="تأكيد كلمة المرور"
                 secureTextEntry={true}
                 underlineColorAndroid='transparent'
-                autoCapitalize="none"
-                onChangeText={password => this.setState({ password })}
-                value={this.state.password}
+
+                onChangeText={(confirmPassword) => {
+                  this.setState({confirmPassword})
+                  this.setState({conPasswordBorder: '#EAEAEA'})
+                  this.setState({passError: 'none'})
+                } }
+                  onEndEditing={(confirmPassword) =>{this.identicalPass(confirmPassword)} }
+                value={this.state.confirmPassword}
                 />
                 </View>
+                <View >
 
-           <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
-                              <Dropdown
-                              itemColor='#919191'
-                              baseColor='#919191'
-                              textColor='#919191'
+                  <Text style={[styles.warning,styles.fontStyle, {display: this.state.passError}]}> كلمة المرور غير متطابقة </Text>
+                </View>
 
-                              itemTextStyle={{textAlign:'right'}}
-                  style={{textAlign:'right'}}
-                  dropdownOffset={{ top: 0, left: 0}}
-                                   inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
-                                  containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
-                                  pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
-                                  itemPadding={10}
-                                  shadeOpacity={0}
-                                  rippleInsets={{top: 0, bottom: 0}}
-                                  dropdownMargins	={{min: 0, max: 0}}
-                                  dropdownPosition ={0}
-                  label='الحي السكني'
 
-                  data={riyadhDistricts}
+                <View >
 
-                  onChangeText={(value) => {
-                    this.setState({neighborhood:value})
-                    this.setState({neighborhoodBorder: '#EAEAEA'})
-                  } }
-                />
-              </View>
-
+                  <Text style={[styles.fontStyle,styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
+                </View>
 
                 <TouchableHighlight style={[styles.buttonContainer, styles.save]}
-                onPress={this.handleInserting}>
+                onPress={this.editProfile}>
 
                 <Text style={styles.saveText}>حفظ</Text>
 
                 </TouchableHighlight>
 
-                    <TouchableHighlight style={[styles.buttonContainer, styles.cancel]}
-                onPress={this.handleInserting}>
-
-                <Text style={styles.saveText}>إلغاء</Text>
-
-
-                </TouchableHighlight>
 
 
 
@@ -308,43 +360,56 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
                                  alignItems: 'center',
                                  backgroundColor: '#F7FAFF',
                                  },
+
                                  smallContainer:{
-                                 marginTop:130,
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 backgroundColor: 'white',
-                                 borderRadius:10,
-                                 width:300,
-                                 height:400,
+                                   marginTop:15,
+
+                                   justifyContent: 'center',
+                                  alignItems: 'center',
+                                  backgroundColor: 'white',
+                                  borderRadius:10,
+                                    width:300,
+                                    height:500,
+                                    marginBottom:30,
+
+                                    shadowOpacity: 0.04,
+                                            shadowRadius: 5,
+                                            shadowColor: 'black',
+                                            shadowOffset: { height: 0, width: 0 }
 
                                  },
 
                                  inputContainer: {
                                    borderColor: '#EAEAEA',
-                                   backgroundColor: '#FFFFFF',
+                                   backgroundColor: 'white',
                                    borderRadius:25,
                                    borderWidth: 1,
                                    width:250,
-                                   height:35,
-                                   marginBottom:10,
-                                   top:40,
+                                   height:40,
+                                   marginBottom:15,
                                    paddingHorizontal:10,
-                                  flexDirection: 'row',
+                                  // fontFamily: 'tajawal',
+
 
                                  },
                                  input:{
-                                       flex:1,
-                                      height:40,
-                                   alignSelf:'flex-end',
-                                     borderColor: '#EAEAEA',
+                                   flex:1,
+                                   height:40,
+                                   //flexDirection:'row-reverse',
+                                   //justifyContent:'flex-end',
+                                   //marginright:16,
+                                  textAlign:'right',
+                                   borderColor: '#EAEAEA',
+                                   marginLeft:10,
 
                                  },
                                  header:{
-    color: "#8197C6",
-    fontSize: 15 ,//problema
-    fontWeight:'bold',
-    bottom:-15 ,
-  },
+                                 color: "#8197C6",
+                                 fontSize: 20 ,//problema
+                                 //fontWeight:900,
+
+                                 bottom: 20,
+                                 },
 
 
 
@@ -369,12 +434,10 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
    },
   save: {
     //backgroundColor: "#FF4DFF",
-    width: 60,
+    width: 70,
     height:30,
-    top: 15,
-    left:35,
+    //top: 120,
     backgroundColor:"#3C68BF",
-   //alignSelf:'flex-end'
     //marginBottom: 300,
   },
 
@@ -390,38 +453,53 @@ let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'�
     fontSize: 15
   },
   phoneContainer:{
-     backgroundColor: '#FFFFFF',
-      borderRadius:30,
-      borderWidth: 1,
-      width:200,
-      height:35,
-      bottom: -45,
-      marginBottom:20,
-      marginRight: 40,
-      flexDirection: 'row-reverse',
-      //justifyContent:'flex-end',
-      alignItems:'flex-end',
-      borderColor: '#EAEAEA'
+  backgroundColor: '#FFFFFF',
+  borderRadius:25,
+  borderWidth: 1,
+  width:250,
+  marginBottom:20,
+  flexDirection: 'row',
+  //justifyContent:'flex-end',
+  justifyContent:'space-around',
   },
+
   phoneInput:{
- flex:1,
-      height:40,
-     //flexDirection:'row-reverse',
-      //justifyContent:'flex-end',
-      //marginright:16,
-      alignSelf:'flex-end',
-      borderColor: '#EAEAEA',
-      marginLeft:10,
+
+
+  width:200,
+
+  borderColor: '#EAEAEA',
+
+  },
+
+  keyNo:{
+  backgroundColor: '#FFFFFF',
+  borderRadius:30,
+  borderWidth: 1,
+  width:30,
+  height:35,
+
+  // marginLeft: 250,
+
+
+  //justifyContent:'flex-end',
+  //alignItems:'flex-end',
+  borderColor: '#EAEAEA'
   },
   keyText:{
-                                 flex:1,
-                                 height:40,
-                                 textAlign:'center',
-                                 //marginRight: 30,
-                                 //justifyContent:'flex-end',
-                                 //marginright:16,
-                                 borderColor: '#EAEAEA',
-                                 color:'#646464' ,
-
-  }
+  flex:1,
+  height:40,
+  textAlign:'center',
+  //marginRight: 30,
+  //justifyContent:'flex-end',
+  //marginright:16,
+  borderColor: '#EAEAEA',
+  color:'#646464' ,
+  },
+  warning:{
+    color: 'red',
+    fontSize:12,
+    marginBottom:10,
+    textAlign:'center'
+  },
 });

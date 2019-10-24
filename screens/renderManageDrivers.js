@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
 import addBusDriver from './addBusDriver'
+import editDriverForm from './editDriverForm'
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
     size={20}
@@ -42,25 +43,55 @@ export default class renderManageDrivers extends React.Component {
       }
 
       componentDidMount(){ //to fetch data
-          firebase.database().ref('drivers/').on('value', (snap) => {
-              let items = [];
-              snap.forEach((child) => {
-                  items.push({
-                      name: child.val().name ,
-                      busNo: child.val().busNo ,
-                      neighborhood: child.val().phoneNo ,
-                      busPlate: child.val().busPlate ,
-                  })
-              })//end snap for each
-              itm = items;
-              this.setState({items: items});
-              console.log(itm);
-              console.log("lama-------");
-              console.log(this.state.items); //This is wrong
-              itm.forEach((itms) => {
-                  console.log(itms.name);
-              })
-          })//end on
+
+        firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+
+  var userId = firebase.auth().currentUser.uid;
+  firebase.database().ref('managers/'+userId).on('value', snapshot => {
+
+this.setState({inst: snapshot.val().instName})
+
+})
+
+firebase.database().ref('drivers/').on('value', (snap) => {
+    let items = [];
+    snap.forEach((child) => {
+      if (child.val().inst === this.state.inst)
+        items.push({
+            name: child.val().name ,
+            busNo: child.val().busNo ,
+            district: child.val().district ,
+            busPlate: child.val().busPlate ,
+            id: child.val().id ,
+            inst: child.val().inst ,
+            phoneNo: child.val().phoneNo ,
+
+
+        })
+
+    })//end snap for each
+    itm = items;
+    this.setState({items: items});
+
+
+})//end on
+
+
+
+
+
+
+
+    }
+  });
+
+
+
+
+
+
+
 
 
       }
@@ -84,7 +115,6 @@ return {
         }
 }
 };
-
 	render() {
     return (
 
@@ -92,52 +122,41 @@ return {
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
      <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
-onPress={() => this.props.navigation.push('addBusDriver')}     >
+onPress={() => this.props.navigation.push('addBusDriver',{inst:this.state.inst})}     >
           <Text style={styles.addText}>إضافة قائد حافلة</Text>
         </TouchableHighlight>
+        {
+        this.state.items.map((u, i ) => {
 
-        {/*
-            <Card containerStyle={styles.cards} title="فاروق نور الدين">
+            return (
+                <Card containerStyle={styles.cards} title={u.name}>
+                <View style={styles.typeContainer}>
+                <Text style={styles.paragraph} key={u.id}>الرقم الوظيفي: </Text>
+                <Text style={styles.info}>{u.id}</Text>
+                </View>
+                <View style={styles.typeContainer}>
+                <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: </Text>
+                <Text style={styles.info}>{u.busNo}</Text>
+                </View>
+                <View style={styles.typeContainer}>
+                    <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: </Text>
+                    <Text style={styles.info}>{u.busPlate}</Text>
+                    </View>
+                    <View style={styles.typeContainer}>
+                    <Text style={styles.paragraph} key={u.phoneNo}>رقم الجوال: </Text>
+                    <Text style={styles.info}>{u.phoneNo}</Text>
+                    </View>
 
-<Text style={styles.paragraph}>
-  • رقم الحافلة : ٩
-</Text>
 
-<Text style={styles.paragraph}>
-• الحي: الغدير
-</Text>
-<Text style={styles.paragraph}>
- • رقم لوحة الحافلة: ٤٤٤ م ب س
-</Text>
-</Card>
+                                     <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+                                     onPress={() =>  this.props.navigation.push('editDriverForm',{id:u.id}) }>
+                                    <Text style={styles.editText}>تعديل</Text>
+                                  </TouchableHighlight>
+                </Card>
+            );
+        })
+        }
 
-            <Card containerStyle={styles.cards} title="محمد سليمان">
-        react-native-elements Card
-          <Text style={styles.paragraph}>
-          • رقم الحافلة : ٣
-          </Text>
-
-          <Text style={styles.paragraph}>
-         • الحي: الصحافة
-          </Text>
-           <Text style={styles.paragraph}>
-           • رقم لوحة الحافلة: ٦٦٦ ب ي ت
-          </Text>
-        </Card>
-        <Card containerStyle={styles.cards} title="محمود ناصر">
-          <Text style={styles.paragraph}>
-        • رقم الحافلة: ٧
-          </Text>
-
-          <Text style={styles.paragraph}>
-         • الحي: الربيع
-          </Text>
-          <Text style={styles.paragraph}>
-           • رقم لوحة الحافلة: ٥٥٥ ح م د
-          </Text>
-        </Card>
-*/
-}
 
       </ScrollView>
       </View>
@@ -158,12 +177,19 @@ const styles = StyleSheet.create({
 
 
   paragraph: {
-    marginTop: 10,
+
     fontSize: 14,
-    fontWeight: 'bold',
     textAlign: 'right',
     color: '#3C68BF',
     borderRadius: 550,
+  },
+  info: {
+
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'right',
+    color: '#c8c8c8',
+
   },
   cards:{
     borderRadius: 25, width: 250, marginTop: 20, borderWidth: 0.5, shadowOpacity: 0.04,
@@ -183,6 +209,13 @@ const styles = StyleSheet.create({
     width:250,
     borderRadius:30,
   },
+  typeContainer: {
+    justifyContent: 'right',
+
+    flex: 1,
+    marginTop:10,
+    flexDirection: 'row-reverse',
+  },
   addButton: {
 		flex: 1,
 		alignSelf:'center',
@@ -193,6 +226,22 @@ const styles = StyleSheet.create({
     bottom: 5,
     backgroundColor:"#EDC51B",
     //marginBottom: 300,
+  },
+  editButton:{
+ 	  flex: 1,
+		alignSelf:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 90,
+    height:30,
+    bottom: 5,
+    backgroundColor:"#3C68BF",
+    //marginBottom: 300,
+  },
+  editText: {
+    color: 'white',
+    fontSize: 12,
+		fontWeight:'bold'
   },
   addText: {
     color: 'white',

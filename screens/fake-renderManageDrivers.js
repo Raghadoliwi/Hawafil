@@ -3,16 +3,20 @@ import React from 'react';
 
 import { Text, View, StyleSheet, ScrollView, SafeAreaView,TouchableHighlight } from 'react-native';
 import { Card } from 'react-native-elements';
-//lama : import Icon from 'react-native-vector-icons/Octicons';
+import {DrawerNavigator} from 'react-navigation';
+import {createAppContainer } from 'react-navigation';
+import {createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
-/*lama will comment this
+import Constants from 'expo-constants';
+import addBusDriver from './addBusDriver'
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
     size={20}
     color='#fff'
     onPress={() => this.navigation.openDrawer()}
 />;
-*/
 
 
 export default class renderManageDrivers extends React.Component {
@@ -27,13 +31,14 @@ export default class renderManageDrivers extends React.Component {
           appId: "1:932110912763:web:68fca60e805543a655b45e",
           measurementId: "G-G21F8ME7TS"
         };
-      
-        firebase.initializeApp(firebaseConfig);
+
+
       }
       constructor(props){
         super(props)
         this.state = {
-          items : []        }
+          items : []
+        }
       }
 
       componentDidMount(){ //to fetch data
@@ -50,44 +55,39 @@ export default class renderManageDrivers extends React.Component {
               itm = items;
               this.setState({items: items});
               console.log(itm);
-              console.log('itemstate' + this.state.items);
+              console.log("lama-------");
+              console.log(this.state.items); //This is wrong
               itm.forEach((itms) => {
-                  console.log('name*'+ itms.name);
+                  console.log(itms.name);
               })
           })//end on
-          .then((response) => response.json())
-          .then((responseJSON) => {
 
-          })
-          .catch((error) => {
-              console.log(error)
-          })
 
       }
-      
-      /*lama comment this
-	static navigationOptions = function(props) {
-  return {
-		drawerLabel:'إدارة السائقين',
-    title: 'إدارة السائقين',
-    headerLeft: <View style={{paddingLeft:16}}>
-				<Icon
-						name="three-bars"
-						size={25}
-						color='white'
-						onPress={() => props.navigation.openDrawer()} />
-		</View>,
 
-		headerTintColor: 'white',
-		      headerStyle: {
-		         backgroundColor: "#4C73CC"
-		      }
-	}
+
+static navigationOptions = function(props) {
+return {
+  drawerLabel:'إدارة السائقين',
+  title: 'إدارة السائقين',
+  headerLeft: <View style={{paddingLeft:16}}>
+      <Icon
+          name="three-bars"
+          size={25}
+          color='white'
+          onPress={() => props.navigation.openDrawer()} />
+  </View>,
+
+  headerTintColor: 'white',
+        headerStyle: {
+           backgroundColor: "#4C73CC"
+        }
+}
 };
-*/
+
 	render() {
     return (
- 
+
       <View style={{padding: 10, flex: 1}, styles.container} >
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
@@ -95,17 +95,7 @@ export default class renderManageDrivers extends React.Component {
 onPress={() => this.props.navigation.push('addBusDriver')}     >
           <Text style={styles.addText}>إضافة قائد حافلة</Text>
         </TouchableHighlight>
-        {
-        this.state.items.map((u, i ) => {
-            return (
-                <Card containerStyle={styles.cards} title={u.name}>
-                    <Text style={styles.paragraph} key={u.busNo}></Text>
-                    <Text style={styles.paragraph} key={u.neighborhood}></Text>
-                    <Text style={styles.paragraph} key={u.busPlate}></Text>
-                </Card>
-            );
-        })
-        }
+
         {/*
             <Card containerStyle={styles.cards} title="فاروق نور الدين">
 

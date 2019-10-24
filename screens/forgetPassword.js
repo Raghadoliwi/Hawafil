@@ -45,13 +45,22 @@ export default class forgetPassword extends React.Component {
 
 
                       forgetPassword = () => {
+                          const { navigation } = this.props;
                         if (this.state.email == '') {
                           this.setState({emailBorders: 'red'})
                           return;
+                          
+
                         }
                         firebase.auth().sendPasswordResetEmail(this.state.email)
                         .then(function() {
+                          Alert.alert('تمت العملية بنجاح',"فضلًا تفقد بريدك الإلكتروني",
+);
+navigation.navigate('login')
+                          /*
+                          Alert('تم إرسال إيميل استعادة المرور بنجاح');
                           this.props.navigation.navigate('login');
+                          */
                           })
                           .catch((error) => {
 

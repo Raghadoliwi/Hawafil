@@ -24,6 +24,15 @@ import Constants from 'expo-constants';
 import DropdownMenu from 'react-native-dropdown-menu';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+/*
+Children:
+- Name
+- Bus
+- School name (institution)
+- type of school
+- parentPhoneNumber
+- district
+*/
 
 const MenuIcon = ({ navigate }) => <Icon
     name='chevron-left'
@@ -50,10 +59,12 @@ export default class editChild extends React.Component {
 
       }
      state = {
+    parentPhoneNo:'',
      sName: '' ,
-     school: '',
+     inst: '',
      level: '',
      busNo: '',
+     district: '',
      errorMessage: null
      }
 
@@ -72,31 +83,86 @@ export default class editChild extends React.Component {
   {cancelable: false},
 );}
 
-     handleInserting = () => {
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( (data) => {
-            firebase.auth().onAuthStateChanged( user => {
-                if (user) {
-                  this.userId = user.uid
-                  firebase.database().ref('drivers/'+this.userId).set(
-                    {
-                      name: this.state.driverName,
-                      id: this.state.workerId,
-                      phoneNo: this.state.phoneNo,
-                      inst: this.state.inst,
-                      busNo: this.state.busNo,
-                      busPlate: this.state.busPlate,
-                    })
-                }
-              });
-        }).then(() => this.props.navigation.navigate('renderManageDrivers'))
-        //raghad plz edit the above line to the page you wanna navigate to after insertion
-        .catch(error => console.log(error.message ))
-    }//end inserting a driver
+componentDidMount(){
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user){
+      var userId = firebase.auth().currentUser.uid;
+      var phoneNo;
+      return firebase.database().ref('parents/'+uid).once('value')
+      .then(function(snapshot) {
+        this.state.parentPhoneNo = snapshot.val().phoneNo;
+        return firebase.database().ref('children/'+this.state.parentPhoneNo).once('value')
+        .then(function(snapshot) {
+          this.setState({
+            sName: snapshot.val().name,
+            inst: snapshot.val().inst,
+            busNo: snapshot.val().busNo,
+            level: snapshot.val().level,
+            district: snapshot.val().district,
+          })
+        })
+       });
+
+    }//end if
+  })
+
+
+
+  const { navigation } = this.props;
+        var parentNo = navigation.getParam('parentNo', 'NO-NUM');
+        console.log(parentNo);
+  if (parentNo !== 'NO-NUM'){
+
+    firebase.database().ref('children/').on('value', (snap) => {
+
+  snap.forEach((child) => {
+
+    if (child.key === parentNo){
+    this.setState({
+
+        sName: child.val().name,
+        level: child.val().level,
+        inst: child.val().inst,
+        busNo: child.val().busNo,
+        district: child.val().district,
+
+
+      });
+  }
+
+
+  })//end snap for each
+
+
+    });
+
+
+
+
+
+  }
+
+
+}
+
+     editChild = () => {
+       var phoneNo = this.state.parentPhoneNo;
+       if (phoneNo != null){
+         return firebase.database().ref('children/'+phoneNo).update({
+           sName: this.state.name,
+           inst: this.state.inst,
+           busNo: this.state.busNo,
+           level: this.state.level,
+           district: this.state.district,
+         })
+         Alert.alert('تم تحديث البيانات بنجاح');
+         this.props.navigation.navigate('parentDashboard');
+       }
+    }//end edit child.
 
      static navigationOptions = function(props) {
      return {
-       title: 'إضافة قائد مركبة',
+       title: 'تعديل بيانات الطفل',
        headerLeft: <View style={{paddingLeft:16, }}>
    				<Icon
    						name="chevron-left"
@@ -128,8 +194,8 @@ export default class editChild extends React.Component {
                 placeholder="اسم الطالب "
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={workerId => this.setState({ sName })}
-                value={this.state.workerId}
+                onChangeText={sName => this.setState({ sName })}
+                value={this.state.sName}
                 />
                 </View>
 
@@ -140,8 +206,8 @@ export default class editChild extends React.Component {
                 placeholder="المدرسة"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={ driverName => this.setState({ school })}
-                value={this.state.driverName}
+                onChangeText={ inst => this.setState({ inst })}
+                value={this.state.inst}
                 />
 
                 </View>
@@ -150,21 +216,21 @@ export default class editChild extends React.Component {
                <View style={styles.typeContainer}>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level1'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level1'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'التمهيدي'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'التمهيدي'})} >
 <Text style={styles.typeText}>تمهيدي</Text>
                 </TouchableHighlight>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level2'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level2'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'الابتدائي'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'الابتدائي'})} >
 <Text style={styles.typeText}>ابتدائي</Text>
                 </TouchableHighlight>
 
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level3'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level3'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'المتوسط'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'المتوسط'})} >
 <Text style={styles.typeText}>متوسط</Text>
                 </TouchableHighlight>
 
-<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.typeOf === 'level4'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({typeOf:'level4'})} >
+<TouchableHighlight style={[styles.typeButtonContainer,styles.buttonContainer, this.state.level === 'الثانوي'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({level:'الثانوي'})} >
 <Text style={styles.typeText}>ثانوي</Text>
                 </TouchableHighlight>
 
@@ -186,24 +252,15 @@ export default class editChild extends React.Component {
 
 
                 <TouchableHighlight style={[styles.buttonContainer, styles.save]}
-                onPress={this.handleInserting}>
-
+                onPress={this.editChild}>
                 <Text style={styles.saveText}>حفظ</Text>
-
                 </TouchableHighlight>
+
                 <TouchableHighlight style={[styles.buttonContainer, styles.delete]}
-                onPress=  {this.showAlertDialog}>
-
+                onPress={this.showAlertDialog}>
                 <Text style={styles.saveText}>حذف الطالب</Text>
-
                 </TouchableHighlight>
-                    <TouchableHighlight style={[styles.buttonContainer, styles.cancel]}
-                onPress={this.handleInserting}>
 
-                <Text style={styles.saveText}>إلغاء</Text>
-
-
-                </TouchableHighlight>
 
 
 
