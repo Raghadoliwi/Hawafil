@@ -79,7 +79,7 @@ export default class asStudent extends Component {
       firebase.database().ref('managers/').once('value', (snap) => {
 
           snap.forEach((child) => {
-          
+
             this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
 
 
@@ -132,6 +132,11 @@ this.setState({currentColor: 'red'})
       this.setState({errorMsgVisibilty: 'flex'})
       return;
     }
+    if (this.state.password.length < 6) {
+      this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور أكثر من ٦ خانات'})
+      this.setState({errorMsgVisibilty: 'flex'})
+      return;
+    }
     if (this.state.emailBorder == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'||this.state.uniBorder=='red'||this.state.busBorder=='red'||this.state.currentColor=='red'||this.state.neighborhoodBorder=='red'){
       this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
       this.setState({errorMsgVisibilty: 'flex'})
@@ -152,10 +157,11 @@ this.setState({currentColor: 'red'})
                   neighborhood: this.state.neighborhood,
                   university:this.state.university,
                 })
-                Alert.alert("تم التسجيل بنجاح")
+
                 this.props.navigation.navigate('login')
             }
           });
+              Alert.alert("تم التسجيل بنجاح، تفقد بريدك الإلكترني")
         }
         )
     .catch((error) => {
@@ -177,7 +183,22 @@ return {
          name="chevron-left"
          size={30}
          color='white'
-         onPress={() => props.navigation.goBack()} />
+         onPress={() => {
+           Alert.alert(
+'',
+'هل أنت متأكد؟',
+[
+  {
+    text: 'لا',
+    onPress: () => console.log('Cancel Pressed'),
+    style: 'cancel',
+  },
+{text: 'نعم', onPress: () => props.navigation.goBack()}
+],
+{cancelable: false},
+);
+
+         }} />
  </View>,
 
  headerTintColor: 'white',

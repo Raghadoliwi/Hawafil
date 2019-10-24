@@ -149,7 +149,7 @@ componentDidMount(){
        var phoneNo = this.state.parentPhoneNo;
        if (phoneNo != null){
          return firebase.database().ref('children/'+phoneNo).update({
-           sName: this.state.name,
+           sName: this.state.sName,
            inst: this.state.inst,
            busNo: this.state.busNo,
            level: this.state.level,

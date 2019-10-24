@@ -58,6 +58,7 @@ export default class addBusDriver extends React.Component {
      inst:'',
      busNo: '',
      district:'',
+     idBorder:'#EAEAEA',
       busPlate: '',
      nameBorders:'#EAEAEA',
  neighborhoodBorder:'#EAEAEA',
@@ -119,7 +120,47 @@ const {navigation} = this.props;
                     }//end
 
 
+                    validateIdentity = (id) => {
 
+                  console.log(id);
+                console.log(this.state.nationalId);
+                    try { id = this.state.nationalId.toString().trim();
+                      console.log(id);
+                    }
+                    catch (e){
+                      console.log(e.message);
+                      console.log(id);
+                    }
+
+                    if (id.length !== 10) {
+                        this.setState({idBorder:'red'})
+                        console.log(id);
+                          console.log(id.length);
+                          console.log('length');
+                        return;
+                    }
+                    var type = id.substr(0, 1);
+                    if (type !== '2' && type !== '1') {
+                        this.setState({idBorder:'red'})
+                          console.log('initial');
+                        return;
+
+                    }
+                  console.log('hello');
+                    var sum = 0;
+                    for (var i = 0; i < 10; i++) {
+                      if (i % 2 === 0) {
+                        var ZFOdd = String('00' + String(Number(id.substr(i, 1)) * 2)).slice(-2);
+                        sum += Number(ZFOdd.substr(0, 1)) + Number(ZFOdd.substr(1, 1));
+                      } else {
+                        sum += Number(id.substr(i, 1));
+                      }
+
+                    }
+                    this.setState({idBorder:'#91b804'})
+                    return;
+
+                  }
 
 
 
@@ -133,7 +174,22 @@ const {navigation} = this.props;
    						name="chevron-left"
    						size={30}
    						color='white'
-   						onPress={() => props.navigation.goBack()} />
+              onPress={() => {
+                Alert.alert(
+     '',
+     'هل أنت متأكد؟',
+     [
+       {
+         text: 'لا',
+         onPress: () => console.log('Cancel Pressed'),
+         style: 'cancel',
+       },
+     {text: 'نعم', onPress: () => props.navigation.goBack()}
+     ],
+     {cancelable: false},
+     );
+
+              }} />
    		</View>,
 
    		headerTintColor: 'white',
@@ -155,16 +211,22 @@ const {navigation} = this.props;
           <View style={styles.smallContainer}>
           <Text style={styles.header}>• إضافة قائد مركبة •</Text>
 
-                <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, {borderColor: this.state.idBorder}]}>
 
-                <TextInput style={styles.email, styles.input}
-                placeholder="الرقم الوظيفي"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={workerId => this.setState({ workerId })}
-                value={this.state.workerId}
-                />
-                </View>
+          <TextInput style={[styles.inputs]}
+          placeholder="الهوية/الإقامة"
+          keyboardType="numeric"
+          underlineColorAndroid='transparent'
+
+          onChangeText={(nationalId) => {
+            this.setState({nationalId})
+            this.setState({idBorder: '#EAEAEA'})
+
+          }}
+            onEndEditing={(nationalId) => this.validateIdentity(nationalId)}
+          value={this.state.nationalId}
+          />
+          </View>
 
 
                 <View style={styles.inputContainer}>

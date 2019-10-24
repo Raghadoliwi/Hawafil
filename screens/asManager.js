@@ -144,7 +144,7 @@ console.log(this.state.nationalId);
   }//end validate phone number
 
     addInstit = () => {
-      if (this.state.name == '' || this.state.email == ''||this.state.password == ''||this.state.confirmPassword=='') {
+      if (this.state.name == '' || this.state.email == ''||this.state.password == ''||this.state.confirmPassword==''|| this.state.phoneNo == ''|| this.state.nationalId == '' || this.state.instName == '') {
         this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
         this.setState({errorMsgVisibilty: 'flex'})
         return;
@@ -155,7 +155,11 @@ console.log(this.state.nationalId);
         return;
       }
 
-
+      if (this.state.password.length < 6) {
+        this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور أكثر من ٦ خانات'})
+        this.setState({errorMsgVisibilty: 'flex'})
+        return;
+      }
 
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then( (data) => {
@@ -170,10 +174,11 @@ console.log(this.state.nationalId);
                   nationalId: this.state.nationalId,
                   instName:this.state.instName,
                 })
-                Alert.alert("تم التسجيل بنجاح")
+
                 this.props.navigation.navigate('login')
             }
           })
+  Alert.alert("تم التسجيل بنجاح، تفقد بريدك الإلكترني")
         })
     .catch((error) => {
       console.log(error.message)
@@ -237,7 +242,22 @@ console.log(this.state.nationalId);
           name="chevron-left"
           size={30}
           color='white'
-          onPress={() => props.navigation.goBack()} />
+          onPress={() => {
+            Alert.alert(
+ '',
+ 'هل أنت متأكد؟',
+ [{text: 'نعم', onPress: () => props.navigation.goBack()},
+   {
+     text: 'لا',
+     onPress: () => console.log('Cancel Pressed'),
+     style: 'cancel',
+   },
+
+ ],
+ {cancelable: false},
+);
+
+          }} />
   </View>,
 
   headerTintColor: 'white',
@@ -397,13 +417,6 @@ value={this.state.instName}
 
 </View>
 
-<TouchableHighlight style={[styles.attachButtonContainer, styles.attachButton]}
-onPress={this.handleDocPicker}>
-
-<Text style={styles.signupText}>إرفاق الإثبات</Text>
-
-</TouchableHighlight>
-<Text style={styles.SubSub}> *يسمح بملفات (PNG , JPG) </Text>
 
 <View >
 

@@ -105,11 +105,17 @@ export default class App extends Component {
 
 
     addParent = () => {
-      if (this.state.fullName == '' || this.state.email == ''||this.state.password == ''||this.state.confirmPassword=='') {
+      if (this.state.fullName == '' || this.state.email == ''||this.state.password == ''||this.state.confirmPassword==''||this.state.phoneNo=='') {
         this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
         this.setState({errorMsgVisibilty: 'flex'})
         return;
       }
+      if (this.state.password.length < 6) {
+        this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور أكثر من ٦ خانات'})
+        this.setState({errorMsgVisibilty: 'flex'})
+        return;
+      }
+
       if (this.state.emailBorder == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'||this.state.uniBorder=='red'||this.state.busBorder=='red'||this.state.currentColor=='red'||this.state.neighborhoodBorder=='red'){
         this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
         this.setState({errorMsgVisibilty: 'flex'})
@@ -130,10 +136,11 @@ export default class App extends Component {
                     name: this.state.fullName,
                     phoneNo: this.state.phoneNo,
                   })
-                  Alert.alert("تم التسجيل بنجاح")
+
                   this.props.navigation.navigate('login')
               }
             });
+              Alert.alert("تم التسجيل بنجاح، تفقد بريدك الإلكترني")
       })
       .catch((error) => {
         console.log(error.message)
@@ -154,7 +161,22 @@ export default class App extends Component {
            name="chevron-left"
            size={30}
            color='white'
-           onPress={() => props.navigation.goBack()} />
+           onPress={() => {
+             Alert.alert(
+  '',
+  'هل أنت متأكد؟',
+  [{text: 'نعم', onPress: () => props.navigation.goBack()},
+    {
+      text: 'لا',
+      onPress: () => console.log('Cancel Pressed'),
+      style: 'cancel',
+    },
+
+  ],
+  {cancelable: false},
+);
+
+           }} />
    </View>,
 
    headerTintColor: 'white',
