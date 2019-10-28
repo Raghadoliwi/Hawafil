@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   info: {
 
     fontSize: 14,
-    fontWeight: 'bold',
+    //fontWeight: 500,
     textAlign: 'right',
     color: '#c8c8c8',
 
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     borderRadius:30,
   },
   typeContainer: {
-    justifyContent: 'right',
+  //  justifyContent: 'right',
 
     flex: 1,
     marginTop:10,
@@ -241,11 +241,11 @@ const styles = StyleSheet.create({
   editText: {
     color: 'white',
     fontSize: 12,
-		fontWeight:'bold'
+		//fontWeight: "500"
   },
   addText: {
     color: 'white',
     fontSize: 18 ,
-		fontWeight:'bold'
+		//fontWeight: "500"
   }
 });
