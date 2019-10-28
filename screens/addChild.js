@@ -392,7 +392,7 @@ backgroundColor: 'white',
 borderRadius:10,
 flex: 1,
 bottom: -50,
-flexDirection: 'row',
+flexDirection: 'row-reverse',
 
 },
 

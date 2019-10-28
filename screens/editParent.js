@@ -174,6 +174,11 @@ this.setState({phoneBorder: 'red'})
          return;
        }
 
+       if (this.state.password.length < 6) {
+         this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور أكثر من ٦ خانات'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
 
 
 
@@ -199,6 +204,7 @@ this.setState({phoneBorder: 'red'})
            user.updatePassword(this.state.password).then(() => {
              navigation.navigate('login')
            }, (error) => {
+             console.log(error);
              // An error happened.
            });
          }
