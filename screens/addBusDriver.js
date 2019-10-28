@@ -24,6 +24,7 @@ import Constants from 'expo-constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Dropdown } from 'react-native-material-dropdown';
 import DropdownMenu from 'react-native-dropdown-menu';
+//import AsyncStorage from '@react-native-community/async-storage';
 const MenuIcon = ({ navigate }) => <Icon
     name='chevron-left'
     size={20}
@@ -46,12 +47,12 @@ export default class addBusDriver extends React.Component {
           appId: "1:932110912763:web:68fca60e805543a655b45e",
           measurementId: "G-G21F8ME7TS"
         };
-
       }
+
+
      state = {
      email: '' ,
-     password: '',
-     workerId: '',
+     nationalId: '',
      driverName: '',
        currentColor: '#EAEAEA',
      phoneNo: '',
@@ -61,50 +62,92 @@ export default class addBusDriver extends React.Component {
      idBorder:'#EAEAEA',
       busPlate: '',
      nameBorders:'#EAEAEA',
+     emailBorder:'#EAEAEA',
  neighborhoodBorder:'#EAEAEA',
    passwordBorder:'#EAEAEA',
    conPasswordBorder:'#EAEAEA',
-     //district:'',
-     errorMessage: null
+     formErrorMsg:'',
+     errorMsgVisibilty:'none',
      }
 
      validateNumber = (phoneNo) => {
        //Regex
-         console.log(phoneNo);
        const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
        if (!numRegex.test('0'+this.state.phoneNo)) {
 
-   this.setState({phoneBorder: 'red'})
+   this.setState({currentColor: 'red'})
 
          }
          else {
-         this.setState({phoneBorder: '#91b804'})
+         this.setState({currentColor: '#91b804'})
          }
    }//end validate phone number
 
+   validateEmail = (email) => {
+
+     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+     if(reg.test(this.state.email)== false)
+     {
+     this.setState({emailBorder:'red'})
+       }
+     else {
+       this.setState({emailBorder:'#91b804'})
+     }
+   }//end validate email
+
+
+   /*
+   : driverName,
+   : nationalId,
+   : phoneNo,
+   : busNo,
+   : busPlate,
+   : district,
+   inst: instName,
+   */
      handleInserting = () => {
+       if (this.state.name == ''|| this.state.email == ''||this.state.id == ''||this.state.phoneNo==''||this.state.busNo==''||this.state.busPlate==''||this.state.district=='') {
+         this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
+       if (this.state.emailBorder == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'||this.state.uniBorder=='red'||this.state.busBorder=='red'||this.state.currentColor=='red'||this.state.neighborhoodBorder=='red'){
+         this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
        //keep the previously signed in user
        //var prevUser = firebase.auth().currentUser;
 const {navigation} = this.props;
               var instName = navigation.getParam('inst', 'NO-INST');
               var driverName= this.state.driverName;
-              var workerId = this.state.workerId;
+              var nationalId = this.state.nationalId;
               var phoneNo= this.state.phoneNo;
               var busNo= this.state.busNo;
               var busPlate = this.state.busPlate;
               var district= this.state.district;
 
-
+/*
                   firebase.auth().onAuthStateChanged( user => {
                       if (user) {
                         this.userId = user.uid +'5'
                         if (instName === 'NO-INST'){return;}
                     }
                   });
-                  firebase.database().ref('drivers/'+this.userId).set(
+                  */
+
+// /'drivers/'+this.userId
+                //  firebase.database().ref('drivers/'+this.userId).set(
+              //  var myKey = firebase().ref().child('drivers').push().key;
+              firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.nationalId)
+              .then( (data) => {
+                  firebase.auth().onAuthStateChanged( user => {
+                      if (user) {
+                        this.userId = user.uid
+                firebase.database().ref('drivers/'+this.userId).set(
                     {
                       name: driverName,
-                      id: workerId,
+                      id: nationalId,
                       phoneNo: phoneNo,
                       busNo: busNo,
                       busPlate: busPlate,
@@ -115,11 +158,17 @@ const {navigation} = this.props;
                       Alert.alert('تمت الإضافة بنجاح');
                       navigation.navigate('renderManageDrivers');
                     })
-                    .catch(error => this.setState({ errorMessage: error.message }))
-                    console.log(this.state.errorMessage);
-                    }//end
+                    .catch((error) => {
+                      console.log(error.message)
+                      this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
+                      this.setState({errorMsgVisibilty: 'flex'})
+                    })
+                  }  //end if user
 
+                })//end
+              })//end then
 
+}//END handle inserting
                     validateIdentity = (id) => {
 
                   console.log(id);
@@ -160,9 +209,7 @@ const {navigation} = this.props;
                     this.setState({idBorder:'#91b804'})
                     return;
 
-                  }
-
-
+                  }//validate national id
 
 
      static navigationOptions = function(props) {
@@ -229,17 +276,38 @@ const {navigation} = this.props;
           </View>
 
 
-                <View style={styles.inputContainer}>
+                <View style={[styles.inputContainer, {borderColor: this.state.nameBorder}]}>
 
                 <TextInput style={styles.email, styles.input}
                 placeholder="اسم القائد"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={ driverName => this.setState({ driverName })}
+                onChangeText={(driverName) => {
+                  this.setState({driverName})
+                  this.setState({nameBorder: '#EAEAEA'})
+                } }
                 value={this.state.driverName}
                 />
 
                 </View>
+
+
+                <View style={[styles.inputContainer, {borderColor: this.state.emailBorder}]}>
+
+                <TextInput style={[styles.fontStyle,styles.inputs]}
+                placeholder="البريد الإلكتروني"
+                keyboardType="email-address"
+                underlineColorAndroid='transparent'
+                onChangeText={(email) => {
+                  this.setState({email})
+                  this.setState({emailBorder: '#EAEAEA'})
+                }
+              }
+                onEndEditing={(email) => this.validateEmail(email)}
+                value={this.state.email}
+                />
+                </View>
+
                 <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
                     >
 
@@ -261,21 +329,7 @@ const {navigation} = this.props;
                     value={this.state.phoneNo}
                     />
                     </View>
-
-
-                <View style={styles.inputContainer}>
-
-                <TextInput style={styles.pass, styles.input}
-                placeholder="كلمة المرور"
-                secureTextEntry={true}
-                underlineColorAndroid='transparent'
-                //lines below are added by lama:
-                secureTextEntry
-                autoCapitalize="none"
-                onChangeText={password => this.setState({ password })}
-                value={this.state.password}
-                />
-                </View>
+//الى هنا سويت فالديشن
 
                 <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
                                       <Dropdown
@@ -317,11 +371,10 @@ const {navigation} = this.props;
                 value={this.state.busNo}
                 />
                 </View>
+                <View >
 
-
-
-
-
+                  <Text style={[styles.fontStyle,styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
+                </View>
 
 <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
 onPress={this.handleInserting}>
