@@ -506,7 +506,7 @@ backgroundColor: 'white',
 borderRadius:10,
 flex: 1,
 bottom: -15,
-flexDirection: 'row',
+flexDirection: 'row-reverse',
 
 },
 
