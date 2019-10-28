@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   info: {
 
     fontSize: 14,
-    //fontWeight: 500,
+    fontWeight: '500',
     textAlign: 'right',
     color: '#c8c8c8',
 
@@ -241,11 +241,11 @@ const styles = StyleSheet.create({
   editText: {
     color: 'white',
     fontSize: 12,
-		//fontWeight: "500"
+    fontWeight: '500',
   },
   addText: {
     color: 'white',
     fontSize: 18 ,
-		//fontWeight: "500"
+    fontWeight: '500',
   }
 });

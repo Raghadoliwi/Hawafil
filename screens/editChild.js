@@ -433,7 +433,7 @@ componentDidMount(){
                                  header:{
     color: "#8197C6",
     fontSize: 15 ,//problema
-    fontWeight:900,
+    fontWeight:'900',
     bottom: -20,
   },
   level:{
