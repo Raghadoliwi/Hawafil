@@ -168,7 +168,7 @@ this.setState({phoneBorder: 'red'})
          this.setState({errorMsgVisibilty: 'flex'})
          return;
        }
-       if (this.state.emailBorder == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'||this.state.uniBorder=='red'||this.state.busBorder=='red'||this.state.currentColor=='red'||this.state.neighborhoodBorder=='red'){
+       if (this.state.phoneBorder=='red'|| this.state.currentColor=='red'||this.state.emailBorder == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'){
          this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
          this.setState({errorMsgVisibilty: 'flex'})
          return;
@@ -206,6 +206,14 @@ this.setState({phoneBorder: 'red'})
 
 
        }
+
+this.setState({phoneBorder: '#EAEAEA'})
+this.setState({emailBorders: '#EAEAEA'})
+this.setState({nameBorders: '#EAEAEA'})
+this.setState({passwordBorder: '#EAEAEA'})
+this.setState({conPasswordBorder: '#EAEAEA'})
+
+
     }//end edit profile.
 
 
@@ -214,11 +222,26 @@ this.setState({phoneBorder: 'red'})
      return {
        title: 'تعديل البيانات الشخصية',
        headerLeft: <View style={{paddingLeft:16, }}>
-   				<Icon
-   						name="three-bars"
-   						size={25}
-   						color='white'
-   						onPress={() => props.navigation.openDrawer()}  />
+       <Icon
+           name="chevron-left"
+           size={30}
+           color='white'
+           onPress={() => {
+             Alert.alert(
+  '',
+  'هل أنت متأكد؟',
+  [{text: 'نعم', onPress: () => props.navigation.goBack()},
+    {
+      text: 'لا',
+      onPress: () => console.log('Cancel Pressed'),
+      style: 'cancel',
+    },
+
+  ],
+  {cancelable: false},
+);
+
+           }} />
    		</View>,
 
    		headerTintColor: 'white',

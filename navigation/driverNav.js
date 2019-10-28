@@ -2,27 +2,29 @@ import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 
+/* Import all pages that a driver can access
 import parentDashboard from '../screens/parentDashboard'
 import addChild from '../screens/addChild'
 import editChild from '../screens/editChild'
 import editParent from '../screens/editParent'
+*/
 import logout from '../screens/logout'
 
-
-
-const parentNavigation = createStackNavigator(
+const driverNavigation = createStackNavigator(
   {
+    /*all pages that a driver can access from his home page not the drawer
     parentDashboard: { screen: parentDashboard },
       addChild: { screen: addChild },
       editChild: { screen: editChild },
-      editParent: {screen: editParent}
+      editParent: {screen: editParent}*/
 
   },
   {
-    initialRouteName: 'parentDashboard'
+    initialRouteName: ''
   }
 )
 
+/*Each page in the drawer shall have a separate stack
 const addChildNavigation = createStackNavigator(
   {
     addChild: { screen: addChild }
@@ -31,28 +33,12 @@ const addChildNavigation = createStackNavigator(
     initialRouteName: 'addBusDriver'
   }
 )
+*/
 
-const editChildNavigation = createStackNavigator(
-  {
-    editChild: { screen: editChild }
-  },
-  {
-    initialRouteName: 'editChild'
-  }
-)
 
-const editParentNavigation = createStackNavigator(
-  {
-    editParent: { screen: editParent }
-  },
-  {
-    initialRouteName: 'editParent'
-  }
-)
-
-const parentDrawer = createDrawerNavigator({
+const driverDrawer = createDrawerNavigator({
     'الرئيسية': {
-      screen: parentNavigation,
+      screen: driverNavigation,
     },
 
     'تسجيل الخروج': {
@@ -61,7 +47,7 @@ const parentDrawer = createDrawerNavigator({
 
   },
   {
-    initialRouteParams: 'parentNavigation',
+    initialRouteParams: 'driverNavigation',
     defaultNavigationOptions: {
       headerStyle: {
       backgroundColor: '#4C73CC',
@@ -75,4 +61,4 @@ const parentDrawer = createDrawerNavigator({
 
   );
 
-export default parentDrawer
+export default driverDrawer

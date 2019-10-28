@@ -27,6 +27,24 @@ import DropdownMenu from 'react-native-dropdown-menu';
 
 
 export default class addChild extends React.Component {
+  state = {
+    sName: '',
+    level   : '',
+    school: '',
+  neighborhood: '',
+  busNo: '',
+ universities:[],
+
+neighborhoodBorder:'#EAEAEA',
+nameBorder:'',
+schoolBorder:'',
+busNoBorder:'',
+errorMessage:'',
+formErrorMsg:'',
+errorMsgVisibilty:'none',
+busNoError:'',
+
+  }
   UNSAFE_componentWillMount(){
     const firebaseConfig = {
       apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
@@ -40,23 +58,21 @@ export default class addChild extends React.Component {
     };
   }
 
-   state = {
-     sName: '',
-     level   : '',
-     school: '',
-   neighborhood: '',
-   busNo: '',
+  componentDidMount(){ //to fetch data
+      firebase.database().ref('managers/').once('value', (snap) => {
 
- neighborhoodBorder:'#EAEAEA',
- nameBorder:'',
- schoolBorder:'',
- busNoBorder:'',
-errorMessage:'',
- formErrorMsg:'',
- errorMsgVisibilty:'none',
- busNoError:'',
+          snap.forEach((child) => {
+            if (child.val().instType=='school')
+            this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
 
-   }
+
+          })
+      })//end on
+
+
+  }
+
+
 
    addChild = () => {
      const {navigation} = this.props;
@@ -103,7 +119,7 @@ errorMessage:'',
 
       static navigationOptions = function(props) {
       return {
-        title: 'تعديل البيانات الشخصية',
+        title: '',
         headerLeft: <View style={{paddingLeft:16, }}>
     				<Icon
     						name="chevron-left"
@@ -144,22 +160,7 @@ errorMessage:'',
              />
        </View>
 
-       <View style={styles.inputContainer}>
 
-         <TextInput style={styles.inputs, styles.input}
-             placeholder="المدرسة"
-             keyboardType="TextInput"
-             underlineColorAndroid='transparent'
-             onChangeText={(school) => {
-               this.setState({school})
-               this.setState({schoolBorder: '#EAEAEA'})
-             } }
-             value={this.state.school}
-
-
-
-             />
-       </View>
 
    <Text style={styles.level}> المرحلة:  </Text>
               <View style={styles.typeContainer}>
@@ -184,6 +185,7 @@ errorMessage:'',
                </TouchableHighlight>
 
              </View>
+
        <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
                              <Dropdown
                              itemColor='#919191'
@@ -213,6 +215,34 @@ errorMessage:'',
                />
              </View>
 
+             <View style={[styles.fontStyle,styles.neighborhoodList]}>
+                           <Dropdown
+                           itemColor='#919191'
+                           baseColor='#919191'
+                           textColor='#919191'
+
+                           itemTextStyle={{textAlign:'right'}}
+               style={{textAlign:'right'}}
+               dropdownOffset={{ top: 0, left: 0}}
+                                inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
+                               containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                               pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                               itemPadding={10}
+                               shadeOpacity={0}
+                               rippleInsets={{top: 0, bottom: 0}}
+                               dropdownMargins	={{min: 0, max: 0}}
+                               dropdownPosition ={0}
+
+               label='المدرسة'
+
+      onChangeText={(value) => {
+      console.log(this.state.school);
+      this.setState({school:value})
+      } }
+                  data={this.state.universities}
+             />
+           </View>
+
   <View style={styles.busInput}>
 
          <TextInput style={styles.inputs, styles.input}
@@ -241,7 +271,7 @@ errorMessage:'',
          </View>
 
          <View>
-          <TouchableHighlight style={[styles.buttonContainer, styles.cancel]} onPress={() => props.navigation.goBack()}>
+          <TouchableHighlight style={[styles.buttonContainer, styles.cancel]} onPress={() => this.props.navigation.goBack()}>
          <Text style={styles.saveText}>إلغاء </Text>
        </TouchableHighlight>
        </View>
@@ -343,6 +373,7 @@ warning:{
    fontSize:12,
    marginBottom:10,
        },
+
 
 
  buttonContainer: {

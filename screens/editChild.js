@@ -23,6 +23,7 @@ import firebase from 'firebase';
 import Constants from 'expo-constants';
 import DropdownMenu from 'react-native-dropdown-menu';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Dropdown } from 'react-native-material-dropdown';
 
 /*
 Children:
@@ -64,8 +65,12 @@ export default class editChild extends React.Component {
      inst: '',
      level: '',
      busNo: '',
+     school:'',
      district: '',
-     errorMessage: null
+     errorMessage: null,
+     universities:[],
+
+    neighborhoodBorder:'#EAEAEA',
      }
 
      showAlertDialog = () =>{
@@ -78,12 +83,28 @@ export default class editChild extends React.Component {
       onPress: () => console.log('Cancel Pressed'),
       style: 'cancel',
     },
-    {text: 'نعم', onPress: () => console.log('OK Pressed')},
+    {text: 'نعم', onPress: () => {
+      var phoneNo = this.props.navigation.getParam('parentNo', 'NO-NUM');
+        firebase.database().ref('children/'+phoneNo).remove()
+        this.props.navigation.push('parentDashboard');
+    }},
   ],
   {cancelable: false},
 );}
 
 componentDidMount(){
+  firebase.database().ref('managers/').once('value', (snap) => {
+
+      snap.forEach((child) => {
+        if (child.val().instType=='school')
+        this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
+
+
+      })
+  })//end on
+
+
+
   firebase.auth().onAuthStateChanged((user) => {
     if (user){
       var userId = firebase.auth().currentUser.uid;
@@ -98,6 +119,7 @@ componentDidMount(){
             inst: snapshot.val().inst,
             busNo: snapshot.val().busNo,
             level: snapshot.val().level,
+            school: child.val().school,
             district: snapshot.val().district,
           })
         })
@@ -124,6 +146,7 @@ componentDidMount(){
         level: child.val().level,
         inst: child.val().inst,
         busNo: child.val().busNo,
+        school: child.val().school,
         district: child.val().district,
 
 
@@ -146,10 +169,24 @@ componentDidMount(){
 }
 
      editChild = () => {
-       var phoneNo = this.state.parentPhoneNo;
+       if (this.state.sName == '' || this.state.school == '' || this.state.neighborhood == '' || this.state.busNo == '' || this.state.level == '' ) {
+        this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
+        this.setState({errorMsgVisibilty: 'flex'})
+        return;
+      }
+
+      if (this.state.neighborhoodBorder == 'red'||this.state.nameBorder == 'red'||this.state.schoolBorder=='red'||this.state.busNoBorder=='red') {
+        this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
+        this.setState({errorMsgVisibilty: 'flex'})
+        return;
+      }
+
+       console.log(phoneNo);
+         var phoneNo = this.props.navigation.getParam('parentNo', 'NO-NUM');
+       console.log(phoneNo);
        if (phoneNo != null){
-         return firebase.database().ref('children/'+phoneNo).update({
-           sName: this.state.sName,
+          firebase.database().ref('children/'+phoneNo).update({
+           name: this.state.sName,
            inst: this.state.inst,
            busNo: this.state.busNo,
            level: this.state.level,
@@ -164,11 +201,26 @@ componentDidMount(){
      return {
        title: 'تعديل بيانات الطفل',
        headerLeft: <View style={{paddingLeft:16, }}>
-   				<Icon
-   						name="chevron-left"
-   						size={25}
-   						color='white'
-   						onPress={() => props.navigation.goBack()} />
+       <Icon
+           name="chevron-left"
+           size={30}
+           color='white'
+           onPress={() => {
+             Alert.alert(
+  '',
+  'هل أنت متأكد؟',
+  [{text: 'نعم', onPress: () => props.navigation.goBack()},
+    {
+      text: 'لا',
+      onPress: () => console.log('Cancel Pressed'),
+      style: 'cancel',
+    },
+
+  ],
+  {cancelable: false},
+);
+
+           }} />
    		</View>,
 
    		headerTintColor: 'white',
@@ -179,6 +231,7 @@ componentDidMount(){
    };
 
     render() {
+      let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]
 
         return (
           <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
@@ -236,6 +289,67 @@ componentDidMount(){
 
               </View>
 
+
+              <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
+                                    <Dropdown
+                                    itemColor='#919191'
+                                    baseColor='#919191'
+                                    textColor='#919191'
+
+                                    itemTextStyle={{textAlign:'right'}}
+                        style={{textAlign:'right'}}
+                        dropdownOffset={{ top: 0, left: 0}}
+                                         inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
+                                        containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                                        pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                                        itemPadding={10}
+                                        shadeOpacity={0}
+                                        rippleInsets={{top: 0, bottom: 0}}
+                                        dropdownMargins	={{min: 0, max: 0}}
+                                        dropdownPosition ={0}
+                        label='الحي السكني'
+
+                        data={riyadhDistricts}
+
+                        onChangeText={(district) => {
+                          this.setState({district})
+                          this.setState({neighborhoodBorder: '#EAEAEA'})
+                        } }
+                        value={this.state.district}
+                      />
+                    </View>
+
+                    <View style={[styles.fontStyle,styles.neighborhoodList]}>
+                                  <Dropdown
+                                  itemColor='#919191'
+                                  baseColor='#919191'
+                                  textColor='#919191'
+
+                                  itemTextStyle={{textAlign:'right'}}
+                      style={{textAlign:'right'}}
+                      dropdownOffset={{ top: 0, left: 0}}
+                                       inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
+                                      containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                                      pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                                      itemPadding={10}
+                                      shadeOpacity={0}
+                                      rippleInsets={{top: 0, bottom: 0}}
+                                      dropdownMargins	={{min: 0, max: 0}}
+                                      dropdownPosition ={0}
+
+                      label='المدرسة'
+
+             onChangeText={(value) => {
+             console.log(this.state.school);
+             this.setState({school:value})
+             } }
+                         data={this.state.universities}
+                         value={this.state.school}
+                    />
+                  </View>
+
+
+
                 <View style={styles.busContainer}>
 
                 <TextInput style={styles.input}
@@ -249,6 +363,10 @@ componentDidMount(){
                 </View>
 
 
+                              <View >
+
+                                 <Text style={[styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
+                               </View>
 
 
                 <TouchableHighlight style={[styles.buttonContainer, styles.save]}
@@ -405,6 +523,18 @@ marginLeft:5,
 marginRight:5,
 
 },
+neighborhoodList: {
+ borderColor: '#EAEAEA',
+  backgroundColor: 'white',
+   width:250,
+  height:100,
+top:40 },
+
+warning:{
+   color: 'red',
+   fontSize:12,
+   marginBottom:10,
+       },
 
 pressedButton: {
 backgroundColor: "#7597DB",
