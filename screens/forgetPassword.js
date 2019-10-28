@@ -49,7 +49,7 @@ export default class forgetPassword extends React.Component {
                         if (this.state.email == '') {
                           this.setState({emailBorders: 'red'})
                           return;
-                          
+
 
                         }
                         firebase.auth().sendPasswordResetEmail(this.state.email)
@@ -87,7 +87,22 @@ navigation.navigate('login')
            name="chevron-left"
            size={25}
            color='white'
-           onPress={() => props.navigation.goBack()} />
+           onPress={() => {
+             Alert.alert(
+  '',
+  'هل أنت متأكد؟',
+  [
+    {
+      text: 'لا',
+      onPress: () => console.log('Cancel Pressed'),
+      style: 'cancel',
+    },
+  {text: 'نعم', onPress: () => props.navigation.goBack()}
+  ],
+  {cancelable: false},
+  );
+
+           }} />
    </View>,
 
    headerTintColor: 'white',
@@ -159,12 +174,12 @@ const styles = StyleSheet.create({
                                  backgroundColor: '#F7FAFF',
                                  },
                                  smallContainer:{
-                                 marginTop:20,
+                                 marginTop:-60,
                                  justifyContent: 'center',
                                  alignItems: 'center',
                                  backgroundColor: 'white',
                                  borderRadius:10,
-                                 width:275,
+                                 width:320,
                                  height:250,
                                  shadowOpacity: 0.04,
                                          shadowRadius: 5,
