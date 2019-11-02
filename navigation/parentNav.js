@@ -7,6 +7,8 @@ import addChild from '../screens/addChild'
 import editChild from '../screens/editChild'
 import editParent from '../screens/editParent'
 import logout from '../screens/logout'
+import parentCustomDrawer from './parentCustomDrawer';
+
 
 
 
@@ -54,14 +56,18 @@ const parentDrawer = createDrawerNavigator({
     'الرئيسية': {
       screen: parentNavigation,
     },
+    'editParentNavigation': {
+      screen: editParentNavigation,
+    },
 
-    'تسجيل الخروج': {
+    'logout': {
       screen: logout,
     },
 
   },
   {
     initialRouteParams: 'parentNavigation',
+    contentComponent: parentCustomDrawer,
     defaultNavigationOptions: {
       headerStyle: {
       backgroundColor: '#4C73CC',
