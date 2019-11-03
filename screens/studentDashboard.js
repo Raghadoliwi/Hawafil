@@ -57,11 +57,11 @@ static navigationOptions = function(props) {
 return {
   title: 'صفحة الطالب',
   headerLeft: <View style={{paddingLeft:16}}>
-     <Icon
-         name="chevron-left"
-         size={25}
-         color='white'
-         onPress={() => props.navigation.goBack()} />
+  <Icon
+      name="three-bars"
+      size={25}
+      color='white'
+      onPress={() => props.navigation.openDrawer()} />
  </View>,
 
  headerTintColor: 'white',
@@ -74,7 +74,7 @@ return {
     render() {
         return (
 
-          <ScrollView>
+          <ScrollView style={styles.scroll}>
           <KeyboardAwareScrollView
 resetScrollToCoords={{ x: 0, y: 0 }}
 contentContainerStyle={styles.container}
@@ -85,7 +85,9 @@ scrollEnabled={false}>
 
                 <View style={styles.typeContainer}>
 
-                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.departure === '6:00'?styles.pressedButton:styles.typeButton]} onPress ={this.onToggle} ></TouchableHighlight>
+                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.departure === '6:00'?styles.pressedButton:styles.typeButton]} onPress ={this.onToggle}>
+                    <Text style={styles.typeText}>6:00 ص</Text>
+                    </TouchableHighlight>
                 </View>
 
 
@@ -93,10 +95,12 @@ scrollEnabled={false}>
             <Text style={styles.SubSub}>ــــــ وقت الإياب ــــــ</Text>
 
                 <View style={styles.typeContainer}>
-//onPress={this.addInstit}
-                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '1:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({arrival:'1:00'})} >
+
+                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '1:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({arrival:'1:00'})}>
+                    <Text style={styles.typeText}>1:00 م</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '3:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({arrival:'3:00'})} >
+                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '3:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({arrival:'3:00'})}>
+<Text style={styles.typeText}>3:00 م</Text>
                         </TouchableHighlight>
                 </View>
 
@@ -109,7 +113,10 @@ scrollEnabled={false}>
 }
 
 const styles = StyleSheet.create({
-
+  scroll: {
+    height:600,
+    backgroundColor: '#F7FAFF',
+  },
   Sub: {
     color: '#9F9F9F',
     fontSize: 12,
@@ -125,7 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F7FAFF',
+
   },
   smallContainer: {
     marginTop: 30,
