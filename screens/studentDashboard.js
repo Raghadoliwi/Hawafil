@@ -45,9 +45,13 @@ constructor(props){
       appId: "1:932110912763:web:68fca60e805543a655b45e",
       measurementId: "G-G21F8ME7TS"
     };
+  }//end UNSAFE_componentWillMount
 
-
-  }
+  onButtonToggle(){
+    this.setState({
+      departure: !this.state.departure
+ })
+}//end on onButtonToggle
 
 static navigationOptions = function(props) {
 return {
@@ -81,13 +85,15 @@ scrollEnabled={false}>
 
                 <View style={styles.typeContainer}>
 
-                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.departure === '6:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({departure:'6:00'})} ></TouchableHighlight>
+                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.departure === '6:00'?styles.pressedButton:styles.typeButton]} onPress ={this.onToggle} ></TouchableHighlight>
                 </View>
+
+
 
             <Text style={styles.SubSub}>ــــــ وقت الإياب ــــــ</Text>
 
                 <View style={styles.typeContainer}>
-
+//onPress={this.addInstit}
                     <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '1:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({arrival:'1:00'})} >
                     </TouchableHighlight>
                     <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '3:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({arrival:'3:00'})} >
@@ -170,7 +176,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
 
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
   },
 
   inputContainer: {
