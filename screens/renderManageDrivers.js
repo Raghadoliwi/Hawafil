@@ -63,7 +63,7 @@ firebase.database().ref('drivers/').on('value', (snap) => {
             busNo: child.val().busNo ,
             district: child.val().district ,
             busPlate: child.val().busPlate ,
-            id: child.val().id ,
+            id: child.val().nationalId ,
             inst: child.val().inst ,
             phoneNo: child.val().phoneNo ,
 
@@ -76,7 +76,6 @@ firebase.database().ref('drivers/').on('value', (snap) => {
 
 
 })//end on
-
 
 
 
@@ -131,7 +130,7 @@ onPress={() => this.props.navigation.push('addBusDriver',{inst:this.state.inst})
             return (
                 <Card containerStyle={styles.cards} title={u.name}>
                 <View style={styles.typeContainer}>
-                <Text style={styles.paragraph} key={u.id}>الرقم الوظيفي: </Text>
+                <Text style={styles.paragraph} key={u.id}> رقم الهوية: </Text>
                 <Text style={styles.info}>{u.id}</Text>
                 </View>
                 <View style={styles.typeContainer}>

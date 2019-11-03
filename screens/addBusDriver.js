@@ -63,6 +63,7 @@ export default class addBusDriver extends React.Component {
       busPlate: '',
      nameBorders:'#EAEAEA',
      emailBorder:'#EAEAEA',
+     busPlateBorders:'#EAEAEA',
  neighborhoodBorder:'#EAEAEA',
    passwordBorder:'#EAEAEA',
    conPasswordBorder:'#EAEAEA',
@@ -144,10 +145,11 @@ const {navigation} = this.props;
                   firebase.auth().onAuthStateChanged( user => {
                       if (user) {
                         this.userId = user.uid
+                          user.sendEmailVerification();
                 firebase.database().ref('drivers/'+this.userId).set(
                     {
                       name: driverName,
-                      id: nationalId,
+                      nationalId: nationalId,
                       phoneNo: phoneNo,
                       busNo: busNo,
                       busPlate: busPlate,
@@ -156,11 +158,11 @@ const {navigation} = this.props;
                     }
                   ).then(function() {
                       Alert.alert('تمت الإضافة بنجاح');
-                      navigation.navigate('renderManageDrivers');
+                      navigation.push('renderManageDrivers');
                     })
                     .catch((error) => {
                       console.log(error.message)
-                      this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا، قم بتسجيل الدخول'})
+                      this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا'})
                       this.setState({errorMsgVisibilty: 'flex'})
                     })
                   }  //end if user
@@ -255,139 +257,155 @@ const {navigation} = this.props;
           contentContainerStyle={styles.container}
             scrollEnabled={false}>
 
-          <View style={styles.smallContainer}>
-          <Text style={styles.header}>• إضافة قائد مركبة •</Text>
+            <View style={styles.smallContainer}>
+            <Text style={styles.header}>• إضافة قائد مركبة •</Text>
 
-          <View style={[styles.inputContainer, {borderColor: this.state.idBorder}]}>
+            <View style={[styles.inputContainer, {borderColor: this.state.idBorder}]}>
 
-          <TextInput style={[styles.inputs]}
-          placeholder="الهوية/الإقامة"
-          keyboardType="numeric"
-          underlineColorAndroid='transparent'
+            <TextInput style={[styles.inputs]}
+            placeholder="الهوية/الإقامة"
+            keyboardType="numeric"
+            underlineColorAndroid='transparent'
 
-          onChangeText={(nationalId) => {
-            this.setState({nationalId})
-            this.setState({idBorder: '#EAEAEA'})
+            onChangeText={(nationalId) => {
+              this.setState({nationalId})
+              this.setState({idBorder: '#EAEAEA'})
 
-          }}
-            onEndEditing={(nationalId) => this.validateIdentity(nationalId)}
-          value={this.state.nationalId}
-          />
-          </View>
-
-
-                <View style={[styles.inputContainer, {borderColor: this.state.nameBorder}]}>
-
-                <TextInput style={styles.email, styles.input}
-                placeholder="اسم القائد"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={(driverName) => {
-                  this.setState({driverName})
-                  this.setState({nameBorder: '#EAEAEA'})
-                } }
-                value={this.state.driverName}
-                />
-
-                </View>
+            }}
+              onEndEditing={(nationalId) => this.validateIdentity(nationalId)}
+            value={this.state.nationalId}
+            />
+            </View>
 
 
-                <View style={[styles.inputContainer, {borderColor: this.state.emailBorder}]}>
+                              <View style={[styles.inputContainer, {borderColor: this.state.nameBorder}]}>
 
-                <TextInput style={[styles.fontStyle,styles.inputs]}
-                placeholder="البريد الإلكتروني"
-                keyboardType="email-address"
-                underlineColorAndroid='transparent'
-                onChangeText={(email) => {
-                  this.setState({email})
-                  this.setState({emailBorder: '#EAEAEA'})
-                }
-              }
-                onEndEditing={(email) => this.validateEmail(email)}
-                value={this.state.email}
-                />
-                </View>
+                              <TextInput style={styles.email, styles.input}
+                              placeholder="اسم القائد"
+                              keyboardType="TextInput"
+                              underlineColorAndroid='transparent'
+                              onChangeText={(driverName) => {
+                                this.setState({driverName})
+                                this.setState({nameBorder: '#EAEAEA'})
+                              } }
+                              value={this.state.driverName}
+                              />
 
-                <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
-                    >
-
-                    <TextInput style={styles.keyText}
-                    value="+966"
-                    editable={false}
-                    />
-
-                    <TextInput style={styles.phoneInput}
-                    placeholder="رقم الجوال"
-                    keyboardType="numeric"
-                    ref="phoneNumber"
-                    underlineColorAndroid='transparent'
-                    onChangeText={(phoneNo) => {
-                      this.setState({phoneNo})
-                      this.setState({currentColor: '#EAEAEA'})
-                    } }
-                    onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
-                    value={this.state.phoneNo}
-                    />
-                    </View>
-//الى هنا سويت فالديشن
-
-                <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
-                                      <Dropdown
-                                      itemColor='#919191'
-                                      baseColor='#919191'
-                                      textColor='#919191'
-
-                                      itemTextStyle={{textAlign:'right'}}
-                          style={{textAlign:'right'}}
-                          dropdownOffset={{ top: 0, left: 0}}
-                                           inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
-                                          containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
-                                          pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
-                                          itemPadding={10}
-                                          shadeOpacity={0}
-                                          rippleInsets={{top: 0, bottom: 0}}
-                                          dropdownMargins	={{min: 0, max: 0}}
-                                          dropdownPosition ={0}
-                          label='الحي السكني'
-
-                          data={riyadhDistricts}
-
-                          onChangeText={(district) => {
-                            this.setState({district})
-                            this.setState({neighborhoodBorder: '#EAEAEA'})
-                          } }
-                          value={this.state.district}
-                        />
-                      </View>
-
-                <View style={styles.inputContainer}>
-
-                <TextInput style={styles.email, styles.input}
-                placeholder="رقم الحافلة"
-                keyboardType="numeric"
-                underlineColorAndroid='transparent'
-                onChangeText={busNo => this.setState({ busNo })}
-                //line below is added new by lama:
-                value={this.state.busNo}
-                />
-                </View>
-                <View >
-
-                  <Text style={[styles.fontStyle,styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
-                </View>
-
-<TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
-onPress={this.handleInserting}>
-
-<Text style={styles.loginText}>إضافة</Text>
+                              </View>
 
 
-</TouchableHighlight>
+                              <View style={[styles.inputContainer, {borderColor: this.state.emailBorder}]}>
+
+                              <TextInput style={[styles.fontStyle,styles.inputs]}
+                              placeholder="البريد الإلكتروني"
+                              keyboardType="email-address"
+                              underlineColorAndroid='transparent'
+                              onChangeText={(email) => {
+                                this.setState({email})
+                                this.setState({emailBorder: '#EAEAEA'})
+                              }
+                            }
+                              onEndEditing={(email) => this.validateEmail(email)}
+                              value={this.state.email}
+                              />
+                              </View>
+
+                              <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
+                                  >
+
+                                  <TextInput style={styles.keyText}
+                                  value="+966"
+                                  editable={false}
+                                  />
+
+                                  <TextInput style={styles.phoneInput}
+                                  placeholder="رقم الجوال"
+                                  keyboardType="numeric"
+                                  ref="phoneNumber"
+                                  underlineColorAndroid='transparent'
+                                  onChangeText={(phoneNo) => {
+                                    this.setState({phoneNo})
+                                    this.setState({currentColor: '#EAEAEA'})
+                                  } }
+                                  onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
+                                  value={this.state.phoneNo}
+                                  />
+                                  </View>
+
+                              <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
+                                                    <Dropdown
+                                                    itemColor='#919191'
+                                                    baseColor='#919191'
+                                                    textColor='#919191'
+
+                                                    itemTextStyle={{textAlign:'right'}}
+                                        style={{textAlign:'right'}}
+                                        dropdownOffset={{ top: 0, left: 0}}
+                                                         inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
+                                                        containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                                                        pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                                                        itemPadding={10}
+                                                        shadeOpacity={0}
+                                                        rippleInsets={{top: 0, bottom: 0}}
+                                                        dropdownMargins	={{min: 0, max: 0}}
+                                                        dropdownPosition ={0}
+                                        label='الحي السكني'
+
+                                        data={riyadhDistricts}
+
+                                        onChangeText={(district) => {
+                                          this.setState({district})
+                                          this.setState({neighborhoodBorder: '#EAEAEA'})
+                                        } }
+                                        value={this.state.district}
+                                      />
+                                    </View>
+
+                              <View style={styles.inputContainer}>
+
+                              <TextInput style={styles.email, styles.input}
+                              placeholder="رقم الحافلة"
+                              keyboardType="numeric"
+                              underlineColorAndroid='transparent'
+                              onChangeText={busNo => this.setState({ busNo })}
+                              //line below is added new by lama:
+                              value={this.state.busNo}
+                              />
+                              </View>
+
+                              <View style={[styles.inputContainer, {borderColor: this.state.busPlateBorder}]}>
+
+                              <TextInput style={styles.email, styles.input}
+                              placeholder="رقم اللوحة"
+                              keyboardType="TextInput"
+                              underlineColorAndroid='transparent'
+                              onChangeText={(busPlate) => {
+                                this.setState({busPlate})
+                                this.setState({busPlateBorder: '#EAEAEA'})
+                              } }
+                              value={this.state.busPlate}
+                              />
+
+                              </View>
+
+
+                              <View >
+
+                                <Text style={[styles.fontStyle,styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
+                              </View>
+
+              <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
+              onPress={this.handleInserting}>
+
+              <Text style={styles.loginText}>إضافة</Text>
+
+
+              </TouchableHighlight>
 
 
 
 
-                </View>
+                  </View>
               </KeyboardAwareScrollView>
               </View>
 
