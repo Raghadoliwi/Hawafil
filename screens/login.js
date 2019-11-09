@@ -101,6 +101,7 @@ export default class login extends React.Component {
 
               firebase.database().ref('drivers/'+user.uid).on('value', snapshot => {
                 if (snapshot.exists())
+                console.log("أهلًا باول درايفر");
                   return;
             //  navigation.navigate('parentDashboard')
               });
@@ -108,6 +109,7 @@ export default class login extends React.Component {
 
               firebase.database().ref('managers/'+user.uid).on('value', snapshot => {
                 if (snapshot.exists()){
+                  console.log("success!");
                   navigation.navigate('managerDrawer');
                   return;
                 }
