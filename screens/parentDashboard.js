@@ -37,17 +37,20 @@ import addChild from './addChild';
 
       }
     }
-    editAttendance = (attendance) => {
-      this.state.childrenList.attendance=attendance;
-      console.log(this.state.childrenList.attendance);
-      var phoneNo = this.state.parentIn.phoneNo;
-
-      if (phoneNo != null){
-       firebase.database().ref('children/'+phoneNo).update({
-          attendance:attendance
-        })
+    editAttendance = (attendance,index,key) => {
+      this.state.childrenList[index].attendance=attendance;
+      this.forceUpdate()
+      console.log("الأطفااال");
+      console.log(this.state.childrenList);
+console.log(this.state.childrenList.length);
+      if (key != null){
+        firebase.database().ref('children/'+key).update({
+           attendance:attendance
+         })
         Alert.alert('تم تحديث حالة الحضور');
       }
+
+      console.log(this.state.childrenList);
    }//end edit child.
 
     componentDidMount(){ //to fetch data
@@ -71,31 +74,34 @@ firebase.database().ref('parents/'+userId).on('value', snapshot => {
 });
 
 this.setState({
-  childrenList: {
-    name: '' ,
-    busNo: '' ,
-    inst: '' ,
-    level: '' ,
-    district: '' ,
-  }
+  childrenList: []
 });
 
-console.log (this.state.parentIn.name);
-console.log (this.state.parentIn.phoneNo);
+//console.log (this.state.parentIn.name);
+//console.log (this.state.parentIn.phoneNo);
 let parentPhoneNo=this.state.parentIn.phoneNo;
-firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
-    if (snap.val()){//check if it's null
-    this.setState({
-      childrenList: {
-        name: snap.val().name ,
-        busNo: snap.val().busNo ,
-        inst: snap.val().inst ,
-        level: snap.val().level ,
-        district: snap.val().district ,
-      attendance: snap.val().attendance
-      }
-    });
-}
+firebase.database().ref('children/').on('value', (snap) => {
+  let childrenList = [];
+  snap.forEach((child) => {
+    if (child.key.includes(parentPhoneNo)){
+      childrenList.push({
+        childKey:child.key,
+        name: child.val().name ,
+        busNo: child.val().busNo ,
+        inst: child.val().inst ,
+        level: child.val().level ,
+        district: child.val().district ,
+      attendance: child.val().attendance
+      });
+
+
+
+  }
+  this.setState({
+    childrenList: childrenList
+  });
+  })//end snap for each
+
 
 
 })//end on
@@ -129,6 +135,8 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
   };
 
 	render() {
+
+
     return (
 
       <View style={{padding: 10, flex: 1}, styles.container} >
@@ -141,92 +149,80 @@ firebase.database().ref('children/'+parentPhoneNo).on('value', (snap) => {
              />
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
+      <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
+    onPress={() => this.props.navigation.navigate('addChild')}>
+           <Text style={styles.addText}>إضافة تابع</Text>
+         </TouchableHighlight>
 
-
- {this.state.parentIn ? (
-                <Card containerStyle={styles.cards} title="معلومات ولي الأمر">
-                <Text style={styles.paragraph} key={this.state.parentIn.name}>• اسم ولي الأمر: {this.state.parentIn.name}</Text>
-
-                    <Text style={styles.paragraph} key={this.state.parentIn.phoneNo}>رقم الجوال: 0{this.state.parentIn.phoneNo}</Text>
-                    <Text style={styles.paragraph} key={this.state.parentIn.email}>• البريد الإلكتروني: {this.state.parentIn.email}</Text>
-                    <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-                         onPress={() => {
-                           try {this.props.navigation.push('editParent')}
-                           catch (e) {console.log(e.message);}
-                           }
-                         }>
-                              <Text style={styles.editText}>تعديل</Text>
-                            </TouchableHighlight>
-
-
-                </Card>
-
-) : null}
    <Text style={styles.perInfo}>──────  التابعين ──────</Text>
 
-   <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
- onPress={() => this.props.navigation.navigate('addChild')}>
-        <Text style={styles.addText}>إضافة تابع</Text>
-      </TouchableHighlight>
-
-{this.state.childrenList && this.state.childrenList.name != '' ? (
-
-
-              <Card containerStyle={styles.cards} title={this.state.childrenList.name}>
-
-                <Text style={styles.paragraph} key={this.state.childrenList.inst}>
-               • المدرسة: {this.state.childrenList.inst}
-                </Text>
-                 <Text style={styles.paragraph}>
-                 • المرحلة: {this.state.childrenList.level}
-                </Text>
-                <Text style={styles.paragraph}>
-                 • رقم الحافلة: {this.state.childrenList.busNo}
-                </Text>
-                 <Text style={styles.paragraph}>
-                 • الحي : {this.state.childrenList.district}
-                </Text>
-
-<View style={styles.typeContainer}>
-                <TouchableHighlight style={[styles.typeButtonContainer, this.state.childrenList.attendance === '1'?styles.pressedButton:styles.typeButton]} onPress ={() => this.editAttendance('1')} >
-
-                <Text style={styles.typeText}>حضور</Text>
-                </TouchableHighlight>
-
-                <TouchableHighlight style={[styles.typeButtonContainer, this.state.childrenList.attendance === '0'?styles.pressedButton:styles.typeButton]} onPress ={() => this.editAttendance('0')}>
-
-                <Text style={styles.typeText}>غياب</Text>
-                </TouchableHighlight>
-</View>
-
-                 <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-                 onPress={() => this.props.navigation.push('editChild',{parentNo:this.state.parentIn.phoneNo})} >
-                <Text style={styles.editText}>تعديل</Text>
-              </TouchableHighlight>
 
 
 
+      {this.state.childrenList ?
+         (
+    this.state.childrenList.map((u, i ) => {
+return (  <Card containerStyle={styles.cards} title={this.state.childrenList[i].name}>
 
-
-
-
-              </Card>
-
-
-
-) : (
-  // if there are no children
-  <View>
-  <Text style={styles.perText}> لا يوجد لديك تابعين</Text>
-  </View>
-)}
-
-
-
-      <View style={styles.childrenContainer}>
-
+  <View style={styles.infoContainer}>
+      <Text style={styles.paragraph}>المدرسة: </Text>
+         <Text style={styles.info}>{this.state.childrenList[i].inst}</Text>
       </View>
 
+
+      <View style={styles.infoContainer}>
+          <Text style={styles.paragraph}>المرحلة: </Text>
+             <Text style={styles.info}>{this.state.childrenList[i].level}</Text>
+          </View>
+
+          <View style={styles.infoContainer}>
+              <Text style={styles.paragraph}>رقم الحافلة: </Text>
+                 <Text style={styles.info}>{this.state.childrenList[i].busNo}</Text>
+              </View>
+
+              <View style={styles.infoContainer}>
+                  <Text style={styles.paragraph}>الحي: </Text>
+                     <Text style={styles.info}>{this.state.childrenList[i].district}</Text>
+                  </View>
+
+
+
+
+
+
+
+
+
+  <View style={styles.typeContainer}>
+     <TouchableHighlight style={[styles.typeButtonContainer, this.state.childrenList[i].attendance === '1'?styles.pressedButton:styles.typeButton]} onPress ={() => this.editAttendance('1',i,this.state.childrenList[i].childKey)} >
+
+     <Text style={styles.typeText}>حضور</Text>
+     </TouchableHighlight>
+
+     <TouchableHighlight style={[styles.typeButtonContainer, this.state.childrenList[i].attendance === '0'?styles.pressedButton:styles.typeButton]} onPress ={() => this.editAttendance('0',i,this.state.childrenList[i].childKey)}>
+
+     <Text style={styles.typeText}>غياب</Text>
+     </TouchableHighlight>
+  </View>
+<View style={{flexDirection:'row-reverse'}}>
+      <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{backgroundColor:'#3C68BF'}]}
+      onPress={() => this.props.navigation.push('editChild',{childKey:this.state.childrenList[i].childKey})} >
+     <Text style={styles.editText}>تعديل</Text>
+   </TouchableHighlight>
+   <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{backgroundColor:'#F4D65B'}]}
+   onPress={() => this.props.navigation.push('editChild',{childKey:this.state.childrenList[i].childKey})} >
+   <Text style={styles.editText}>تتبع</Text>
+   </TouchableHighlight>
+</View>
+
+
+
+
+    </Card>)
+
+
+  }) )
+    :null}
       </ScrollView>
       </View>
 
@@ -246,12 +242,18 @@ const styles = StyleSheet.create({
 
 
   paragraph: {
-    marginTop: 10,
     fontSize: 14,
-    fontWeight: 'bold',
     textAlign: 'right',
     color: '#3C68BF',
-    borderRadius: 550,
+
+  },
+  info: {
+
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'right',
+    color: '#b5b5b5',
+
   },
   cards:{
     borderRadius: 25, width: 250, marginTop: 20, borderWidth: 0.5, shadowOpacity: 0.04,
@@ -304,6 +306,15 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'row-reverse',
     },
+
+    infoContainer: {
+    //  justifyContent: 'right',
+
+      flex: 1,
+      marginTop:5,
+      flexDirection: 'row-reverse',
+    },
+
     typeButtonContainer: {
       height: 40,
       width:55,
@@ -346,10 +357,11 @@ justifyContent: 'center',
 		alignSelf:'center',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 90,
+    width: 60,
     height:30,
     bottom: 5,
-    backgroundColor:"#3C68BF",
+    marginRight:5,
+    marginLeft:5
     //marginBottom: 300,
   },
   editText: {

@@ -60,18 +60,33 @@ export default class editChild extends React.Component {
 
       }
      state = {
-    parentPhoneNo:'',
-     sName: '' ,
-     inst: '',
-     level: '',
-     busNo: '',
-     school:'',
-     district: '',
+       childKey:'',
+       name: '',
+       busNo: '',
+       inst: '',
+       level: '',
+       district:'',
+     attendance: '',
      errorMessage: null,
      universities:[],
 
+      busesNumbers:[{value:'قم باختيار مدرسة'}],
+
     neighborhoodBorder:'#EAEAEA',
+    nameBorder:'',
+    schoolBorder:'',
+    busNoBorder:'',
+    errorMessage:'',
+    formErrorMsg:'',
+    errorMsgVisibilty:'none',
+    busNoError:'',
+    disableBuses:false,
+    busPlaceholder:'قم باختيار مدرسة',
+
      }
+
+
+
 
      showAlertDialog = () =>{
   Alert.alert(
@@ -84,8 +99,8 @@ export default class editChild extends React.Component {
       style: 'cancel',
     },
     {text: 'نعم', onPress: () => {
-      var phoneNo = this.props.navigation.getParam('parentNo', 'NO-NUM');
-        firebase.database().ref('children/'+phoneNo).remove()
+      var childKey = this.props.navigation.getParam('childKey', 'NO-NUM');
+        firebase.database().ref('children/'+childKey).remove()
         this.props.navigation.push('parentDashboard');
     }},
   ],
@@ -93,60 +108,36 @@ export default class editChild extends React.Component {
 );}
 
 componentDidMount(){
-  firebase.database().ref('managers/').once('value', (snap) => {
+      var childKey = this.props.navigation.getParam('childKey', 'NO-NUM');
+      console.log(childKey);
+      firebase.database().ref('managers/').once('value', (snap) => {
 
-      snap.forEach((child) => {
-        if (child.val().instType=='school')
-        this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
-
-
-      })
-  })//end on
+          snap.forEach((child) => {
+            if (child.val().instType=='school')
+            this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
 
 
-
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user){
-      var userId = firebase.auth().currentUser.uid;
-      var phoneNo;
-      return firebase.database().ref('parents/'+uid).once('value')
-      .then(function(snapshot) {
-        this.state.parentPhoneNo = snapshot.val().phoneNo;
-        return firebase.database().ref('children/'+this.state.parentPhoneNo).once('value')
-        .then(function(snapshot) {
-          this.setState({
-            sName: snapshot.val().name,
-            inst: snapshot.val().inst,
-            busNo: snapshot.val().busNo,
-            level: snapshot.val().level,
-            school: child.val().school,
-            district: snapshot.val().district,
           })
-        })
-       });
-
-    }//end if
-  })
+      })//end on
 
 
 
   const { navigation } = this.props;
-        var parentNo = navigation.getParam('parentNo', 'NO-NUM');
-        console.log(parentNo);
-  if (parentNo !== 'NO-NUM'){
+        var parentNo = navigation.getParam('childKey', 'NO-NUM');
+        console.log(childKey);
+  if (childKey !== 'NO-NUM'){
 
     firebase.database().ref('children/').on('value', (snap) => {
 
   snap.forEach((child) => {
 
-    if (child.key === parentNo){
+    if (child.key === childKey){
     this.setState({
 
-        sName: child.val().name,
+        name: child.val().name,
         level: child.val().level,
         inst: child.val().inst,
         busNo: child.val().busNo,
-        school: child.val().school,
         district: child.val().district,
 
 
@@ -168,8 +159,37 @@ componentDidMount(){
 
 }
 
+retrieveBuses = () => {
+  this.setState({disableBuses:false})
+    this.setState({busPlaceholder:''})
+  this.setState({ busesNumbers:[]})
+  firebase.database().ref('drivers/').once('value', (snap) => {
+
+      snap.forEach((child) => {
+
+        if (child.val().inst==this.state.inst)
+        this.setState({ busesNumbers: this.state.busesNumbers.concat({value:child.val().busNo} ) })
+
+      })
+
+      if (this.state.busesNumbers.length==0) {
+        this.setState({busPlaceholder:'لا يوجد حافلات',disableBuses:true,busNo:''})
+
+      }
+    else {
+
+      this.setState({busPlaceholder:'',disableBuses:false,busNo:''})
+    }
+
+  })//end on
+  console.log(this.state.busesNumbers);
+
+console.log(this.state.busesNumbers);
+}
+
      editChild = () => {
-       if (this.state.sName == '' || this.state.school == '' || this.state.neighborhood == '' || this.state.busNo == '' || this.state.level == '' ) {
+
+       if (this.state.name == '' || this.state.inst == '' || this.state.district == '' || this.state.busNo == '' || this.state.level == '' ) {
         this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
         this.setState({errorMsgVisibilty: 'flex'})
         return;
@@ -181,12 +201,13 @@ componentDidMount(){
         return;
       }
 
-       console.log(phoneNo);
-         var phoneNo = this.props.navigation.getParam('parentNo', 'NO-NUM');
-       console.log(phoneNo);
-       if (phoneNo != null){
-          firebase.database().ref('children/'+phoneNo).update({
-           name: this.state.sName,
+
+         var childKey = this.props.navigation.getParam('childKey', 'NO-NUM');
+       console.log(childKey);
+       if (childKey != null){
+
+          firebase.database().ref('children/'+childKey).update({
+           name: this.state.name,
            inst: this.state.inst,
            busNo: this.state.busNo,
            level: this.state.level,
@@ -199,7 +220,7 @@ componentDidMount(){
 
      static navigationOptions = function(props) {
      return {
-       title: 'تعديل بيانات الطفل',
+       title: '',
        headerLeft: <View style={{paddingLeft:16, }}>
        <Icon
            name="chevron-left"
@@ -243,27 +264,16 @@ componentDidMount(){
 
                 <View style={styles.inputContainer}>
 
-                <TextInput style={styles.input}
+                <TextInput style={styles.inputs, styles.input}
                 placeholder="اسم الطالب "
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={sName => this.setState({ sName })}
-                value={this.state.sName}
+                onChangeText={name => this.setState({ name })}
+                value={this.state.name}
                 />
                 </View>
 
 
-                <View style={styles.inputContainer}>
-
-                <TextInput style={styles.input}
-                placeholder="المدرسة"
-                keyboardType="TextInput"
-                underlineColorAndroid='transparent'
-                onChangeText={ inst => this.setState({ inst })}
-                value={this.state.inst}
-                />
-
-                </View>
 
                 <Text style={styles.level}> المرحلة:  </Text>
                <View style={styles.typeContainer}>
@@ -290,7 +300,7 @@ componentDidMount(){
               </View>
 
 
-              <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
+              <View style={[styles.neighborhoodList,{marginTop: 30}]}>
                                     <Dropdown
                                     itemColor='#919191'
                                     baseColor='#919191'
@@ -319,7 +329,7 @@ componentDidMount(){
                       />
                     </View>
 
-                    <View style={[styles.fontStyle,styles.neighborhoodList]}>
+                    <View style={[styles.fontStyle,styles.neighborhoodList,{marginTop: 20}]}>
                                   <Dropdown
                                   itemColor='#919191'
                                   baseColor='#919191'
@@ -340,27 +350,47 @@ componentDidMount(){
                       label='المدرسة'
 
              onChangeText={(value) => {
-             console.log(this.state.school);
-             this.setState({school:value})
+             console.log(this.state.inst);
+             this.setState({inst:value})
+             this.retrieveBuses()
              } }
                          data={this.state.universities}
-                         value={this.state.school}
+                         value={this.state.inst}
                     />
                   </View>
 
 
 
-                <View style={styles.busContainer}>
+                  <View style={[styles.neighborhoodList, {marginTop: 20, marginBottom:20}]}>
+                                        <Dropdown
+                                        itemColor='#919191'
+                                        baseColor='#919191'
+                                        textColor='#919191'
+       disabled={this.state.disableBuses}
+                                        itemTextStyle={{textAlign:'right'}}
+                            style={{textAlign:'right'}}
+                            dropdownOffset={{ top: 0, left: 0}}
+                                             inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
+                                            containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                                            pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                                            itemPadding={10}
+                                            shadeOpacity={0}
+                                            rippleInsets={{top: 0, bottom: 0}}
+                                            dropdownMargins	={{min: 0, max: 0}}
+                                            dropdownPosition ={0}
+                            label='رقم الحافلة'
+                            placeholder={this.state.busPlaceholder}
+                            data={this.state.busesNumbers}
 
-                <TextInput style={styles.input}
-                placeholder="رقم الحافلة"
-                keyboardType="numeric"
-                underlineColorAndroid='transparent'
-                onChangeText={busNo => this.setState({ busNo })}
-                //line below is added new by lama:
-                value={this.state.busNo}
-                />
-                </View>
+                            onChangeText={(busNo) => {
+                              this.setState({busNo})
+                              this.setState({busNoBorder: '#EAEAEA'})
+                              this.setState({busNoError: 'none'})
+                            } }
+                            value={this.state.busNo}
+                          />
+                        </View>
+
 
 
                               <View >
@@ -369,19 +399,17 @@ componentDidMount(){
                                </View>
 
 
-                <TouchableHighlight style={[styles.buttonContainer, styles.save]}
-                onPress={this.editChild}>
-                <Text style={styles.saveText}>حفظ</Text>
-                </TouchableHighlight>
+                               <View>
+                             <TouchableHighlight style={[styles.buttonContainer, styles.save]} onPress={this.editChild}>
+                             <Text style={styles.saveText}>حفظ</Text>
+                            </TouchableHighlight>
+                             </View>
 
-                <TouchableHighlight style={[styles.buttonContainer, styles.delete]}
-                onPress={this.showAlertDialog}>
-                <Text style={styles.saveText}>حذف الطالب</Text>
-                </TouchableHighlight>
-
-
-
-
+                             <View>
+                              <TouchableHighlight style={[styles.buttonContainer, styles.delete]} onPress={this.showAlertDialog}>
+                             <Text style={styles.saveText}>حذف</Text>
+                           </TouchableHighlight>
+                           </View>
                 </View>
 
                 </ScrollView>
@@ -400,49 +428,67 @@ componentDidMount(){
                                  backgroundColor: '#F7FAFF',
                                  },
                                  smallContainer:{
-                                 marginTop:130,
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                                 backgroundColor: 'white',
-                                 borderRadius:10,
-                                 width:300,
-                                 height:400,
+                                   marginTop:40,
+                                   justifyContent: 'center',
+                                  alignItems: 'center',
+                                  backgroundColor: 'white',
+                                  borderRadius:10,
+                                    width:300,
+                                    height:575
 
                                  },
 
                                  inputContainer: {
-                                   borderColor: '#EAEAEA',
                                    backgroundColor: '#FFFFFF',
-                                   borderRadius:25,
+                                   borderRadius:30,
                                    borderWidth: 1,
-                                   width:250,
+                                   width:260,
                                    height:35,
-                                   marginBottom:10,
-                                   top:50,
-                                   paddingHorizontal:10,
-                                  flexDirection: 'row',
+                                   marginBottom:15,
+                                  // flexDirection: 'row-reverse',
+                                   //justifyContent:'flex-end',
+                                  // alignItems:'left',
+                                   borderColor: '#EAEAEA'
 
                                  },
                                  input:{
-                                       flex:1,
-                                      height:40,
-                                   alignSelf:'flex-end',
-                                     borderColor: '#EAEAEA',
 
+                                   height:40,
+                                   //flexDirection:'row-reverse',
+                                   //justifyContent:'flex-end',
+                                   //marginright:16,
+                                  textAlign:'right',
+                                   borderColor: '#EAEAEA',
+                                   //marginLeft:10,
+                                   marginRight: 10,
                                  },
                                  header:{
-    color: "#8197C6",
-    fontSize: 15 ,//problema
-    fontWeight:'900',
-    bottom: -20,
+                                   color: "#8197C6",
+                                   fontSize: 15 ,//problema
+                                   fontWeight:"900",
+                                   marginTop:20,
+                                   marginBottom:20,
   },
   level:{
-       flex:1,
-                                      width: 70,
-                                   alignSelf:'flex-end',
-                                     color: '#9F9F9F',
-                                     top:60,
-                                     right:7
+    textAlign:'right',
+
+      display:'block',
+    alignSelf:'flex-end',
+                                        color: '#9F9F9F',
+
+                                        right:7,
+                                        marginBottom:10,
+  },
+  inputs:{
+
+      height:40,
+      //flexDirection:'row-reverse',
+
+      //marginRight:120,
+      //justifyContent:'flex-end',
+      //marginright:16,
+      borderColor: '#EAEAEA',
+      marginRight: 10,
   },
 
 
@@ -461,30 +507,31 @@ componentDidMount(){
                              },
 
                                  buttonContainer: {
-                                  height:30,
-                                   flexDirection: 'row',
-                                  justifyContent: 'center',
-                                   alignItems: 'center',
-    //marginBottom:20,
-                                 width:60,
-                                  borderRadius:30,
+                                   height:30,
+                                                                 flexDirection: 'row',
+                                                                justifyContent: 'center',
+                                                                 alignItems: 'center',
+                                  //marginBottom:20,
+                                                               width:60,
+                                                                borderRadius:30,
     //top: -10
   },
   save: {
     //backgroundColor: "#FF4DFF",
     width: 60,
     height:30,
-    top: 20,
-    left:110,
+    top: -15,
+    left:40,
     backgroundColor:"#3C68BF",
    //alignSelf:'flex-end'
     //marginBottom: 300,
   },
   delete:{
-      width: 100,
-    height:30,
-    top: -10,
-    left:25,
+    width: 60,
+    height: 30,
+    top: -45,
+    left:-40,
+
     backgroundColor:"#DC143C",
    //alignSelf:'flex-end'
     //marginBottom: 300,
@@ -501,21 +548,20 @@ componentDidMount(){
     fontSize: 15
   },
 typeContainer:{
-justifyContent: 'center',
-backgroundColor: 'white',
-borderRadius:10,
-flex: 1,
-bottom: -15,
-flexDirection: 'row-reverse',
+  justifyContent: 'center',
+  backgroundColor: 'white',
+  borderRadius:10,
+
+  flexDirection: 'row-reverse',
 
 },
 
 typeButtonContainer: {
-borderRadius: 5,
-flexDirection: 'row',
- width: 60,
-    height:30,
-    backgroundColor:"#3C68BF",
+  borderRadius: 5,
+  flexDirection: 'row',
+  width: 60,
+     height:30,
+     backgroundColor:"#3C68BF",
 },
 typeButton: {
 backgroundColor: "#DFE8FB",
@@ -524,16 +570,15 @@ marginRight:5,
 
 },
 neighborhoodList: {
- borderColor: '#EAEAEA',
-  backgroundColor: 'white',
-   width:250,
-  height:100,
-top:40 },
+  borderColor: '#EAEAEA',
+  width:260,
+  height:50,
+},
 
 warning:{
-   color: 'red',
-   fontSize:12,
-   marginBottom:10,
+  color: 'red',
+  fontSize:12,
+  marginBottom:20,
        },
 
 pressedButton: {
