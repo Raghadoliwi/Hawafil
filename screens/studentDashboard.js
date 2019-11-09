@@ -28,10 +28,10 @@ export default class studentDashboard extends React.Component {
 
 constructor(props){
     super(props)
-    this.state={departure:'6:00',
-                arrival:'1:00'
-              }
-
+    this.state={
+      userId: null,
+      arrival: '0',
+    }
 }
 
     UNSAFE_componentWillMount(){
@@ -47,11 +47,64 @@ constructor(props){
     };
   }//end UNSAFE_componentWillMount
 
-  onButtonToggle(){
-    this.setState({
-      departure: !this.state.departure
- })
-}//end on onButtonToggle
+  componentDidMount(){ //to fetch data
+firebase.auth().onAuthStateChanged((user) => {
+if (user) {
+var userId = firebase.auth().currentUser.uid;
+email= firebase.auth().currentUser.email;
+firebase.database().ref('students/'+userId).on('value', snapshot => {
+this.setState({
+    arrival: snapshot.val().arrival,
+    departure: snapshot.val().departure,
+    userId: userId
+});
+});
+}
+})
+
+
+}//end componentDidMount
+
+onDepartureToggle = () => {
+  var temp = !this.state.departure
+
+this.setState((state, props) => ({
+  departure: temp,
+}));
+ //update in  db
+   firebase.database().ref('students/'+this.state.userId).update({
+    departure: temp
+    })
+ //Alert
+ Alert.alert('تم تحديث حالة الحضور');
+
+
+}//end on onDepartureToggle
+
+onArrivalToggle = (arr) => {
+  this.setState((state, props) => ({
+    arrival: arr,
+  }));
+   //update in  db
+     firebase.database().ref('students/'+this.state.userId).update({
+      arrival: arr
+      })
+   //Alert
+   Alert.alert('تم تحديث حالة الحضور');
+  /*
+  this.setState({
+    arrival: arr
+  })
+
+  firebase.database().ref('students/'+this.state.userId).update({
+   arrival: arr
+   })
+   //Alert
+   //Alert.alert('تم تحديث حالة الحضور');
+
+   */
+}//end onarrivaltoggle
+
 
 static navigationOptions = function(props) {
 return {
@@ -85,8 +138,8 @@ scrollEnabled={false}>
 
                 <View style={styles.typeContainer}>
 
-                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.departure === '6:00'?styles.pressedButton:styles.typeButton]} onPress ={this.onToggle}>
-                    <Text style={styles.typeText}>6:00 ص</Text>
+                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.departure === true? styles.pressedButton:styles.typeButton]} onPress ={this.onDepartureToggle}>
+                    <Text style={styles.typeText}>6:00</Text>
                     </TouchableHighlight>
                 </View>
 
@@ -96,11 +149,11 @@ scrollEnabled={false}>
 
                 <View style={styles.typeContainer}>
 
-                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '1:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({arrival:'1:00'})}>
-                    <Text style={styles.typeText}>1:00 م</Text>
+                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '13:00'?styles.pressedButton:styles.typeButton]} onPress ={() => this.onArrivalToggle('13:00')}>
+                    <Text style={styles.typeText}>13:00</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '3:00'?styles.pressedButton:styles.typeButton]} onPress ={()=> this.setState({arrival:'3:00'})}>
-<Text style={styles.typeText}>3:00 م</Text>
+                    <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '15:00'?styles.pressedButton:styles.typeButton]} onPress ={() => this.onArrivalToggle('15:00')}>
+<Text style={styles.typeText}>15:00</Text>
                         </TouchableHighlight>
                 </View>
 
