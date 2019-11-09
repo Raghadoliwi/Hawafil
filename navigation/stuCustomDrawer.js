@@ -69,12 +69,17 @@ console.log(this.state.name);
           </View>
 ) : null}
         <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-<FontAwesomeIcon icon={ faCoffee } />
             <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('studentDashboard')}>
             الرئيسية
             </Text>
           </View>
 
+
+          <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
+              <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('editStudent')}>
+              تعديل البيانات
+              </Text>
+            </View>
 
 
 

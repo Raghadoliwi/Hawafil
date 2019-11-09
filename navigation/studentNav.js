@@ -5,7 +5,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import stuCustomDrawer from './stuCustomDrawer';
 import addChild from '../screens/addChild';
 import studentDashboard from '../screens/studentDashboard'
-
+import editStudent from '../screens/editStudent'
 /* Import all pages that a student can access
 */
 import logout from '../screens/logout'
@@ -14,7 +14,7 @@ const studentNavigation = createStackNavigator(
   {
 
     studentDashboard: { screen: studentDashboard },
-
+    editStudent: {screen: editStudent},
 
   },
   {
@@ -33,12 +33,22 @@ const editStudentNav = createStackNavigator(
 )
 */
 
+const editStudentNavigation = createStackNavigator(
+  {
+    editStudent: { screen: editStudent }
+  },
+  {
+    initialRouteName: 'editStudent'
+  }
+)
+
 
 const studentDrawer = createDrawerNavigator({
     'studentNavigation': {
       screen: studentNavigation,
-    },   'addChild': {
-        screen: addChild,
+    },
+       'editStudentNavigation': {
+        screen: editStudentNavigation,
       },
     'logout': {
       screen: logout,

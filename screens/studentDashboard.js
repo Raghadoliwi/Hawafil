@@ -108,19 +108,20 @@ onArrivalToggle = (arr) => {
 
 static navigationOptions = function(props) {
 return {
-  title: 'صفحة الطالب',
+  drawerLabel:'الرئيسية',
+  title: 'الرئيسية',
   headerLeft: <View style={{paddingLeft:16}}>
-  <Icon
-      name="three-bars"
-      size={25}
-      color='white'
-      onPress={() => props.navigation.openDrawer()} />
- </View>,
+      <Icon
+          name="three-bars"
+          size={25}
+          color='white'
+          onPress={() => props.navigation.openDrawer()} />
+  </View>,
 
- headerTintColor: 'white',
-       headerStyle: {
-          backgroundColor: "#4C73CC"
-       }
+  headerTintColor: 'white',
+        headerStyle: {
+           backgroundColor: "#4C73CC"
+        }
 }
 };
 
