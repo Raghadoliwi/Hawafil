@@ -19,92 +19,162 @@ const MenuIcon = ({ navigate }) => <Icon
 />;
 
 
-export default class driverDashboard extends React.Component {
-    UNSAFE_componentWillMount(){
-        const firebaseConfig = {
-          apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
-          authDomain: "hawafildb.firebaseapp.com",
-          databaseURL: "https://hawafildb.firebaseio.com",
-          projectId: "hawafildb",
-          storageBucket: "",
-          messagingSenderId: "932110912763",
-          appId: "1:932110912763:web:68fca60e805543a655b45e",
-          measurementId: "G-G21F8ME7TS"
-        };
 
+export default class busStudents extends React.Component {
 
-      }
-      constructor(props){
+  UNSAFE_componentWillMount(){
+      const firebaseConfig = {
+        apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+        authDomain: "hawafildb.firebaseapp.com",
+        databaseURL: "https://hawafildb.firebaseio.com",
+        projectId: "hawafildb",
+        storageBucket: "",
+        messagingSenderId: "932110912763",
+        appId: "1:932110912763:web:68fca60e805543a655b45e",
+        measurementId: "G-G21F8ME7TS"
+      };
+}
+
+Constructor(props){
         super(props)
         this.state = {
           items : []
         }
+
       }
+
+      ///////////////////////
 
       componentDidMount(){ //to fetch data
-          firebase.database().ref('drivers/').on('value', (snap) => {
-              let items = [];
-              snap.forEach((child) => {
-                  items.push({
-                      name: child.val().name ,
-                      busNo: child.val().busNo ,
-                      neighborhood: child.val().phoneNo ,
-                      busPlate: child.val().busPlate ,
-                  })
-              })//end snap for each
-              itm = items;
-              this.setState({items: items});
-              console.log(itm);
-              console.log("lama-------");
-              console.log(this.state.items); //This is wrong
-              itm.forEach((itms) => {
-                  console.log(itms.name);
-              })
-          })//end on
 
+        firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
 
+  var userId = firebase.auth().currentUser.uid;
+  insType = firebase.auth().currentUser.insName;
+
+  firebase.database().ref('driver/'+userId).on('value', snapshot => {
+
+    this.setState({
+
+      driverIn: {
+        name: snapshot.val().name,
+        insName: snapshot.val().insName,
+      },
+
+    });
+
+  });
+
+  firebase.database().ref('manager/').on('value', snapshot => {
+
+    this.setState({
+
+      managerIn:{
+      insName : snapshot.val().insName,
       }
+    });
+
+  });
 
 
-static navigationOptions = function(props) {
-return {
-  drawerLabel:'إدارة السائقين',
-  title: 'إدارة السائقين',
-  headerLeft: <View style={{paddingLeft:16}}>
-      <Icon
-          name="three-bars"
-          size={25}
-          color='white'
-          onPress={() => props.navigation.openDrawer()} />
-  </View>,
+  console.log (this.state.driverIn.insName);
+  console.log (this.state.managerIn.insName);
 
-  headerTintColor: 'white',
-        headerStyle: {
-           backgroundColor: "#4C73CC"
-        }
-}
+
+  let insType =this.state.driverIn.insName;
+
+
+
+
+    }
+  });
+  //////////////
+
+      componentDidMount(){ //to fetch data
+
+
+        firebase.database().ref('managers/').on('value', (snap) => {
+            let allInsttBus = [];
+            snap.forEach((child) => {
+                item.push({
+                    insName: child.val().insName ,
+                    insType: child.val().insType ,
+                })
+            })//end snap for each
+
+        })
+
+        firebase.database().ref('buses/').on('value', (snap) => {
+            let allInsttBus = [];
+            snap.forEach((child) => {
+                items.push({
+                    driverName: child.val().driverName ,
+                    busNo: child.val().busNo ,
+                    neighborhood: child.val().neighborhood ,
+                    carPlate: child.val().carPlate ,
+                    inst:child.val().inst,
+                })
+            })//end snap for each
+
+        })
+
+
+    }
+
+
+	static navigationOptions = function(props) {
+  return {
+		drawerLabel:'الرحلات',
+    title: 'رحلات هذا اليوم',
+    headerLeft: <View style={{paddingLeft:16}}>
+				<Icon
+						name="three-bars"
+						size={25}
+						color='white'
+						onPress={() => props.navigation.openDrawer()} />
+		</View>,
+
+		headerTintColor: 'white',
+		      headerStyle: {
+		         backgroundColor: "#4C73CC"
+		      }
+	}
 };
 
 	render() {
     return (
 
+      // take the driver name
+      // search for it in the manager table
+      // if type = school 2 car \ds
+
       <View style={{padding: 10, flex: 1}, styles.container} >
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
 
-        {
-        this.state.items.map((u, i ) => {
-            return (
-                <Card containerStyle={styles.cards} title={u.name}>
-                    <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: {u.busNo}</Text>
-                    <Text style={styles.paragraph} key={u.neighborhood}>الحي: {u.neighborhood}</Text>
-                    <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: {u.busPlate}</Text>
-                </Card>
-            );
-        })
-        }
+{
+
+this.state.items.map((u, i ) => {
+  return (
+    <Card containerStyle={styles.cards} title="رحـلة #١">
+{/*react-native-elements Card*/}
+  <Text style={styles.paragraph} >
+    تبدأ هذة الرحلة في تمام الساعة
+  </Text>
+
+// كيف افرق بين المدرسة و الجامعة عشان الكاردز
 
 
+  <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton]}
+   onPress={() => this.props.navigation.navigate('studentsList')}>
+      <Text style={[styles.fontStyle,styles.registerText]}>الركاب</Text>
+  </TouchableHighlight>
+
+</Card>
+);
+})
+}
       </ScrollView>
       </View>
 
@@ -139,15 +209,16 @@ const styles = StyleSheet.create({
 
   }
   ,
+
   buttonContainer: {
     height:45,
-    top:25,
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
+    marginBottom:10,
     width:250,
     borderRadius:30,
+
   },
   addButton: {
 		flex: 1,
@@ -160,6 +231,27 @@ const styles = StyleSheet.create({
     backgroundColor:"#EDC51B",
     //marginBottom: 300,
   },
+  viewStudentsButtonContainer: {
+    height:45,
+  	flexDirection: 'row',
+  	justifyContent: 'center',
+  	alignItems: 'center',
+  	marginBottom:10,
+  	width:250,
+  	borderRadius:30
+  },
+  viewStudentsText:{
+     color: '#EDC51B',
+
+  },
+
+viewStudentsButton:{
+  backgroundColor: "white",
+  borderColor:'#EDC51B',
+  borderRadius:25,
+  borderWidth :1
+},
+
   addText: {
     color: 'white',
     fontSize: 18 ,
