@@ -10,8 +10,10 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
-import addBusDriver from './addBusDriver'
-import editDriverForm from './editDriverForm'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Dropdown } from 'react-native-material-dropdown';
+import DropdownMenu from 'react-native-dropdown-menu';
+
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
     size={20}
@@ -20,7 +22,7 @@ const MenuIcon = ({ navigate }) => <Icon
 />;
 
 
-export default class renderManageDrivers extends React.Component {
+export default class approveStudent extends React.Component {
     UNSAFE_componentWillMount(){
         const firebaseConfig = {
           apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
@@ -53,18 +55,16 @@ this.setState({inst: snapshot.val().instName})
 
 })
 
-firebase.database().ref('drivers/').on('value', (snap) => {
+firebase.database().ref('students/').on('value', (snap) => {
     let items = [];
     snap.forEach((child) => {
       if (child.val().inst === this.state.inst)
         items.push({
             name: child.val().name ,
             busNo: child.val().busNo ,
-            district: child.val().district ,
-            busPlate: child.val().busPlate ,
-            id: child.val().id ,
-            inst: child.val().inst ,
-            phoneNo: child.val().phoneNo ,
+            neighborhood: child.val().neighborhood ,
+            stdID: child.key
+            //phoneNo: child.val().phoneNo ,
 
 
         })
@@ -76,30 +76,15 @@ firebase.database().ref('drivers/').on('value', (snap) => {
 
 })//end on
 
-
-
-
-
-
-
     }
   });
-
-
-
-
-
-
-
-
-
       }
 
 
 static navigationOptions = function(props) {
 return {
-  drawerLabel:'إدارة السائقين',
-  title: 'إدارة السائقين',
+  drawerLabel:'عرض الطلاب الجدد',
+  title: 'عرض الطلاب الجدد',
   headerLeft: <View style={{paddingLeft:16}}>
       <Icon
           name="three-bars"
@@ -114,43 +99,51 @@ return {
         }
 }
 };
+//<TouchableHighlight onPress={() => { this.functionOne(); this.functionTwo(); }/>
+
+removeCard(stdID){
+  this.setState({ items:this.state.items.filter(items => items.stdID !== stdID)});
+}
 	render() {
     return (
 
       <View style={{padding: 10, flex: 1}, styles.container} >
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
-     <TouchableHighlight style={[styles.buttonContainer, styles.addButton]}
-onPress={() => this.props.navigation.push('addBusDriver',{inst:this.state.inst})}     >
-          <Text style={styles.addText}>إضافة قائد حافلة</Text>
-        </TouchableHighlight>
+
         {
         this.state.items.map((u, i ) => {
 
             return (
-                <Card containerStyle={styles.cards} title={u.name}>
+                <Card  containerStyle={styles.cards} title={u.name}>
                 <View style={styles.typeContainer}>
-                <Text style={styles.paragraph} key={u.id}>الرقم الوظيفي: </Text>
-                <Text style={styles.info}>{u.id}</Text>
+                <Text style={styles.paragraph} key={u.name}>اسم الطالب: </Text>
+                <Text style={styles.info}>{u.name}</Text>
                 </View>
                 <View style={styles.typeContainer}>
                 <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: </Text>
                 <Text style={styles.info}>{u.busNo}</Text>
                 </View>
                 <View style={styles.typeContainer}>
-                    <Text style={styles.paragraph} key={u.busPlate}>رقم اللوحة: </Text>
-                    <Text style={styles.info}>{u.busPlate}</Text>
+                    <Text style={styles.paragraph} key={u.neighborhood}>الحي: </Text>
+                    <Text style={styles.info}>{u.neighborhood}</Text>
                     </View>
                     <View style={styles.typeContainer}>
-                    <Text style={styles.paragraph} key={u.phoneNo}>رقم الجوال: </Text>
-                    <Text style={styles.info}>{u.phoneNo}</Text>
-                    </View>
+                     <Text style={styles.paragraph} key={u.phoneNo}>رقم الجوال: </Text>
+                     <Text style={styles.info}>{u.phoneNo}</Text>
+                     </View>
 
 
-                                     <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-                                     onPress={() =>  this.props.navigation.push('editDriverForm',{id:u.id}) }>
-                                    <Text style={styles.editText}>تعديل</Text>
-                                  </TouchableHighlight>
+
+
+                                  <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+                                  onPress={() =>  removeCard(stdID)}>
+                                 <Text style={styles.editText}>قبول</Text>
+                               </TouchableHighlight>
+                               <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+                               onPress={() =>  removeCard(stdID)}>
+                              <Text style={styles.editText}>رفض</Text>
+                            </TouchableHighlight>
                 </Card>
             );
         })
