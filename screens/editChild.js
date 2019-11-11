@@ -472,7 +472,7 @@ console.log(this.state.busesNumbers);
   level:{
     textAlign:'right',
 
-      display:'block',
+
     alignSelf:'flex-end',
                                         color: '#9F9F9F',
 
