@@ -23,6 +23,8 @@ import firebase from 'firebase';
 import Constants from 'expo-constants';
 import DropdownMenu from 'react-native-dropdown-menu';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Dropdown } from 'react-native-material-dropdown';
+
 
 const MenuIcon = ({ navigate }) => <Icon
     name='chevron-left'
@@ -54,12 +56,16 @@ export default class editStudent extends React.Component {
   confirmPassword:'',
      currentColor: '#EAEAEA',
       passError:'none',
-
+      universities:[],
+      buses:[],
     name:'',
      phoneNo: '',
      neighborhood:'',
      university:'',
      busNo: '',
+     neighborhoodBorder:'#EAEAEA',
+     uniBorder:'#EAEAEA',
+     busBorder:'#EAEAEA',
 
      errorMessage: null,
     nameBorders:'#EAEAEA',
@@ -71,7 +77,15 @@ export default class editStudent extends React.Component {
 
           componentDidMount(){ //to fetch data
 
+            firebase.database().ref('managers/').once('value', (snap) => {
 
+                snap.forEach((child) => {
+
+                  this.setState({ universities: this.state.universities.concat({value:child.val().instName} ) })
+
+
+                })
+            })//end on
 const { navigation } = this.props;
 firebase.auth().onAuthStateChanged((user) => {
 if (user) {
@@ -229,7 +243,7 @@ const { navigation } = this.props;
 
 
 
-                    <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
+                        <View style={[styles.phoneContainer, {borderColor: this.state.phoneBorder}]}
                         >
 
                         <TextInput style={styles.keyText}
@@ -237,46 +251,127 @@ const { navigation } = this.props;
                         editable={false}
                         />
 
-                        <TextInput style={styles.phoneInput}
+                        <TextInput style={[styles.phoneInput]}
                         placeholder="رقم الجوال"
                         keyboardType="numeric"
                         ref="phoneNumber"
                         underlineColorAndroid='transparent'
                         onChangeText={(phoneNo) => {
-                          this.setState({phoneNo})
-                          this.setState({currentColor: '#EAEAEA'})
+                        this.setState({phoneNo})
+                        this.setState({currentColor: '#EAEAEA'})
                         } }
                         onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
                         value={this.state.phoneNo}
                         />
                         </View>
 
+                        <View style={[styles.inputContainer, {borderColor: this.state.emailBorders}]}>
 
-                       <View style={styles.inputContainer}>
+                        <TextInput style={styles.input}
+                        placeholder="البريد الإلكتروني"
+                        keyboardType="email-address"
+                        underlineColorAndroid='transparent'
+                        onChangeText={(email) => {
+                        this.setState({email})
+                        this.setState({emailBorder: '#EAEAEA'})
+                        }
+                        }
+                        onEndEditing={(email) => this.validateEmail(email)}
+                        value={this.state.email}
+                        />
 
-                     <TextInput style={styles.pass, styles.input}
-                     placeholder="كلمة المرور"
-                     secureTextEntry={true}
-                     underlineColorAndroid='transparent'
-                     autoCapitalize="none"
-                     onChangeText={password => this.setState({ password })}
-                     value={this.state.password}
-                     />
-                     </View>
+                        </View>
+
+                        <View style={styles.inputContainer}>
+
+                       <TextInput style={styles.input}
+                       placeholder="كلمة المرور"
+                       secureTextEntry={true}
+                       underlineColorAndroid='transparent'
+                       autoCapitalize="none"
+                       onChangeText={(password) => {
+                         this.setState({password})
+                         this.setState({passwordBorder: '#EAEAEA'})
+                       } }
+                       value={this.state.password}
+                       />
+                       </View>
 
 
 
                      <View style={styles.inputContainer}>
 
-                     <TextInput style={styles.pass, styles.input}
+                     <TextInput style={styles.input}
                      placeholder="تأكيد كلمة المرور"
                      secureTextEntry={true}
                      underlineColorAndroid='transparent'
-                     autoCapitalize="none"
-                     onChangeText={password => this.setState({ password })}
-                     value={this.state.password}
+
+                     onChangeText={(confirmPassword) => {
+                       this.setState({confirmPassword})
+                       this.setState({conPasswordBorder: '#EAEAEA'})
+                       this.setState({passError: 'none'})
+                     } }
+                       onEndEditing={(confirmPassword) =>{this.identicalPass(confirmPassword)} }
+                     value={this.state.confirmPassword}
                      />
                      </View>
+
+                     <View style={[styles.neighborhoodList,styles.fontStyle, {borderColor: this.state.neighborhoodBorder}]}>
+                                   <Dropdown
+                                   itemColor='#919191'
+                                   baseColor='#919191'
+                                   textColor='#919191'
+
+                                   itemTextStyle={[styles.fontStyle,{textAlign:'right'}]}
+                       style={[styles.fontStyle,{marginTop:5,textAlign:'right'}]}
+                       dropdownOffset={{ top: 0, left: 0}}
+                                        inputContainerStyle={[{textAlign:'right', borderBottomColor: 'transparent'},styles.fontStyle ]}
+                                       containerStyle={[styles.fontStyle,{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}]}
+                                       pickerStyle={[styles.fontStyle,{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}]}
+                                       itemPadding={10}
+                                       shadeOpacity={0}
+                                       rippleInsets={{top: 0, bottom: 0}}
+                                       dropdownMargins	={{min: 0, max: 0}}
+                                       dropdownPosition ={0}
+                       label='الحي السكني'
+
+                       data={riyadhDistricts}
+
+                       onChangeText={(value) => {
+                         this.setState({neighborhood:value})
+                         this.setState({neighborhoodBorder: '#EAEAEA'})
+                       } }
+                     />
+                   </View>
+
+                   <View style={[styles.fontStyle,styles.neighborhoodList, {borderColor: this.state.uniBorder}]}>
+                                 <Dropdown
+                                 itemColor='#919191'
+                                 baseColor='#919191'
+                                 textColor='#919191'
+
+                                 itemTextStyle={[styles.fontStyle,{textAlign:'right'}]}
+                     style={[styles.fontStyle,{marginTop:5,textAlign:'right'}]}
+                     dropdownOffset={{ top: 0, left: 0}}
+                                      inputContainerStyle={[{textAlign:'right', borderBottomColor: 'transparent'},styles.fontStyle ]}
+                                     containerStyle={[styles.fontStyle,{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}]}
+                                     pickerStyle={[styles.fontStyle,{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}]}
+                                     itemPadding={10}
+                                     shadeOpacity={0}
+                                     rippleInsets={{top: 0, bottom: 0}}
+                                     dropdownMargins	={{min: 0, max: 0}}
+                                     dropdownPosition ={0}
+
+                     label='الجامعة'
+
+         onChangeText={(value) => {
+           console.log(this.state.universities);
+           this.setState({university:value})
+           this.setState({uniBorder: '#EAEAEA'})
+         } }
+                        data={this.state.universities}
+                   />
+                 </View>
 
 
 
@@ -353,6 +448,27 @@ const { navigation } = this.props;
                                      height: 0,
                                      width: 0}
 
+
+                                 },
+                                 neighborhoodList: {
+                                   borderColor: '#EAEAEA',
+                                   backgroundColor: 'white',
+                                   width:250,
+                                   height:100,
+                                   marginBottom:-40,
+                                   marginTop:5
+                                 },
+                                 dropdown:{
+                                   borderRadius:25,
+                                 },
+                                 inputDown:{
+                                 flex:1,
+                                 height:40,
+                                 //flexDirection:'row-reverse',
+                                 //justifyContent:'flex-end',
+                                 //marginright:16,
+
+                                 borderColor: '#EAEAEA',
 
                                  },
 
