@@ -128,47 +128,48 @@ const {navigation} = this.props;
               var busPlate = this.state.busPlate;
               var district= this.state.district;
 
-/*
-                  firebase.auth().onAuthStateChanged( user => {
-                      if (user) {
-                        this.userId = user.uid +'5'
-                        if (instName === 'NO-INST'){return;}
-                    }
-                  });
-                  */
+              var config = {apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
+                  authDomain: "hawafildb.firebaseapp.com",
+                  databaseURL: "https://hawafildb.firebaseio.com"};
+              var secondaryApp = firebase.initializeApp(config, "Secondary");
 
-// /'drivers/'+this.userId
-                //  firebase.database().ref('drivers/'+this.userId).set(
-              //  var myKey = firebase().ref().child('drivers').push().key;
-              firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.nationalId)
-              .then( (data) => {
-                  firebase.auth().onAuthStateChanged( user => {
-                      if (user) {
-                        this.userId = user.uid
-                          user.sendEmailVerification();
-                firebase.database().ref('drivers/'+this.userId).set(
-                    {
-                      name: driverName,
-                      nationalId: nationalId,
-                      phoneNo: phoneNo,
-                      busNo: busNo,
-                      busPlate: busPlate,
-                      district: district,
-                      inst: instName,
-                    }
-                  ).then(function() {
-                      Alert.alert('تمت الإضافة بنجاح');
-                      navigation.push('renderManageDrivers');
-                    })
-                    .catch((error) => {
-                      console.log(error.message)
-                      this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا'})
-                      this.setState({errorMsgVisibilty: 'flex'})
-                    })
-                  }  //end if user
+              secondaryApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.nationalId)
+              .then(function(firebaseUser) {
+            var user = secondaryApp.auth().currentUser;
+            console.log(user.uid);
+            try {
+                  user.sendEmailVerification();
 
-                })//end
-              })//end then
+        firebase.database().ref('drivers/'+firebaseUser.uid).set(
+            {
+              name: driverName,
+              nationalId: nationalId,
+              phoneNo: phoneNo,
+              busNo: busNo,
+              busPlate: busPlate,
+              district: district,
+              inst: instName,
+            }
+          ).then(function() {
+              Alert.alert('تمت الإضافة بنجاح');
+              navigation.push('renderManageDrivers');
+            })
+            .catch((error) => {
+              console.log(error.message)
+              this.setState({formErrorMsg: 'البريد الإلكتروني مسجل مسبقًا'})
+              this.setState({errorMsgVisibilty: 'flex'})
+            })
+          }
+          catch(e){
+          console.log(e.message);}
+                  secondaryApp.auth().signOut();
+                  secondaryApp.delete();
+
+
+              });
+
+
+
 
 }//END handle inserting
                     validateIdentity = (id) => {

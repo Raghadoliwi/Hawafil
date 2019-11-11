@@ -71,10 +71,10 @@ export default class login extends React.Component {
           this.setState({emailBorders: 'red'})
           return;
         }
-        if (this.state.password == '') {
+    /*  if (this.state.password == '') {
           this.setState({passBorders: 'red'})
             return;
-        }
+        }*/
       const {email, password} = this.state
       const { navigation } = this.props;
       //we need to add code to check if user's account is verified or not.
@@ -101,7 +101,7 @@ export default class login extends React.Component {
 
               firebase.database().ref('drivers/'+user.uid).on('value', snapshot => {
                 if (snapshot.exists())
-                console.log("أهلًا باول درايفر");
+                navigation.navigate('driverNav');
                   return;
             //  navigation.navigate('parentDashboard')
               });

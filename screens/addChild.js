@@ -34,7 +34,8 @@ export default class addChild extends React.Component {
   neighborhood: '',
   busNo: '',
  universities:[],
-
+  busesNumbers:[{value:'قم باختيار مدرسة'}],
+universities:[],
 neighborhoodBorder:'#EAEAEA',
 nameBorder:'',
 schoolBorder:'',
@@ -43,6 +44,9 @@ errorMessage:'',
 formErrorMsg:'',
 errorMsgVisibilty:'none',
 busNoError:'',
+disableBuses:true,
+busPlaceholder:'قم باختيار مدرسة',
+
 
   }
   UNSAFE_componentWillMount(){
@@ -72,7 +76,21 @@ busNoError:'',
 
   }
 
+retrieveBuses = () => {
+  this.setState({disableBuses:false})
+    this.setState({busPlaceholder:''})
+  this.setState({ busesNumbers:[]})
+  firebase.database().ref('drivers/').once('value', (snap) => {
 
+      snap.forEach((child) => {
+        if (child.val().inst==this.state.school)
+        this.setState({ busesNumbers: this.state.busesNumbers.concat({value:child.val().busNo} ) })
+
+
+      })
+  })//end on
+console.log(this.state.busesNumbers);
+}
 
    addChild = () => {
      const {navigation} = this.props;
@@ -89,13 +107,17 @@ busNoError:'',
        this.setState({errorMsgVisibilty: 'flex'})
        return;
      }
+
+const rand=()=>Math.random(0).toString(36).substr(2);
+const token=(length)=>(rand()+rand()+rand()+rand()).substr(0,length);
+
      var uid = firebase.auth().currentUser.uid;
      var parentPhoneNoDB;
      firebase.database().ref('parents/'+uid).on('value', snapshot => {
        parentPhoneNoDB = snapshot.val().phoneNo;
      });
      //adding child:
-     firebase.database().ref('children/'+parentPhoneNoDB).set(
+     firebase.database().ref('children/'+parentPhoneNoDB+token(10)).set(
        {
         name: this.state.sName,
         level: this.state.level,
@@ -121,11 +143,26 @@ busNoError:'',
       return {
         title: '',
         headerLeft: <View style={{paddingLeft:16, }}>
-    				<Icon
-    						name="chevron-left"
-    						size={25}
-    						color='white'
-    						onPress={() => props.navigation.goBack()} />
+        <Icon
+            name="chevron-left"
+            size={30}
+            color='white'
+            onPress={() => {
+              Alert.alert(
+   '',
+   'هل أنت متأكد؟',
+   [{text: 'نعم', onPress: () => props.navigation.goBack()},
+     {
+       text: 'لا',
+       onPress: () => console.log('Cancel Pressed'),
+       style: 'cancel',
+     },
+
+   ],
+   {cancelable: false},
+ );
+
+            }} />
     		</View>,
 
     		headerTintColor: 'white',
@@ -186,7 +223,7 @@ busNoError:'',
 
              </View>
 
-       <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
+       <View style={[styles.neighborhoodList,{marginTop: 20}]}>
                              <Dropdown
                              itemColor='#919191'
                              baseColor='#919191'
@@ -215,7 +252,7 @@ busNoError:'',
                />
              </View>
 
-             <View style={[styles.fontStyle,styles.neighborhoodList]}>
+             <View style={[styles.fontStyle,styles.neighborhoodList,{marginTop: 20}]}>
                            <Dropdown
                            itemColor='#919191'
                            baseColor='#919191'
@@ -238,26 +275,48 @@ busNoError:'',
       onChangeText={(value) => {
       console.log(this.state.school);
       this.setState({school:value})
+      this.retrieveBuses()
       } }
                   data={this.state.universities}
              />
            </View>
 
-  <View style={styles.busInput}>
 
-         <TextInput style={styles.inputs, styles.input}
-             placeholder="رقم الحافلة "
-             keyboardType="numeric"
-             underlineColorAndroid='transparent'
-             onChangeText={(busNo) => {
-               this.setState({busNo})
-               this.setState({busNoBorder: '#EAEAEA'})
-               this.setState({busNoError: 'none'})
-             }
-             }
-             value={this.state.busNo}
-             />
-       </View>
+
+           <View style={[styles.neighborhoodList, {marginTop: 20, marginBottom:20}]}>
+                                 <Dropdown
+                                 itemColor='#919191'
+                                 baseColor='#919191'
+                                 textColor='#919191'
+disabled={this.state.disableBuses}
+                                 itemTextStyle={{textAlign:'right'}}
+                     style={{textAlign:'right'}}
+                     dropdownOffset={{ top: 0, left: 0}}
+                                      inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
+                                     containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                                     pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                                     itemPadding={10}
+                                     shadeOpacity={0}
+                                     rippleInsets={{top: 0, bottom: 0}}
+                                     dropdownMargins	={{min: 0, max: 0}}
+                                     dropdownPosition ={0}
+                     label='رقم الحافلة'
+                     placeholder={this.state.busPlaceholder}
+                     data={this.state.busesNumbers}
+
+                     onChangeText={(busNo) => {
+                       this.setState({busNo})
+                       this.setState({busNoBorder: '#EAEAEA'})
+                       this.setState({busNoError: 'none'})
+                     } }
+                     value={this.state.busNo}
+                   />
+                 </View>
+
+
+
+
+
 
               <View >
 
@@ -284,7 +343,7 @@ busNoError:'',
 
 const styles = StyleSheet.create({
   input:{
-    flex:1,
+
     height:40,
     //flexDirection:'row-reverse',
     //justifyContent:'flex-end',
@@ -305,10 +364,9 @@ const styles = StyleSheet.create({
      backgroundColor: '#FFFFFF',
      borderRadius:30,
      borderWidth: 1,
-     width:250,
+     width:260,
      height:35,
      marginBottom:15,
-    top: 80,
     // flexDirection: 'row-reverse',
      //justifyContent:'flex-end',
     // alignItems:'left',
@@ -334,28 +392,31 @@ const styles = StyleSheet.create({
    backgroundColor: 'white',
    borderRadius:10,
      width:300,
-     height:500
+     height:575
  },
 
  header:{
    color: "#8197C6",
    fontSize: 15 ,//problema
    fontWeight:"900",
-   bottom: -40,
+   marginTop:20,
+   marginBottom:20,
  },
  level:{
-      flex:1,
-                                     width: 70,
-                                  alignSelf:'flex-end',
+textAlign:'right',
+
+
+alignSelf:'flex-end',
                                     color: '#9F9F9F',
-                                    top:90,
-                                    right:7
+
+                                    right:7,
+                                    marginBottom:10,
  },
  inputs:{
-     flex:1,
+
      height:40,
      //flexDirection:'row-reverse',
-     alignSelf:'flex-end',
+
      //marginRight:120,
      //justifyContent:'flex-end',
      //marginright:16,
@@ -363,15 +424,16 @@ const styles = StyleSheet.create({
      marginRight: 10,
  },
  neighborhoodList: {
-  borderColor: '#EAEAEA',
-   backgroundColor: 'white',
-    width:250,
-   height:100,
-top:30   },
+   borderColor: '#EAEAEA',
+   width:260,
+   height:50,
+
+},
+
 warning:{
    color: 'red',
    fontSize:12,
-   marginBottom:10,
+   marginBottom:20,
        },
 
 
@@ -390,8 +452,7 @@ warning:{
 justifyContent: 'center',
 backgroundColor: 'white',
 borderRadius:10,
-flex: 1,
-bottom: -50,
+
 flexDirection: 'row-reverse',
 
 },

@@ -82,6 +82,7 @@ this.setState((state, props) => ({
 }//end on onDepartureToggle
 
 onArrivalToggle = (arr) => {
+  /*works
   this.setState((state, props) => ({
     arrival: arr,
   }));
@@ -91,6 +92,42 @@ onArrivalToggle = (arr) => {
       })
    //Alert
    Alert.alert('تم تحديث حالة الحضور');
+*/
+
+   ///
+   if (arr==='13:00' && this.state.arrival === '13:00'){
+     var temp = ''
+
+   this.setState((state, props) => ({
+     arrival: '',
+   }));
+   Alert.alert('تم تحديث حالة الحضور');
+
+ }//end if
+ else if (arr==='15:00' && this.state.arrival === '15:00'){
+   var temp = ''
+
+ this.setState((state, props) => ({
+   arrival: '',
+ }));
+ Alert.alert('تم تحديث حالة الحضور');
+
+ }
+   else{
+     this.setState((state, props) => ({
+       arrival: arr,
+     }));
+      //update in  db
+        firebase.database().ref('students/'+this.state.userId).update({
+         arrival: arr
+         })
+         Alert.alert('تم تحديث حالة الحضور');
+   }
+
+    //Alert
+
+
+
   /*
   this.setState({
     arrival: arr
@@ -108,19 +145,20 @@ onArrivalToggle = (arr) => {
 
 static navigationOptions = function(props) {
 return {
-  title: 'صفحة الطالب',
+  drawerLabel:'الرئيسية',
+  title: 'الرئيسية',
   headerLeft: <View style={{paddingLeft:16}}>
-  <Icon
-      name="three-bars"
-      size={25}
-      color='white'
-      onPress={() => props.navigation.openDrawer()} />
- </View>,
+      <Icon
+          name="three-bars"
+          size={25}
+          color='white'
+          onPress={() => props.navigation.openDrawer()} />
+  </View>,
 
- headerTintColor: 'white',
-       headerStyle: {
-          backgroundColor: "#4C73CC"
-       }
+  headerTintColor: 'white',
+        headerStyle: {
+           backgroundColor: "#4C73CC"
+        }
 }
 };
 

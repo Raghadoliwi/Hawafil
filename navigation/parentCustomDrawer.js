@@ -5,7 +5,11 @@ import {NavigationActions} from 'react-navigation';
 import {ScrollView, Text, View,Image} from 'react-native';
 import firebase from 'firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { faHome } from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { faCogs } from '@fortawesome/free-solid-svg-icons'
+
+
 class parentCustomDrawer extends Component {
   state = {
     name:'',
@@ -67,27 +71,34 @@ console.log(this.state.name);
             </Text>
           </View>
 ) : null}
-        <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-<FontAwesomeIcon icon={ faCoffee } />
-            <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('parentDashboard')}>
-            الرئيسية
+        <View style={{padding: 10,display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
+        <View style={{flexDirection:'row-reverse'}}>
+      <FontAwesomeIcon icon={ faHome } size={ 20 } style={{color:'#6B82B6'}}/>
+            <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('parentDashboard')}>
+الرئيسية
             </Text>
+            </View>
           </View>
 
 
-          <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-        <FontAwesomeIcon icon={ faCoffee } />
-              <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('editParent')}>
+          <View style={{padding: 10,display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
+          <View style={{flexDirection:'row-reverse'}}>
+        <FontAwesomeIcon icon={ faCogs } size={ 20 } style={{color:'#6B82B6'}}/>
+              <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('editParent')}>
               تعديل البيانات
               </Text>
+              </View>
             </View>
 
 
         </ScrollView>
         <View style={styles.footerContainer}>
-        <Text style={styles.navItemStyle} onPress={this.navigateToScreen('logout')}>
-        تسجيل الخروج
-        </Text>
+        <View style={{flexDirection:'row-reverse'}}>
+
+            <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('logout')}>
+            تسجيل الخروج
+            </Text>
+            </View>
         </View>
       </View>
     );
@@ -114,7 +125,7 @@ const styles = {
   navHeaderStyle: {
 
     color:'#6B82B6',
-    padding: 10,
+
     textAlign: 'right',
 
   },

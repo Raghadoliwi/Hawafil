@@ -153,9 +153,7 @@ import addChild from './addChild';
              />
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
-
-
-
+{this.state.item && this.state.item.instType == 'university' ? (): }
 
 
 

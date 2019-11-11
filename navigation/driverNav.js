@@ -8,19 +8,21 @@ import addChild from '../screens/addChild'
 import editChild from '../screens/editChild'
 import editParent from '../screens/editParent'
 */
+import driverDashboard from '../screens/driverDashboard'
 import logout from '../screens/logout'
 
 const driverNavigation = createStackNavigator(
   {
-    /*all pages that a driver can access from his home page not the drawer
-    parentDashboard: { screen: parentDashboard },
+
+    driverDashboard: { screen: driverDashboard },
+        /*all pages that a driver can access from his home page not the drawer
       addChild: { screen: addChild },
       editChild: { screen: editChild },
       editParent: {screen: editParent}*/
 
   },
   {
-    initialRouteName: ''
+    initialRouteName: 'driverDashboard'
   }
 )
 
