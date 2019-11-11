@@ -7,6 +7,7 @@ import addBusDriver from '../screens/addBusDriver';
 import editDriverForm from '../screens/editDriverForm';
 import approveStudent from '../screens/approveStudent';
 import mngCustomDrawer from './mngCustomDrawer';
+import managerDashboard from '../screens/managerDashboard';
 import logout from '../screens/logout';
 
 const managerNavigation = createStackNavigator(

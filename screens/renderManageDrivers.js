@@ -86,13 +86,6 @@ firebase.database().ref('drivers/').on('value', (snap) => {
   });
 
 
-
-
-
-
-
-
-
       }
 
 

@@ -100,10 +100,10 @@ return {
 }
 };
 //<TouchableHighlight onPress={() => { this.functionOne(); this.functionTwo(); }/>
-
+/*
 removeCard(stdID){
   this.setState({ items:this.state.items.filter(items => items.stdID !== stdID)});
-}
+}*/
 	render() {
     return (
 
@@ -137,11 +137,11 @@ removeCard(stdID){
 
 
                                   <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-                                  onPress={() =>  removeCard(stdID)}>
+                                  onPress={() =>  console.log('Cancel Pressed')}>
                                  <Text style={styles.editText}>قبول</Text>
                                </TouchableHighlight>
                                <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-                               onPress={() =>  removeCard(stdID)}>
+                               onPress={() =>  console.log('Cancel Pressed')}>
                               <Text style={styles.editText}>رفض</Text>
                             </TouchableHighlight>
                 </Card>
