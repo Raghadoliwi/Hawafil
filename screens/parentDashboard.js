@@ -40,7 +40,7 @@ import addChild from './addChild';
     editAttendance = (attendance,index,key) => {
       this.state.childrenList[index].attendance=attendance;
       this.forceUpdate()
-      console.log("الأطفااال");
+  
       console.log(this.state.childrenList);
 console.log(this.state.childrenList.length);
       if (key != null){

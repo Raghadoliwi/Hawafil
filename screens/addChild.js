@@ -223,7 +223,7 @@ const token=(length)=>(rand()+rand()+rand()+rand()).substr(0,length);
 
              </View>
 
-       <View style={[styles.neighborhoodList,{marginTop: 30}]}>
+       <View style={[styles.neighborhoodList,{marginTop: 20}]}>
                              <Dropdown
                              itemColor='#919191'
                              baseColor='#919191'
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
  level:{
 textAlign:'right',
 
-  display:'block',
+
 alignSelf:'flex-end',
                                     color: '#9F9F9F',
 
