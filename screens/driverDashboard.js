@@ -13,6 +13,10 @@ import Constants from 'expo-constants';
 import editParent from './editParent';
 import editChild from './editChild';
 import addChild from './addChild';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faHome } from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 
   export default class driverDashboard extends React.Component {
@@ -33,6 +37,13 @@ import addChild from './addChild';
     constructor(props){
       super(props)
       this.state = {
+        morning:0,
+            noon:0,
+            afternoon:0,
+            attendees:0,
+            mornStudents:[],
+            noonStudents:[],
+            afternoonStudents:[],
 
 
       }
@@ -61,62 +72,124 @@ import addChild from './addChild';
 
      firebase.database().ref('drivers/'+userId).on('value', snapshot => {
 
-       this.setState({
-
-         driverIn: {
-           name: snapshot.val().name,
-           inst: snapshot.val().inst,
-         },
-
-       });
+       this.setState({instName: snapshot.val().inst});
+       this.setState({busNo: snapshot.val().busNo});
 
      });
 
-     firebase.database().ref('managers/').on('value', snapshot => {
+     firebase.database().ref('managers/').on('value', (snap)=> {
    // retrieve all managers
-   if (this.state.driverIn.inst==snapshot.val().instName)
+   snap.forEach((child) => {
+     try {
+          if (this.state.instName===child.val().instName) {
+          this.setState({instType: child.val().instType},
+          // retrieving number of students
+        function() {
+            let mornStudents = [];
+            let noonStudents = [];
+            let afternoonStudents = [];
 
-   item.push({
-       instName: snapshot.val().instName ,
-       instType: snapshot.val().instType ,
+          if (this.state.instType && this.state.instType==='university' ){
 
-   })
+            firebase.database().ref('students/').on('value', (snap) => {
 
-       this.setState({
+              snap.forEach((child) => {
+                  console.log(child.val().university+child.val().busNo );
+                if(child.val().university===this.state.instName && child.val().busNo===this.state.busNo) {
 
-         managerIn:{
-         insName : snapshot.val().insName,
-         insType: snapshot.val().insType ,
-         }
-       });
+                  if ( child.val().departure) {
+                      mornStudents.push({
+                        studentKey:child.key,
+                        name: child.val().name ,
+                        neighborhood: child.val().neighborhood ,
+                        phoneNo: child.val().phoneNo ,
+                      });
+                     this.setState({morning:mornStudents.length});
+                   }
+                   if (child.val().arrival ==='13:00') {
+                     noonStudents.push({
+                       studentKey:child.key,
+                       name: child.val().name ,
+                       neighborhood: child.val().neighborhood ,
+                       phoneNo: child.val().phoneNo ,
+                     });
+                      this.setState({noon:noonStudents.length});
+                    }
+                    else if (child.val().arrival ==='15:00') {
+                      afternoonStudents.push({
+                        studentKey:child.key,
+                        name: child.val().name ,
+                        neighborhood: child.val().neighborhood ,
+                        phoneNo: child.val().phoneNo ,
+                      });
+                       this.setState({afternoon:afternoonStudents.length});
+                     }
+
+                }
+
+              })//end snap for each
+
+              this.setState({
+                mornStudents: mornStudents
+              });
+              this.setState({
+                noonStudents: noonStudents
+              });
+              this.setState({
+                afternoonStudents: afternoonStudents
+              });
+
+            });
+          }
+          else {
+            firebase.database().ref('children/').on('value', (snap) => {
+
+              snap.forEach((child) => {
+                  console.log(child.val().inst+child.val().busNo );
+                if(child.val().inst===this.state.instName && child.val().busNo===this.state.busNo) {
+
+                  if ( child.val().attendance==1) {
+                      attendees.push({
+                        studentKey:child.key,
+                        name: child.val().name ,
+                        neighborhood: child.val().neighborhood ,
+                        phoneNo: child.val().phoneNo ,
+                      });
+                     this.setState({attendees:attendees.length});
+                   }
+
+
+                }
+
+              })//end snap for each
+
+            });
+          }
+
+
+
+
+
+
+        }
+
+
+
+
+
+        );
+
+        }
+}
+
+          catch(e){console.log(e.message);}
+   })//end snap for each
+
 
      });
 
-     firebase.database().ref('buses/').on('value', (snap) => {
-         let allInsttBus = [];
-         snap.forEach((child) => {
-             items.push({
-                 driverName: child.val().driverName ,
-                 busNo: child.val().busNo ,
-                 neighborhood: child.val().neighborhood ,
-                 carPlate: child.val().carPlate ,
-                 inst:child.val().inst,
-             })
-         })//end snap for each
 
-     })
-     console.log (this.state.driverIn.insName);
-     console.log (this.state.managerIn.insName);
-
-
-     let insType =this.state.driverIn.insName;
-     let insType2 =this.state.managerIn.insName;
-
-
-
-
-
-       }
+}
      });
 
 
@@ -153,7 +226,87 @@ import addChild from './addChild';
              />
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
+      {this.state.instType==='university' ?
+(
+   [
+     <View style={{flexDirection: 'row',marginTop:20}}>
+ <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginLeft:20}} />
+ <Text style={[{ color: 'grey', alignSelf:'center', paddingHorizontal:5},styles.titles]}>رحلة الذهاب</Text>
+ <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginRight:20}} />
+</View>,
+           <Card containerStyle={styles.cards}>
 
+           <Text style={styles.title}>6:00 صباحًا</Text>
+           <View style={{flexDirection:'row-reverse',justifyContent:'space-between',marginTop:10,alignItems:'center',marginBottom:10}}>
+           <Text style={styles.paragraph}>{this.state.morning} ركاب</Text>
+              <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{flexDirection:'row-reverse'}]}
+           onPress={() => this.props.navigation.navigate('studentsList',{rideTime:'morning',intType:this.state.instType,mornStudents:this.state.mornStudents})}>
+           <View style={{flexDirection:'row-reverse'}}>
+           <Text style={[styles.fontStyle,{writingDirection:'ltr'}]}>التفاصيل</Text>
+<FontAwesomeIcon icon={ faChevronLeft } size={ 20 } style={{color:'white'}}/>
+</View>
+           </TouchableHighlight>
+           </View>
+             </Card>,
+             <View style={{flexDirection: 'row',marginTop:20}}>
+          <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginLeft:20}} />
+          <Text style={[{ color: 'grey', alignSelf:'center', paddingHorizontal:5},styles.titles]}>رحلات العودة</Text>
+          <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginRight:20}} />
+         </View>,
+
+         <Card containerStyle={styles.cards}>
+
+         <Text style={styles.title}>1:00 ظهرًا</Text>
+         <View style={{flexDirection:'row-reverse',justifyContent:'space-between',marginTop:10,alignItems:'center',marginBottom:10}}>
+         <Text style={styles.paragraph}>{this.state.noon} ركاب</Text>
+            <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{flexDirection:'row-reverse'}]}
+         onPress={() => this.props.navigation.navigate('studentsList',{rideTime:'noon',intType:this.state.instType,noonStudents:this.state.noonStudents})}>
+         <View style={{flexDirection:'row-reverse'}}>
+         <Text style={[styles.fontStyle,{writingDirection:'ltr'}]}>التفاصيل</Text>
+<FontAwesomeIcon icon={ faChevronLeft } size={ 20 } style={{color:'white'}}/>
+</View>
+         </TouchableHighlight>
+         </View>
+           </Card>,
+
+           <Card containerStyle={styles.cards}>
+
+           <Text style={styles.title}>3:00 عصرًا</Text>
+           <View style={{flexDirection:'row-reverse',justifyContent:'space-between',marginTop:10,alignItems:'center',marginBottom:10}}>
+           <Text style={styles.paragraph}>{this.state.afternoon} ركاب</Text>
+              <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{flexDirection:'row-reverse'}]}
+           onPress={() => this.props.navigation.push('studentsList',{rideTime:'afternoon',intType:this.state.instType,afternoonStudents:this.state.afternoonStudents})}>
+           <View style={{flexDirection:'row-reverse'}}>
+           <Text style={[styles.fontStyle,{writingDirection:'ltr'}]}>التفاصيل</Text>
+<FontAwesomeIcon icon={ faChevronLeft } size={ 20 } style={{color:'white'}}/>
+</View>
+           </TouchableHighlight>
+           </View>
+             </Card>,
+
+
+
+
+             ]
+ )
+    :  (
+      [
+              <Card containerStyle={styles.cards}>
+
+              <Text style={styles.title}>رحلة اليوم</Text>
+              <View style={{flexDirection:'row-reverse',justifyContent:'space-between',marginTop:10,alignItems:'center',marginBottom:10}}>
+              <Text style={styles.paragraph}>{this.state.morning} ركاب</Text>
+                 <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{flexDirection:'row-reverse'}]}
+              onPress={() => this.props.navigation.navigate('studentsList',{rideTime:'attendees',intType:this.state.instType,attendees:this.state.attendees})}>
+              <View style={{flexDirection:'row-reverse'}}>
+              <Text style={[styles.fontStyle,{writingDirection:'ltr'}]}>التفاصيل</Text>
+   <FontAwesomeIcon icon={ faChevronLeft } size={ 20 } style={{color:'white'}}/>
+   </View>
+              </TouchableHighlight>
+              </View>
+                </Card>
+                ]
+    )}
 
 
 
@@ -174,31 +327,40 @@ const styles = StyleSheet.create({
   flex: 1,
 	backgroundColor: '#F7FAFF',
 },
-
+title: {
+  marginTop: 10,
+  fontSize: 18,
+  fontWeight: 'bold',
+  textAlign: 'right',
+    color: '#3C68BF',
+},
 
 
   paragraph: {
-    marginTop: 10,
+
     fontSize: 14,
-    fontWeight: 'bold',
     textAlign: 'right',
-    color: '#3C68BF',
-    borderRadius: 550,
+    color: '#c8c8c8',
+
   },
+
+
   cards:{
-    borderRadius: 25, width: 250, marginTop: 20, borderWidth: 0.5, shadowOpacity: 0.04,
+    borderRadius: 25, width: 325, marginTop: 20, borderWidth: 0.5, shadowOpacity: 0.04,
             shadowRadius: 5,
             shadowColor: 'black',
             shadowOffset: { height: 0, width: 0 },
+
 
   }
   ,
 
   buttonContainer: {
     height:45,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1,
+  alignSelf:'center',
+   justifyContent: 'center',
+   alignItems: 'center',
     marginBottom:10,
     width:250,
     borderRadius:30,
@@ -217,28 +379,34 @@ const styles = StyleSheet.create({
   },
   viewStudentsButtonContainer: {
     height:45,
-  	flexDirection: 'row',
+    alignSelf:'flex-start' ,
   	justifyContent: 'center',
+    flexDirection:'row-reverse',
   	alignItems: 'center',
-  	marginBottom:10,
-  	width:250,
-  	borderRadius:30
-  },
+
+  	width:100,
+
+  	borderRadius:30,
+      backgroundColor: "#EDC51B",
+      color:'white'
+
+ },
   viewStudentsText:{
-     color: '#EDC51B',
+     color: '#white',
 
   },
 
-viewStudentsButton:{
-  backgroundColor: "white",
-  borderColor:'#EDC51B',
-  borderRadius:25,
-  borderWidth :1
-},
 
   addText: {
     color: 'white',
     fontSize: 18 ,
 		fontWeight:'bold'
+  },
+  fontStyle:{
+    color:'white'
+  },
+  titles:{
+    color:'grey',
+    fontSize:16
   }
 });

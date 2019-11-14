@@ -378,10 +378,7 @@ const parentStack = createStackNavigator(
   {
   parentDashboard: { screen: parentDashboard },
 editParent: { screen: editParent },
-
 });
-
-
 const MyDrawerNavigator = createDrawerNavigator({
     'الرئيسية': {
       screen: parentStack,
@@ -402,15 +399,10 @@ const MyDrawerNavigator = createDrawerNavigator({
       },
     },
   }
-
   );
-
-
 const MyApp = createAppContainer(MyDrawerNavigator);
-
 export default class App extends React.Component {
    render() {
      return <MyApp />;
-
    }
  }*/

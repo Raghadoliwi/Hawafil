@@ -260,6 +260,7 @@ const {navigation} = this.props;
 
             <View style={styles.smallContainer}>
             <Text style={styles.header}>• إضافة قائد مركبة •</Text>
+            <Text style={styles.Main}> • البيانات الشخصية • </Text>
 
             <View style={[styles.inputContainer, {borderColor: this.state.idBorder}]}>
 
@@ -332,6 +333,9 @@ const {navigation} = this.props;
                                   value={this.state.phoneNo}
                                   />
                                   </View>
+
+                                   <Text style={styles.Main}> • البيانات المتعلقة بالحافلة • </Text>
+
 
                               <View style={[styles.neighborhoodList, {borderColor: this.state.neighborhoodBorder}]}>
                                                     <Dropdown
@@ -427,7 +431,8 @@ const styles = StyleSheet.create({
                                  flexDirection: 'row',
                                  justifyContent: 'center',
                                  alignItems: 'center',
-                                 marginBottom:50,
+                                 marginBottom:30,
+                                 top:25
                                  },
                                  container: {
                                    flex: 1,
@@ -442,7 +447,8 @@ const styles = StyleSheet.create({
                                    backgroundColor: 'white',
                                    borderRadius:10,
                                      width:300,
-                                     height:600
+                                     height:700
+
                                  },
                                  header:{
                                    color: "#8197C6",

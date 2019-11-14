@@ -34,7 +34,7 @@ const MenuIcon = ({ navigate }) => <Icon
 
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
-export default class editDriverForm extends React.Component {
+export default class editDriverManagerSide extends React.Component {
     UNSAFE_componentWillMount(){
         const firebaseConfig = {
           apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
@@ -84,7 +84,7 @@ snap.forEach((child) => {
       driverKey:child.key,
       workerId: child.val().id,
       driverName: child.val().name,
-      phoneNo: child.val().phoneNo,
+     phoneNo: child.val().phoneNo,
       busNo: child.val().busNo,
       busPlate:child.val().busPlate
     });
@@ -125,7 +125,7 @@ snap.forEach((child) => {
   }
 }//end validate phone number
 
-identicalPass = (password) => {
+/*identicalPass = (password) => {
 if (this.state.password != this.state.confirmPassword){
   this.setState({passError: 'flex'})
 }
@@ -134,7 +134,7 @@ else {
 }
 
 }//end inserting a bus
-
+*/
   validateNumber = (phoneNo) => {
     //Regex
     const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
@@ -179,13 +179,13 @@ const { navigation } = this.props;
          }
   navigation.navigate('renderManageDrivers')
        }
-       else {
+      /* else {
           firebase.database().ref('drivers/'+driverKey).updatePassword(this.state.password).then(() => {
           navigation.navigate('login')
          }, (error) => {
            // An error happened.
          });
-       }
+       }*/
 
 
     }//end edit driver
@@ -194,7 +194,7 @@ const { navigation } = this.props;
 
 
      return {
-        title: 'تعديل بيانات قائد الحافلة',
+        title: 'تعديل بيانات القائد',
        headerLeft: <View style={{paddingLeft:16, }}>
    				<Icon
    						name="chevron-left"
@@ -265,30 +265,32 @@ const { navigation } = this.props;
                         </View>
 
 
-                       <View style={styles.inputContainer}>
 
-                     <TextInput style={styles.pass, styles.input}
-                     placeholder="كلمة المرور"
-                     secureTextEntry={true}
-                     underlineColorAndroid='transparent'
-                     autoCapitalize="none"
-                     onChangeText={password => this.setState({ password })}
-                     value={this.state.password}
-                     />
-                     </View>
+                      <Text style={styles.Main}> • تعديل بيانات الحافلة • </Text>
+
                      <View style={styles.inputContainer}>
 
-                     <TextInput style={styles.pass, styles.input}
-                     placeholder="تأكيد كلمة المرور"
-                     secureTextEntry={true}
+                     <TextInput style={styles.email, styles.input}
+                     placeholder="رقم الحافلة"
+                     keyboardType="numeric"
                      underlineColorAndroid='transparent'
-                     autoCapitalize="none"
-                     onChangeText={password => this.setState({ password })}
-                     value={this.state.password}
+                     onChangeText={busNo => this.setState({ busNo })}
+                     //line below is added new by lama:
+                     value={this.state.busNo}
                      />
                      </View>
 
+                     <View style={styles.inputContainer}>
 
+                     <TextInput style={styles.email, styles.input}
+                     placeholder="رقم اللوحة"
+                     keyboardType="numeric"
+                     underlineColorAndroid='transparent'
+                     onChangeText={busPlate => this.setState({ busPlate })}
+                     //line below is added new by lama:
+                     value={this.state.busPlate}
+                     />
+                     </View>
 
 
 
@@ -296,9 +298,21 @@ const { navigation } = this.props;
 
                         <Text style={[styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
                                    </View>
-
-
 <View style={styles.typeContainer}>
+<TouchableHighlight style={[styles.buttonContainer, styles.delete]}
+onPress={this.showAlertDialog}>
+
+<Text style={styles.saveText}>حذف الحافلة </Text>
+
+
+</TouchableHighlight>
+                                   <TouchableHighlight style={[styles.buttonContainer, styles.save]}
+                                   onPress={this.editProfile}>
+
+                                   <Text style={styles.saveText}>حفظ</Text>
+
+
+                                   </TouchableHighlight>
 
 
 
