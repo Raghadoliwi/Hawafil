@@ -44,7 +44,7 @@ export default class approveStudent extends React.Component {
       }
 
       componentDidMount(){ //to fetch data
-
+console.log('from approve');
         firebase.auth().onAuthStateChanged((user) => {
     if (user) {
 
@@ -58,11 +58,12 @@ this.setState({inst: snapshot.val().instName})
 firebase.database().ref('students/').on('value', (snap) => {
     let items = [];
     snap.forEach((child) => {
-      if (child.val().inst === this.state.inst)
+      if (child.val().university === this.state.inst)
         items.push({
             name: child.val().name ,
             busNo: child.val().busNo ,
             neighborhood: child.val().neighborhood ,
+            phoneNo: child.val().phoneNo ,
             stdID: child.key
             //phoneNo: child.val().phoneNo ,
 
@@ -72,7 +73,7 @@ firebase.database().ref('students/').on('value', (snap) => {
     })//end snap for each
     itm = items;
     this.setState({items: items});
-
+console.log(this.state.items);
 
 })//end on
 
@@ -113,7 +114,7 @@ removeCard(stdID){
 
         {
         this.state.items.map((u, i ) => {
-
+console.log(this.state.items);
             return (
                 <Card  containerStyle={styles.cards} title={u.name}>
                 <View style={styles.typeContainer}>
@@ -135,15 +136,16 @@ removeCard(stdID){
 
 
 
-
-                                  <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+<View style={{flexDirection:'row-reverse'}}>
+                                  <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{backgroundColor:'#F4D65B'}]}
                                   onPress={() =>  console.log('Cancel Pressed')}>
                                  <Text style={styles.editText}>قبول</Text>
                                </TouchableHighlight>
-                               <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
+                               <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{backgroundColor:'#DC143C'}]}
                                onPress={() =>  console.log('Cancel Pressed')}>
                               <Text style={styles.editText}>رفض</Text>
                             </TouchableHighlight>
+                            </View>
                 </Card>
             );
         })
@@ -224,9 +226,10 @@ const styles = StyleSheet.create({
 		alignSelf:'center',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 90,
+    width: 75,
     height:30,
     bottom: 5,
+    marginRight:7.5,
     backgroundColor:"#3C68BF",
     //marginBottom: 300,
   },

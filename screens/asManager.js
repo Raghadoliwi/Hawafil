@@ -173,6 +173,7 @@ console.log(this.state.nationalId);
                   phoneNo: '0'+this.state.phoneNo,
                   nationalId: this.state.nationalId,
                   instName:this.state.instName,
+                  instType:this.state.typeOf,
                 })
 
                 this.props.navigation.navigate('login')

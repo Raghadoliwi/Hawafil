@@ -64,28 +64,23 @@ console.log(this.state.name);
             {this.state.name}
             </Text>
             <Text style={[styles.infoText]}>
-            {this.state.university}
+            {this.state.instName}
             </Text>
           </View>
 ) : null}
         <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-<FontAwesomeIcon icon={ faCoffee } />
+
             <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('renderManageDrivers')}>
             الرئيسية
             </Text>
           </View>
           <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-      <FontAwesomeIcon icon={ faCoffee } />
+
               <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('approveStudent')}>
             عرض الطلاب الجدد
               </Text>
             </View>
-            <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-        <FontAwesomeIcon icon={ faCoffee } />
-                <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('addBusDriver')}>
-            اضافة قائد مركبة
-                </Text>
-              </View>
+
 
 
 
