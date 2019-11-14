@@ -30,7 +30,7 @@ constructor(props){
     super(props)
     this.state={
       userId: null,
-      arrival: '0',
+      arrival: 'none',
     }
 }
 
@@ -96,28 +96,28 @@ onArrivalToggle = (arr) => {
 
    ///
    if (arr==='13:00' && this.state.arrival === '13:00'){
-     var temp = ''
+     var temp = 'none'
 
    this.setState((state, props) => ({
-     arrival: '',
+     arrival: 'none',
    }));
    //update in  db
      firebase.database().ref('students/'+this.state.userId).update({
-      arrival: ''
+      arrival: 'none'
       })
    Alert.alert('تم تحديث حالة الحضور');
 
  }//end if
 
  else if (arr==='15:00' && this.state.arrival === '15:00'){
-   var temp = ''
+   var temp = 'none'
 
  this.setState((state, props) => ({
-   arrival: '',
+   arrival: 'none',
  }));
  //update in  db
    firebase.database().ref('students/'+this.state.userId).update({
-    arrival: '',
+    arrival: 'none',
     })
  Alert.alert('تم تحديث حالة الحضور');
 

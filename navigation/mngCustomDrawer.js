@@ -64,7 +64,7 @@ console.log(this.state.name);
             {this.state.name}
             </Text>
             <Text style={[styles.infoText]}>
-            {this.state.university}
+            {this.state.instName}
             </Text>
           </View>
 ) : null}
