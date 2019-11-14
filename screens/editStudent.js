@@ -72,10 +72,18 @@ export default class editStudent extends React.Component {
     emailBorders:'#EAEAEA',
   passwordBorder:'#EAEAEA',
   conPasswordBorder:'#EAEAEA',
+  busesNumbers:[{value:'قم باختيار مدرسة'}],
+
+  busNoBorder:'',
+  busNoError:'',
+  disableBuses:false,
+  busPlaceholder:'قم باختيار مدرسة',
      }
 
 
-          componentDidMount(){ //to fetch data
+componentDidMount(){ //to fetch data
+
+
 
             firebase.database().ref('managers/').once('value', (snap) => {
 
@@ -86,6 +94,9 @@ export default class editStudent extends React.Component {
 
                 })
             })//end on
+
+
+
 const { navigation } = this.props;
 firebase.auth().onAuthStateChanged((user) => {
 if (user) {
@@ -112,9 +123,36 @@ if (user) {
 
 
 
-        }
+}//end componentDidMount
 
 
+retrieveBuses = () => {
+              this.setState({disableBuses:false})
+                this.setState({busPlaceholder:''})
+              this.setState({ busesNumbers:[]})
+              firebase.database().ref('drivers/').once('value', (snap) => {
+
+                  snap.forEach((child) => {
+
+                    if (child.val().inst==this.state.inst)
+                    this.setState({ busesNumbers: this.state.busesNumbers.concat({value:child.val().busNo} ) })
+
+                  })
+
+                  if (this.state.busesNumbers.length==0) {
+                    this.setState({busPlaceholder:'لا يوجد حافلات',disableBuses:true,busNo:''})
+
+                  }
+                else {
+
+                  this.setState({busPlaceholder:'',disableBuses:false,busNo:''})
+                }
+
+              })//end on
+              console.log(this.state.busesNumbers);
+
+            console.log(this.state.busesNumbers);
+          }//end
 
 
      validateEmail = (email) => {
@@ -199,7 +237,7 @@ const { navigation } = this.props;
 
 
      return {
-        title: 'تعديل بيانات الطالب',
+        title: ' بيانات الطالب',
        headerLeft: <View style={{paddingLeft:16, }}>
    				<Icon
    						name="chevron-left"
@@ -375,7 +413,7 @@ const { navigation } = this.props;
 
 
 
-
+/*
                      <View style={styles.inputContainer}>
 
                      <TextInput style={styles.email, styles.input}
@@ -387,6 +425,36 @@ const { navigation } = this.props;
                      value={this.state.busNo}
                      />
                      </View>
+*/
+<View style={[styles.neighborhoodList, {marginTop: 20, marginBottom:20}]}>
+                      <Dropdown
+                      itemColor='#919191'
+                      baseColor='#919191'
+                      textColor='#919191'
+disabled={this.state.disableBuses}
+                      itemTextStyle={{textAlign:'right'}}
+          style={{textAlign:'right'}}
+          dropdownOffset={{ top: 0, left: 0}}
+                           inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
+                          containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                          pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                          itemPadding={10}
+                          shadeOpacity={0}
+                          rippleInsets={{top: 0, bottom: 0}}
+                          dropdownMargins	={{min: 0, max: 0}}
+                          dropdownPosition ={0}
+          label='رقم الحافلة'
+          placeholder={this.state.busPlaceholder}
+          data={this.state.busesNumbers}
+
+          onChangeText={(busNo) => {
+            this.setState({busNo})
+            this.setState({busNoBorder: '#EAEAEA'})
+            this.setState({busNoError: 'none'})
+          } }
+          value={this.state.busNo}
+        />
+      </View>
 
 
 
@@ -394,6 +462,8 @@ const { navigation } = this.props;
 
                         <Text style={[styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
                                    </View>
+
+                                   <View style={styles.typeContainer}>
 
 
                                    <TouchableHighlight style={[styles.buttonContainer, styles.save]}
@@ -403,7 +473,7 @@ const { navigation } = this.props;
 
 
                                    </TouchableHighlight>
-
+                                  </View>
 
 
 
