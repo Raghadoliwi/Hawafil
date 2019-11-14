@@ -4,24 +4,38 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 
 import renderManageDrivers from '../screens/renderManageDrivers';
 import addBusDriver from '../screens/addBusDriver';
-import editDriverForm from '../screens/editDriverForm';
+import editDriverManagerSide from '../screens/editDriverManagerSide';
 import approveStudent from '../screens/approveStudent';
+import editManagerForm from '../screens/editManagerForm';
 import mngCustomDrawer from './mngCustomDrawer';
-//import managerDashboard from '../screens/managerDashboard';
+import managerDashboard from '../screens/managerDashboard';
 import logout from '../screens/logout';
 
 const managerNavigation = createStackNavigator(
   {
+     managerDashboard: { screen: managerDashboard },
+    editManagerForm: {screen: editManagerForm},
     renderManageDrivers: { screen: renderManageDrivers },
     addBusDriver: { screen: addBusDriver },
-      editDriverForm: { screen: editDriverForm },
+    //  editDriverForm: { screen: editDriverForm },
+    editDriverManagerSide: { screen: editDriverManagerSide },
       approveStudent: { screen: approveStudent }
 
   },
   {
-    initialRouteName: 'renderManageDrivers'
+    initialRoutseName: 'renderManageDrivers'
   }
 )
+
+const editManagerNavigation = createStackNavigator(
+  {
+    editManagerForm: { screen: editManagerForm }
+  },
+  {
+    initialRouteName: 'editManagerForm'
+  }
+)
+
 
 const addDriverNavigation = createStackNavigator(
   {
@@ -34,10 +48,10 @@ const addDriverNavigation = createStackNavigator(
 
 const editDriverNavigation = createStackNavigator(
   {
-    editDriverForm: { screen: editDriverForm }
+    editDriverManagerSide: { screen: editDriverManagerSide }
   },
   {
-    initialRouteName: 'editDriverForm'
+    initialRouteName: 'editDriverManagerSide'
   }
 )
 const approveStudentNavigation = createStackNavigator(

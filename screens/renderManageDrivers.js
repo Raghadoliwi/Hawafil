@@ -10,8 +10,8 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
-import addBusDriver from './addBusDriver'
-import editDriverForm from './editDriverForm'
+import addBusDriver from '../screens/addBusDriver';
+import editDriverManagerSide from '../screens/editDriverManagerSide';
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
     size={20}
@@ -123,7 +123,7 @@ onPress={() => this.props.navigation.push('addBusDriver',{inst:this.state.inst})
             return (
                 <Card containerStyle={styles.cards} title={u.name}>
                 <View style={styles.typeContainer}>
-                <Text style={styles.paragraph} key={u.id}>الرقم الوظيفي: </Text>
+                <Text style={styles.paragraph} key={u.id}>رقم الهوية: </Text>
                 <Text style={styles.info}>{u.id}</Text>
                 </View>
                 <View style={styles.typeContainer}>
@@ -141,7 +141,7 @@ onPress={() => this.props.navigation.push('addBusDriver',{inst:this.state.inst})
 
 
                                      <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-                                     onPress={() =>  this.props.navigation.push('editDriverForm',{id:u.id}) }>
+                                     onPress={() =>  this.props.navigation.push('editDriverManagerSide',{id:u.id}) }>
                                     <Text style={styles.editText}>تعديل</Text>
                                   </TouchableHighlight>
                 </Card>
