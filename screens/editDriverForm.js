@@ -312,20 +312,23 @@ const { navigation } = this.props;
                      />
                      </View>
 
-                     
+
 
                      <View>
 
                         <Text style={[styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
                                    </View>
+
+
 <View style={styles.typeContainer}>
-<TouchableHighlight style={[styles.buttonContainer, styles.delete]}
-onPress={this.showAlertDialog}>
 
-<Text style={styles.saveText}>حذف الحافلة </Text>
+//<TouchableHighlight style={[styles.buttonContainer, styles.delete]}
+//onPress={this.showAlertDialog}>
+
+//<Text style={styles.saveText}>حذف الحافلة </Text>
 
 
-</TouchableHighlight>
+//</TouchableHighlight>
                                    <TouchableHighlight style={[styles.buttonContainer, styles.save]}
                                    onPress={this.editProfile}>
 

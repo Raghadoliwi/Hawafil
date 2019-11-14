@@ -30,7 +30,7 @@ constructor(props){
     super(props)
     this.state={
       userId: null,
-      arrival: '0',
+      arrival: 'none',
     }
 }
 
@@ -96,20 +96,29 @@ onArrivalToggle = (arr) => {
 
    ///
    if (arr==='13:00' && this.state.arrival === '13:00'){
-     var temp = ''
+     var temp = 'none'
 
    this.setState((state, props) => ({
-     arrival: '',
+     arrival: 'none',
    }));
+   //update in  db
+     firebase.database().ref('students/'+this.state.userId).update({
+      arrival: 'none'
+      })
    Alert.alert('تم تحديث حالة الحضور');
 
  }//end if
+
  else if (arr==='15:00' && this.state.arrival === '15:00'){
-   var temp = ''
+   var temp = 'none'
 
  this.setState((state, props) => ({
-   arrival: '',
+   arrival: 'none',
  }));
+ //update in  db
+   firebase.database().ref('students/'+this.state.userId).update({
+    arrival: 'none',
+    })
  Alert.alert('تم تحديث حالة الحضور');
 
  }
@@ -413,6 +422,27 @@ marginLeft:10,
 
   typeText: {
     color: 'white',
+  },
+  neighborhoodList: {
+    borderColor: '#EAEAEA',
+    backgroundColor: 'white',
+    width:250,
+    height:100,
+    marginBottom:-40,
+    marginTop:5
+  },
+  dropdown:{
+    borderRadius:25,
+  },
+  inputDown:{
+  flex:1,
+  height:40,
+  //flexDirection:'row-reverse',
+  //justifyContent:'flex-end',
+  //marginright:16,
+
+  borderColor: '#EAEAEA',
+
   },
 
 
