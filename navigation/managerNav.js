@@ -8,17 +8,16 @@ import editDriverManagerSide from '../screens/editDriverManagerSide';
 import approveStudent from '../screens/approveStudent';
 import editManagerForm from '../screens/editManagerForm';
 import mngCustomDrawer from './mngCustomDrawer';
-import managerDashboard from '../screens/managerDashboard';
+//import managerDashboard from '../screens/managerDashboard';
 import logout from '../screens/logout';
 
 const managerNavigation = createStackNavigator(
   {
-     managerDashboard: { screen: managerDashboard },
-    editManagerForm: {screen: editManagerForm},
     renderManageDrivers: { screen: renderManageDrivers },
-    addBusDriver: { screen: addBusDriver },
-    //  editDriverForm: { screen: editDriverForm },
     editDriverManagerSide: { screen: editDriverManagerSide },
+    editManagerForm: {screen: editManagerForm},
+  //  addBusDriver: { screen: addBusDriver },
+    //  editDriverForm: { screen: editDriverForm },
       approveStudent: { screen: approveStudent }
 
   },

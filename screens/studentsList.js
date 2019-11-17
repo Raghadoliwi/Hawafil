@@ -397,7 +397,7 @@ info: {
 
  },
   viewStudentsText:{
-     color: '#white',
+     color: 'white',
 
   },
 

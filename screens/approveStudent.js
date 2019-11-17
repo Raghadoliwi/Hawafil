@@ -1,7 +1,8 @@
+
 import React from 'react';
 //import react in our code.
 
-import { Text, View, StyleSheet, ScrollView, SafeAreaView,TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, SafeAreaView,TouchableHighlight,Alert } from 'react-native';
 import { Card } from 'react-native-elements';
 import {DrawerNavigator} from 'react-navigation';
 import {createAppContainer } from 'react-navigation';
@@ -43,37 +44,59 @@ export default class approveStudent extends React.Component {
         }
       }
 
+      editApprove= (approved,index,key) => {
+        this.state.studentsList[index].approved=approved;
+        this.forceUpdate()
+
+        console.log(this.state.studentsList);
+  console.log(this.state.studentsList.length);
+        if (key != null){
+          firebase.database().ref('students/'+key).update({
+             approved:approved
+           })
+          Alert.alert('تم قبول الطالب');
+        }
+
+        console.log(this.state.studentsList);
+     }//end edit child.
+
       componentDidMount(){ //to fetch data
 console.log('from approve');
         firebase.auth().onAuthStateChanged((user) => {
     if (user) {
 
   var userId = firebase.auth().currentUser.uid;
+  email= firebase.auth().currentUser.email;
   firebase.database().ref('managers/'+userId).on('value', snapshot => {
 
 this.setState({inst: snapshot.val().instName})
 
 })
 
+this.setState({
+  studentsList: []
+});
+
 firebase.database().ref('students/').on('value', (snap) => {
-    let items = [];
+    let studentsList = [];
     snap.forEach((child) => {
-      if (child.val().university === this.state.inst)
-        items.push({
+      if (child.val().university === this.state.inst && child.val().approved == 0)
+        studentsList.push({
             name: child.val().name ,
             busNo: child.val().busNo ,
             neighborhood: child.val().neighborhood ,
             phoneNo: child.val().phoneNo ,
-            stdID: child.key
+            stdID: child.key,
+            approved: child.val().approved
             //phoneNo: child.val().phoneNo ,
 
 
         })
 
     })//end snap for each
-    itm = items;
-    this.setState({items: items});
-console.log(this.state.items);
+    this.setState({
+      studentsList: studentsList
+    });
 
 })//end on
 
@@ -101,9 +124,9 @@ return {
 }
 };
 //<TouchableHighlight onPress={() => { this.functionOne(); this.functionTwo(); }/>
-/*
-removeCard(stdID){
-  this.setState({ items:this.state.items.filter(items => items.stdID !== stdID)});
+
+/*removeCard(stdID){
+  this.setState({ items:this.state.items.filter(items => u.stdID !== stdID)});
 }*/
 	render() {
     return (
@@ -112,44 +135,43 @@ removeCard(stdID){
       <ScrollView style={{flex: 1, marginBottom:20}}>
 
 
-        {
-        this.state.items.map((u, i ) => {
-console.log(this.state.items);
+        { this.state.studentsList ?
+           (
+        this.state.studentsList.map((u,i) => {
+console.log(this.state.studentsList);
             return (
-                <Card  containerStyle={styles.cards} title={u.name}>
-                <View style={styles.typeContainer}>
-                <Text style={styles.paragraph} key={u.name}>اسم الطالب: </Text>
-                <Text style={styles.info}>{u.name}</Text>
-                </View>
+                <Card  title={this.state.studentsList[i].name}  containerStyle={styles.cards} >
+
                 <View style={styles.typeContainer}>
                 <Text style={styles.paragraph} key={u.busNo}>رقم الحافلة: </Text>
-                <Text style={styles.info}>{u.busNo}</Text>
+                <Text style={styles.info}>{this.state.studentsList[i].busNo}</Text>
                 </View>
                 <View style={styles.typeContainer}>
                     <Text style={styles.paragraph} key={u.neighborhood}>الحي: </Text>
-                    <Text style={styles.info}>{u.neighborhood}</Text>
+                    <Text style={styles.info}>{this.state.studentsList[i].neighborhood}</Text>
                     </View>
                     <View style={styles.typeContainer}>
                      <Text style={styles.paragraph} key={u.phoneNo}>رقم الجوال: </Text>
-                     <Text style={styles.info}>{u.phoneNo}</Text>
+                     <Text style={styles.info}>{this.state.studentsList[i].phoneNo}</Text>
                      </View>
 
 
 
 <View style={{flexDirection:'row-reverse'}}>
-                                  <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{backgroundColor:'#F4D65B'}]}
-                                  onPress={() =>  console.log('Cancel Pressed')}>
+                                  <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{ backgroundColor:'#F4D65B'}]}
+                                  onPress ={() => this.editApprove('1',i,this.state.studentsList[i].stdID)}>
                                  <Text style={styles.editText}>قبول</Text>
                                </TouchableHighlight>
                                <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{backgroundColor:'#DC143C'}]}
-                               onPress={() =>  console.log('Cancel Pressed')}>
+                               onPress={() => this.state.studentsList[i].stdID.delete()}>
                               <Text style={styles.editText}>رفض</Text>
                             </TouchableHighlight>
                             </View>
                 </Card>
             );
         })
-        }
+      )
+        :null}
 
 
       </ScrollView>
