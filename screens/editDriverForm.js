@@ -301,15 +301,6 @@ const { navigation } = this.props;
 <View style={styles.typeContainer}>
 
 
-                                   <TouchableHighlight style={[styles.buttonContainer, styles.save]}
-                                   onPress={this.editProfile}>
-
-                                   <Text style={styles.saveText}>حفظ</Text>
-
-
-                                   </TouchableHighlight>
-
-
 
 
 </View>

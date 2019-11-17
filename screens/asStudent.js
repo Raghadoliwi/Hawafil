@@ -156,6 +156,9 @@ this.setState({currentColor: 'red'})
                   busNo: this.state.busNo,
                   neighborhood: this.state.neighborhood,
                   university:this.state.university,
+                  approved: 0,
+                  arrival: 'none',
+                  departure: false,
                 })
 
                 this.props.navigation.navigate('login')

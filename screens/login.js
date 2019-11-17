@@ -118,9 +118,13 @@ export default class login extends React.Component {
 
 
               firebase.database().ref('students/'+user.uid).on('value', snapshot => {
-                if (snapshot.exists())
-                navigation.navigate('studentDrawer');
-                  return;
+                if (snapshot.exists()){
+                  if (snapshot.val().approved=='0')
+                    Alert.alert('لم يتم قبولك في الحافلة بعد')
+                    else
+                      navigation.navigate('studentDrawer');
+              }
+                return;
               //navigation.navigate('parentDashboard')
               });
 
