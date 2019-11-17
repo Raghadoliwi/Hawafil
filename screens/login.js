@@ -101,7 +101,7 @@ export default class login extends React.Component {
 
               firebase.database().ref('drivers/'+user.uid).on('value', snapshot => {
                 if (snapshot.exists())
-                navigation.navigate('driverNav');
+                navigation.navigate('driverDrawer');
                   return;
             //  navigation.navigate('parentDashboard')
               });

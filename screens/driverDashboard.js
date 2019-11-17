@@ -392,7 +392,7 @@ title: {
 
  },
   viewStudentsText:{
-     color: '#white',
+     color: 'white',
 
   },
 

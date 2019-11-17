@@ -329,11 +329,7 @@ disabled={this.state.disableBuses}
        </TouchableHighlight>
          </View>
 
-         <View>
-          <TouchableHighlight style={[styles.buttonContainer, styles.cancel]} onPress={() => this.props.navigation.goBack()}>
-         <Text style={styles.saveText}>إلغاء </Text>
-       </TouchableHighlight>
-       </View>
+
 
        </View>
      </KeyboardAwareScrollView>

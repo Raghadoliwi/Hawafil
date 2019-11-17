@@ -53,7 +53,7 @@ const editParentNavigation = createStackNavigator(
 )
 
 const parentDrawer = createDrawerNavigator({
-    'الرئيسية': {
+    'parentNavigation': {
       screen: parentNavigation,
     },
     'editParentNavigation': {
