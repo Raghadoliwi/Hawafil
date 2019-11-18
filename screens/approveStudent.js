@@ -36,7 +36,34 @@ export default class approveStudent extends React.Component {
           measurementId: "G-G21F8ME7TS"
         };
       }
-
+      state={
+        name: '',
+        busNo: '',
+        neighborhood: '',
+        phoneNo: '' ,
+        stdID: '',
+        approved: ''
+      }
+      showAlertDialog = (stdID,i) =>{
+   Alert.alert(
+   'هل أنت متأكد؟',
+   '',
+   [
+     {
+       text: 'إلغاء',
+       onPress: () => console.log('Cancel Pressed'),
+       style: 'cancel',
+     },
+     {text: 'نعم', onPress: () => {
+         firebase.database().ref('students/'+stdID).remove()
+         this.state.studentsList.splice(i,1)
+         //this.props.navigation.push('parentDashboard');
+     }
+   },
+   ],
+   {cancelable: false},
+   );
+ }
       constructor(props){
         super(props)
         this.state = {
@@ -61,6 +88,7 @@ export default class approveStudent extends React.Component {
      }//end edit child.
 
       componentDidMount(){ //to fetch data
+
 console.log('from approve');
         firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -163,7 +191,7 @@ console.log(this.state.studentsList);
                                  <Text style={styles.editText}>قبول</Text>
                                </TouchableHighlight>
                                <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{backgroundColor:'#DC143C'}]}
-                               onPress={() => this.state.studentsList[i].stdID.delete()}>
+                               onPress={() => this.showAlertDialog(this.state.studentsList[i].stdID,i)}>
                               <Text style={styles.editText}>رفض</Text>
                             </TouchableHighlight>
                             </View>

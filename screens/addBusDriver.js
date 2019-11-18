@@ -215,39 +215,38 @@ const {navigation} = this.props;
                   }//validate national id
 
 
-     static navigationOptions = function(props) {
-     return {
-       drawerLabel:'إضافة قائد مركبة',
-       title: 'إضافة قائد مركبة',
-       headerLeft: <View style={{paddingLeft:16, }}>
-   				<Icon
-   						name="chevron-left"
-   						size={30}
-   						color='white'
-              onPress={() => {
-                Alert.alert(
-     '',
-     'هل أنت متأكد؟',
-     [
-       {
-         text: 'لا',
-         onPress: () => console.log('Cancel Pressed'),
-         style: 'cancel',
-       },
-     {text: 'نعم', onPress: () => props.navigation.goBack()}
-     ],
-     {cancelable: false},
-     );
+                  static navigationOptions = function(props) {
+                  return {
+                    title: 'إضافة قائد حافلة',
+                    headerLeft: <View style={{paddingLeft:16, }}>
+                    <Icon
+                        name="chevron-left"
+                        size={30}
+                        color='white'
+                        onPress={() => {
+                          Alert.alert(
+               '',
+               'هل أنت متأكد؟',
+               [{text: 'نعم', onPress: () => props.navigation.goBack()},
+                 {
+                   text: 'لا',
+                   onPress: () => console.log('Cancel Pressed'),
+                   style: 'cancel',
+                 },
 
-              }} />
-   		</View>,
+               ],
+               {cancelable: false},
+             );
 
-   		headerTintColor: 'white',
-   		      headerStyle: {
-   		         backgroundColor: "#4C73CC"
-   		      }
-   	}
-   };
+                        }} />
+                		</View>,
+
+                		headerTintColor: 'white',
+                		      headerStyle: {
+                		         backgroundColor: "#4C73CC"
+                		      }
+                	}
+                };
 
     render() {
       let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]

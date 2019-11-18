@@ -5,7 +5,10 @@ import {NavigationActions} from 'react-navigation';
 import {ScrollView, Text, View,Image} from 'react-native';
 import firebase from 'firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+//import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { faHome } from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { faCogs } from '@fortawesome/free-solid-svg-icons'
 class mngCustomDrawer extends Component {
   state = {
     name:'',
@@ -69,22 +72,22 @@ console.log(this.state.name);
           </View>
 ) : null}
         <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-<FontAwesomeIcon icon={ faCoffee } />
+<FontAwesomeIcon icon={ faHome } />
             <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('renderManageDrivers')}>
             الرئيسية
             </Text>
           </View>
           <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-      <FontAwesomeIcon icon={ faCoffee } />
+      <FontAwesomeIcon icon={ faCogs } size={ 20 } style={{color:'#6B82B6'}} />
               <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('editManagerForm')}>
           تعديل البيانات الشخصية
               </Text>
             </View>
 
-        
+
 
           <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-      <FontAwesomeIcon icon={ faCoffee } />
+    
               <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('approveStudent')}>
             عرض الطلاب الجدد
               </Text>
