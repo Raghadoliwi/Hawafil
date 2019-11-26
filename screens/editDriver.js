@@ -13,7 +13,7 @@ import {
 	SafeAreaView,
   Image,
   Alert} from 'react-native';
-  import { Card } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 import {DrawerNavigator} from 'react-navigation';
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
@@ -55,6 +55,7 @@ export default class editDriver extends React.Component {
      phoneNo:'',
     password: '',
   confirmPassword:'',
+  currentColor: '#EAEAEA',
       passError:'none',
      errorMessage: null,
     nameBorders:'#EAEAEA',
@@ -62,7 +63,10 @@ export default class editDriver extends React.Component {
         idBorders:'#EAEAEA',
         phoneBorders:'#EAEAEA',
   passwordBorder:'#EAEAEA',
+  errorMsgVisibilty:'none',
   conPasswordBorder:'#EAEAEA',
+  errorMsgVisibilty:'none',
+  formErrorMsg:'',
      }
 
 
@@ -88,14 +92,6 @@ const { navigation } = this.props;
 
         }
        });
-
-
-
-
-
-
-
-
 
         }
 
@@ -185,6 +181,21 @@ else {
       this.setState({phoneBorders: '#91b804'})
       }
 }//end validate phone number
+showAlertDialog = () =>{
+Alert.alert(
+'هل أنت متأكد؟',
+'',
+[
+{
+ text: 'إلغاء',
+ onPress: () => console.log('Cancel Pressed'),
+ style: 'cancel',
+},
+{text: 'نعم', onPress: () => console.log('OK Pressed')},
+],
+{cancelable: false},
+);}
+
 
      editProfile = () => {
 const { navigation } = this.props;
@@ -229,6 +240,7 @@ var user = firebase.auth().currentUser;
           user.updatePassword(this.state.password).then(() => {
           navigation.navigate('login')
          }, (error) => {
+           console.log(error);
            // An error happened.
          });
        }
@@ -350,6 +362,8 @@ var user = firebase.auth().currentUser;
 
 
                        <View style={[styles.inputContainer,{borderColor: this.state.passwordBorder}]}>
+
+
 
                      <TextInput style={styles.pass, styles.input}
                      placeholder="كلمة المرور"

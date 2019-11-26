@@ -71,6 +71,8 @@ export default class editDriverForm extends React.Component {
 
 
 const { navigation } = this.props;
+
+
       var driverId = navigation.getParam('id', 'NO-ID');
       console.log(driverId);
 if (driverId !== 'NO-ID'){
@@ -83,34 +85,19 @@ snap.forEach((child) => {
   this.setState({
       driverKey:child.key,
       workerId: child.val().id,
-      driverName: child.val().name,
+      driverName: child.val().driverName,
       phoneNo: child.val().phoneNo,
       busNo: child.val().busNo,
       busPlate:child.val().busPlate
     });
 }
 
-
 })//end snap for each
-
 
   });
 
-
-
-
-
 }
-
-
-
-
-
-
         }
-
-
-
 
      validateEmail = (email) => {
 
@@ -162,7 +149,7 @@ const { navigation } = this.props;
 
    if (this.state.password == '') {
          if (this.state.driverName != ''){
-           firebase.database().ref('drivers/'+driverKey).update({name : this.state.driverName,})
+           firebase.database().ref('drivers/'+driverKey).update({driverName: this.state.driverName,})
          }
 
          if (this.state.phoneNo != ''){
@@ -217,6 +204,7 @@ const { navigation } = this.props;
 <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
       contentContainerStyle={styles.container}
         scrollEnabled={false}>
+
                 <ScrollView style={{flex: 1, marginBottom:20}}>
                   <View style={styles.smallContainer}>
 
@@ -259,6 +247,7 @@ const { navigation } = this.props;
                           this.setState({phoneNo})
                           this.setState({currentColor: '#EAEAEA'})
                         } }
+                        
                         onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
                         value={this.state.phoneNo}
                         />
