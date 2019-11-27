@@ -3,7 +3,7 @@ import AuthNavigation from './authNav'
 import managerDrawer from './managerNav'
 import parentDrawer from './parentNav'
 import studentDrawer from './studentNav'
-import driverNav from './driverNav'
+import driverDrawer from './driverNav'
 
 const SwitchNavigator = createSwitchNavigator(
   {
@@ -11,7 +11,7 @@ const SwitchNavigator = createSwitchNavigator(
     managerDrawer: managerDrawer,
     parentDrawer: parentDrawer,
     studentDrawer: studentDrawer,
-      driverNav: driverNav
+      driverDrawer: driverDrawer
 
   },
   {

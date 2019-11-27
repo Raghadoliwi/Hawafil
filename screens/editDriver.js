@@ -13,7 +13,7 @@ import {
 	SafeAreaView,
   Image,
   Alert} from 'react-native';
-  import { Card } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 import {DrawerNavigator} from 'react-navigation';
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
@@ -34,7 +34,7 @@ const MenuIcon = ({ navigate }) => <Icon
 
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
-export default class editDriverForm extends React.Component {
+export default class editDriver extends React.Component {
     UNSAFE_componentWillMount(){
         const firebaseConfig = {
           apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
@@ -49,66 +49,109 @@ export default class editDriverForm extends React.Component {
 
       }
      state = {
+       uid:'',
      email: '' ,
+     nationalId:'',
+     phoneNo:'',
     password: '',
   confirmPassword:'',
-     currentColor: '#EAEAEA',
+  currentColor: '#EAEAEA',
       passError:'none',
-     workerId: '',
-     driverName: '',
-     phoneNo: '',
-     inst:'',
-     busNo: '',
      errorMessage: null,
     nameBorders:'#EAEAEA',
     emailBorders:'#EAEAEA',
+        idBorders:'#EAEAEA',
+        phoneBorders:'#EAEAEA',
   passwordBorder:'#EAEAEA',
+  errorMsgVisibilty:'none',
   conPasswordBorder:'#EAEAEA',
+  errorMsgVisibilty:'none',
+  formErrorMsg:'',
      }
 
 
           componentDidMount(){ //to fetch data
-
-
 const { navigation } = this.props;
+            firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+
+       this.state.uid=firebase.auth().currentUser.uid;
+       email= firebase.auth().currentUser.email;
+       firebase.database().ref('drivers/'+this.state.uid).on('value', snapshot => {
+
+        this.setState({
+          name: snapshot.val().name ,
+          phoneNo: snapshot.val().phoneNo,
+          nationalId:snapshot.val().nationalId,
+          email: email
+        });
+
+       });
 
 
-      var driverId = navigation.getParam('id', 'NO-ID');
-      console.log(driverId);
-if (driverId !== 'NO-ID'){
 
-  firebase.database().ref('drivers/').on('value', (snap) => {
+        }
+       });
 
-snap.forEach((child) => {
-
-  if (child.val().id === driverId){
-  this.setState({
-      driverKey:child.key,
-      workerId: child.val().id,
-      driverName: child.val().driverName,
-      phoneNo: child.val().phoneNo,
-      busNo: child.val().busNo,
-      busPlate:child.val().busPlate
-    });
-}
-
-})//end snap for each
-
-  });
-
-}
         }
 
-     validateEmail = (email) => {
 
+        validateIdentity = (id) => {
+
+      console.log(id);
+    console.log(this.state.nationalId);
+        try { id = this.state.nationalId.toString().trim();
+          console.log(id);
+        }
+        catch (e){
+          console.log(e.message);
+          console.log(id);
+        }
+
+        if (id.length !== 10) {
+            this.setState({idBorders:'red'})
+            console.log(id);
+              console.log(id.length);
+              console.log('length');
+            return;
+        }
+        var type = id.substr(0, 1);
+        if (type !== '2' && type !== '1') {
+            this.setState({idBorders:'red'})
+              console.log('initial');
+            return;
+
+        }
+      console.log('hello');
+        var sum = 0;
+        for (var i = 0; i < 10; i++) {
+          if (i % 2 === 0) {
+            var ZFOdd = String('00' + String(Number(id.substr(i, 1)) * 2)).slice(-2);
+            sum += Number(ZFOdd.substr(0, 1)) + Number(ZFOdd.substr(1, 1));
+          } else {
+            sum += Number(id.substr(i, 1));
+          }
+
+        }
+        this.setState({idBorders:'#91b804'})
+        return;
+
+      }
+
+
+
+     validateEmail = (email) => {
+     if (this.state.email == ''){
+       this.setState({emailBorders:'red'})
+     }
   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
   if(reg.test(this.state.email)== false)
   {
 
-  this.setState({emailBorder:'red'})
+  this.setState({emailBorders:'red'})
     }
   else {
-    this.setState({emailBorder:'#91b804'})
+    this.setState({emailBorders:'#91b804'})
   }
 }//end validate phone number
 
@@ -124,6 +167,9 @@ else {
 
   validateNumber = (phoneNo) => {
     //Regex
+    if (this.state.phoneNo == ''){
+      this.setState({phoneBorders:'red'})
+    }
     const numRegex = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
     if (!numRegex.test('0'+this.state.phoneNo)) {
       console.log('number bad');
@@ -132,44 +178,69 @@ else {
 
       }
       else {
-      this.setState({currentColor: '#91b804'})
+      this.setState({phoneBorders: '#91b804'})
       }
 }//end validate phone number
+showAlertDialog = () =>{
+Alert.alert(
+'هل أنت متأكد؟',
+'',
+[
+{
+ text: 'إلغاء',
+ onPress: () => console.log('Cancel Pressed'),
+ style: 'cancel',
+},
+{text: 'نعم', onPress: () => console.log('OK Pressed')},
+],
+{cancelable: false},
+);}
+
 
      editProfile = () => {
 const { navigation } = this.props;
-       if (this.state.workerId == '' || this.state.driverName == ''|| this.state.phoneNo == ''|| this.state.busNo == ''|| this.state.busPlate == '') {
+var user = firebase.auth().currentUser;
+
+       if (this.state.nationalId == '' || this.state.name == ''|| this.state.phoneNo == ''|| this.state.email == '') {
          this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
          this.setState({errorMsgVisibilty: 'flex'})
          return;
        }
 
+       if (this.state.emailBorders == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'||this.state.nameBorders=='red'||this.state.idBorders=='red'||this.state.phoneBorders=='red'){
+         this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
 
-       var driverKey=this.state.driverKey;
+
 
    if (this.state.password == '') {
+     if (this.state.email != ''){
+       user.updateEmail(this.state.email);
+     }
          if (this.state.driverName != ''){
-           firebase.database().ref('drivers/'+driverKey).update({driverName: this.state.driverName,})
+           firebase.database().ref('drivers/'+this.state.uid).update({name : this.state.name,})
          }
 
          if (this.state.phoneNo != ''){
-           firebase.database().ref('drivers/'+driverKey).update({phoneNo : this.state.phoneNo,})
+           firebase.database().ref('drivers/'+this.state.uid).update({phoneNo : this.state.phoneNo,})
          }
          if (this.state.workerId != ''){
-           firebase.database().ref('drivers/'+driverKey).update({id : this.state.workerId,})
+           firebase.database().ref('drivers/'+this.state.uid).update({nationalId : this.state.nationalId,})
          }
-         if (this.state.busNo != ''){
-           firebase.database().ref('drivers/'+driverKey).update({busNo : this.state.busNo,})
-         }
-         if (this.state.busPlate != ''){
-           firebase.database().ref('drivers/'+driverKey).update({busPlate : this.state.busPlate,})
-         }
-  navigation.navigate('renderManageDrivers')
+  navigation.navigate('driverDashboard')
        }
        else {
-          firebase.database().ref('drivers/'+driverKey).updatePassword(this.state.password).then(() => {
+         if (this.state.password.length < 6) {
+           this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور أكثر من ٦ خانات'})
+           this.setState({errorMsgVisibilty: 'flex'})
+           return;
+         }
+          user.updatePassword(this.state.password).then(() => {
           navigation.navigate('login')
          }, (error) => {
+           console.log(error);
            // An error happened.
          });
        }
@@ -177,25 +248,38 @@ const { navigation } = this.props;
 
     }//end edit driver
 
-     static navigationOptions = function(props) {
+    static navigationOptions = function(props) {
+    return {
+      title: 'تعديل',
+      headerLeft: <View style={{paddingLeft:16, }}>
+      <Icon
+          name="chevron-left"
+          size={30}
+          color='white'
+          onPress={() => {
+            Alert.alert(
+ '',
+ 'هل أنت متأكد؟',
+ [{text: 'نعم', onPress: () => props.navigation.goBack()},
+   {
+     text: 'لا',
+     onPress: () => console.log('Cancel Pressed'),
+     style: 'cancel',
+   },
 
+ ],
+ {cancelable: false},
+);
 
-     return {
-        title: 'تعديل بيانات قائد الحافلة',
-       headerLeft: <View style={{paddingLeft:16, }}>
-   				<Icon
-   						name="chevron-left"
-   						size={25}
-   						color='white'
-   						onPress={() => props.navigation.goBack()} />
-   		</View>,
+          }} />
+     </View>,
 
-   		headerTintColor: 'white',
-   		      headerStyle: {
-   		         backgroundColor: "#4C73CC"
-   		      }
-   	}
-   };
+     headerTintColor: 'white',
+           headerStyle: {
+              backgroundColor: "#4C73CC"
+           }
+   }
+  };
 
     render() {
       let riyadhDistricts = [{value:'النخيل'},{value:'الصحافة'},{value:'الياسمين'},{value:'النفل'},{value:'الازدهار'},{value:'الملقا'},{value:'المغرزات'},{value:'الواحه'},{value:'الورود'},{value:'الرائد'},{value:'الغدير'},{value:'المروج'},{value:'العقيق'},{value:'المرسلات'},{value:'الغدير'},{value:'الربيع'},{value:'الربوة'}]
@@ -204,33 +288,57 @@ const { navigation } = this.props;
 <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
       contentContainerStyle={styles.container}
         scrollEnabled={false}>
-
                 <ScrollView style={{flex: 1, marginBottom:20}}>
                   <View style={styles.smallContainer}>
 
-                        <Text style={styles.Main}> • تعديل البيانات الشخصية • </Text>
-                        <View style={styles.inputContainer}>
+                        <Text style={styles.Main}> • البيانات الشخصية • </Text>
+
+                        <View style={[styles.inputContainer,{borderColor: this.state.nameBorders}]}>
 
                         <TextInput style={styles.email, styles.input}
-                        placeholder="رقم الهوية"
-                        keyboardType="numeric"
-                        underlineColorAndroid='transparent'
-                        onChangeText={workerId => this.setState({ workerId })}
-                        value={this.state.workerId}
-                        />
-                        </View>
-                        <View style={styles.inputContainer}>
-
-                        <TextInput style={styles.email, styles.input}
-                        placeholder="اسم القائد"
+                        placeholder="الاسم"
                         keyboardType="TextInput"
                         underlineColorAndroid='transparent'
-                        onChangeText={ driverName => this.setState({ driverName })}
-                        value={this.state.driverName}
+                        onChangeText={ name => this.setState({ name })}
+                        value={this.state.name}
                         />
 
                         </View>
-                    <View style={[styles.phoneContainer, {borderColor: this.state.currentColor}]}
+
+                        <View style={[styles.inputContainer, {borderColor: this.state.idBorders}]}>
+
+                        <TextInput style={styles.email, styles.input}
+                        placeholder="الهوية/الإقامة"
+                        keyboardType="numeric"
+                        underlineColorAndroid='transparent'
+
+                        onChangeText={(nationalId) => {
+                          this.setState({nationalId})
+                          this.setState({idBorders: '#EAEAEA'})
+
+                        }}
+                          onEndEditing={(nationalId) => this.validateIdentity(nationalId)}
+                        value={this.state.nationalId}
+                        />
+                        </View>
+
+                        <View style={[styles.inputContainer, {borderColor: this.state.emailBorders}]}>
+
+                        <TextInput style={styles.email, styles.input}
+                        placeholder="البريد الإلكتروني"
+                        keyboardType="email-address"
+                        underlineColorAndroid='transparent'
+                        onChangeText={(email) => {
+                          this.setState({email})
+                          this.setState({emailBorders: '#EAEAEA'})
+                        }
+                      }
+                        onEndEditing={(email) => this.validateEmail(email)}
+                        value={this.state.email}
+                        />
+                        </View>
+
+                    <View style={[styles.phoneContainer, {borderColor: this.state.phoneBorders}]}
                         >
 
                         <TextInput style={styles.keyText}
@@ -247,37 +355,50 @@ const { navigation } = this.props;
                           this.setState({phoneNo})
                           this.setState({currentColor: '#EAEAEA'})
                         } }
-                        
                         onEndEditing={(phoneNo) => this.validateNumber(phoneNo)}
                         value={this.state.phoneNo}
                         />
                         </View>
 
 
-                       <View style={styles.inputContainer}>
+                       <View style={[styles.inputContainer,{borderColor: this.state.passwordBorder}]}>
+
+
 
                      <TextInput style={styles.pass, styles.input}
                      placeholder="كلمة المرور"
                      secureTextEntry={true}
                      underlineColorAndroid='transparent'
                      autoCapitalize="none"
-                     onChangeText={password => this.setState({ password })}
+                     onChangeText={(password) => {
+                       this.setState({password})
+                       this.setState({passwordBorder: '#EAEAEA'})
+                     } }
                      value={this.state.password}
                      />
                      </View>
+
                      <View style={styles.inputContainer}>
 
-                     <TextInput style={styles.pass, styles.input}
+                     <TextInput style={styles.input}
                      placeholder="تأكيد كلمة المرور"
                      secureTextEntry={true}
                      underlineColorAndroid='transparent'
-                     autoCapitalize="none"
-                     onChangeText={password => this.setState({ password })}
-                     value={this.state.password}
+
+                     onChangeText={(confirmPassword) => {
+                       this.setState({confirmPassword})
+                       this.setState({conPasswordBorder: '#EAEAEA'})
+                       this.setState({passError: 'none'})
+                     } }
+                       onEndEditing={(confirmPassword) =>{this.identicalPass(confirmPassword)} }
+                     value={this.state.confirmPassword}
                      />
                      </View>
 
+                     <View >
 
+                       <Text style={[styles.warning,styles.fontStyle, {display: this.state.passError}]}> كلمة المرور غير متطابقة </Text>
+                     </View>
 
 
 
@@ -288,6 +409,15 @@ const { navigation } = this.props;
 
 
 <View style={styles.typeContainer}>
+
+
+                                   <TouchableHighlight style={[styles.buttonContainer, styles.save]}
+                                   onPress={this.editProfile}>
+
+                                   <Text style={styles.saveText}>حفظ</Text>
+
+
+                                   </TouchableHighlight>
 
 
 

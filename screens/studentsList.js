@@ -93,23 +93,25 @@ export default class studentsList extends React.Component {
 
 }
 
-	static navigationOptions = function(props) {
-  return {
-		drawerLabel:'قائمة الطلاب',
-    title: 'الطلاب',
-    headerLeft: <View style={{paddingLeft:16}}>
-				<Icon
-						name="three-bars"
-						size={25}
-						color='white'
-						onPress={() => props.navigation.openDrawer()} />
-		</View>,
+static navigationOptions = function(props) {
+return {
+  title: 'تعديل البيانات الشخصية',
+  headerLeft: <View style={{paddingLeft:16, }}>
+  <Icon
+      name="chevron-left"
+      size={30}
+      color='white'
+      onPress={() => {
+  props.navigation.goBack()
 
-		headerTintColor: 'white',
-		      headerStyle: {
-		         backgroundColor: "#4C73CC"
-		      }
-	}
+      }} />
+ </View>,
+
+ headerTintColor: 'white',
+       headerStyle: {
+          backgroundColor: "#4C73CC"
+       }
+}
 };
 
 	render() {
@@ -390,12 +392,10 @@ info: {
   	alignItems: 'center',
     marginRight:5,
   	width:50,
-
   	borderRadius:30,
-
-      color:'white'
-
+    color:'white'
  },
+ 
   viewStudentsText:{
      color: 'white',
 

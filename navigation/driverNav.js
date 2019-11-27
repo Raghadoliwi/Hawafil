@@ -10,12 +10,14 @@ import editParent from '../screens/editParent'
 */
 import driverDashboard from '../screens/driverDashboard'
 import studentsList from '../screens/studentsList'
+import editDriver from '../screens/editDriver'
+import driverCustomDrawer from './driverCustomDrawer'
 import logout from '../screens/logout'
 
 const driverNavigation = createStackNavigator(
   {
-
     driverDashboard: { screen: driverDashboard },
+    editDriver: { screen: editDriver },
     studentsList: { screen: studentsList },
         /*all pages that a driver can access from his home page not the drawer
       addChild: { screen: addChild },
@@ -38,20 +40,31 @@ const addChildNavigation = createStackNavigator(
   }
 )
 */
-
+const editDriverNavigation = createStackNavigator(
+  {
+    
+    editDriver: { screen: editDriver }
+  },
+  {
+    initialRouteName: 'editDriver'
+  }
+)
 
 const driverDrawer = createDrawerNavigator({
-    'الرئيسية': {
+    'driverNavigation': {
       screen: driverNavigation,
     },
-
-    'تسجيل الخروج': {
+    'editDriverNavigation': {
+      screen: editDriverNavigation,
+    },
+    'logout': {
       screen: logout,
     },
 
   },
   {
     initialRouteParams: 'driverNavigation',
+        contentComponent: driverCustomDrawer,
     defaultNavigationOptions: {
       headerStyle: {
       backgroundColor: '#4C73CC',

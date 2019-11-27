@@ -10,7 +10,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
-import addBusDriver from '../screens/addBusDriver';
+//import addBusDriver from '../screens/addBusDriver';
 import editDriverManagerSide from '../screens/editDriverManagerSide';
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'

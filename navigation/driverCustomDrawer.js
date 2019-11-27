@@ -1,15 +1,15 @@
-
 import PropTypes from 'prop-types';
 import React, {StyleSheet, Component} from 'react';
 import {NavigationActions} from 'react-navigation';
 import {ScrollView, Text, View,Image} from 'react-native';
 import firebase from 'firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-//import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { faCogs } from '@fortawesome/free-solid-svg-icons'
-class mngCustomDrawer extends Component {
+
+
+class driverCustomDrawer extends Component {
   state = {
     name:'',
   email   : '',
@@ -22,21 +22,15 @@ if (user) {
 
 var userId = firebase.auth().currentUser.uid;
 email= firebase.auth().currentUser.email;
-firebase.database().ref('managers/'+userId).on('value', snapshot => {
+firebase.database().ref('drivers/'+userId).on('value', snapshot => {
 
 
 this.setState({
     name: snapshot.val().name,
-    instName:snapshot.val().instName,
     email: email,
 });
 
 });
-
-
-
-console.log (userId);
-console.log(this.state.name);
 
 
 
@@ -67,50 +61,45 @@ console.log(this.state.name);
             {this.state.name}
             </Text>
             <Text style={[styles.infoText]}>
-            {this.state.instName}
+            {this.state.email}
             </Text>
           </View>
 ) : null}
-        <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-<FontAwesomeIcon icon={ faHome } />
-            <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('renderManageDrivers')}>
-            الرئيسية
+        <View style={{padding: 10,display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
+        <View style={{flexDirection:'row-reverse'}}>
+      <FontAwesomeIcon icon={ faHome } size={ 20 } style={{color:'#6B82B6'}}/>
+            <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('driverDashboard')}>
+الرئيسية
             </Text>
+            </View>
           </View>
-          <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-      <FontAwesomeIcon icon={ faCogs } size={ 20 } style={{color:'#6B82B6'}} />
-              <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('editManagerForm')}>
-          تعديل البيانات الشخصية
+
+
+          <View style={{padding: 10,display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
+          <View style={{flexDirection:'row-reverse'}}>
+        <FontAwesomeIcon icon={ faCogs } size={ 20 } style={{color:'#6B82B6'}}/>
+              <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('editDriver')}>
+              تعديل البيانات
               </Text>
+              </View>
             </View>
-
-
-
-          <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-    
-              <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('approveStudent')}>
-            عرض الطلاب الجدد
-              </Text>
-            </View>
-
-
-
-
-
 
 
         </ScrollView>
         <View style={styles.footerContainer}>
-        <Text style={styles.navItemStyle} onPress={this.navigateToScreen('logout')}>
-        تسجيل الخروج
-        </Text>
+        <View style={{flexDirection:'row-reverse'}}>
+
+            <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('logout')}>
+            تسجيل الخروج
+            </Text>
+            </View>
         </View>
       </View>
     );
   }
 }
 
-mngCustomDrawer.propTypes = {
+driverCustomDrawer.propTypes = {
   navigation: PropTypes.object
 };
 const styles = {
@@ -130,7 +119,7 @@ const styles = {
   navHeaderStyle: {
 
     color:'#6B82B6',
-    padding: 10,
+
     textAlign: 'right',
 
   },
@@ -160,4 +149,4 @@ const styles = {
   }
 
 };
-export default mngCustomDrawer;
+export default driverCustomDrawer;
