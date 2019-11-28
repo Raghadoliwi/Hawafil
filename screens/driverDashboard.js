@@ -167,6 +167,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
               this.setState({
                 attendees: attendees
               });
+              console.log(this.state);
 
             });
           }

@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { faCogs } from '@fortawesome/free-solid-svg-icons'
+import { faList } from '@fortawesome/free-solid-svg-icons'
 class mngCustomDrawer extends Component {
   state = {
     name:'',
@@ -71,26 +72,40 @@ console.log(this.state.name);
             </Text>
           </View>
 ) : null}
-        <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-<FontAwesomeIcon icon={ faHome } />
-            <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('renderManageDrivers')}>
-            الرئيسية
-            </Text>
+        <View style={{padding: 10,display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
+
+
+            <View style={{flexDirection:'row-reverse'}}>
+          <FontAwesomeIcon icon={ faHome } size={ 20 } style={{color:'#6B82B6'}}/>
+                <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('parentDashboard')}>
+    الرئيسية
+                </Text>
+                </View>
           </View>
-          <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-      <FontAwesomeIcon icon={ faCogs } size={ 20 } style={{color:'#6B82B6'}} />
-              <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('editManagerForm')}>
-          تعديل البيانات الشخصية
-              </Text>
+          <View style={{padding: 10,display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
+
+
+              <View style={{flexDirection:'row-reverse'}}>
+            <FontAwesomeIcon icon={ faCogs } size={ 20 } style={{color:'#6B82B6'}}/>
+                  <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('renderManageDrivers')}>
+                  تعديل البيانات
+                  </Text>
+                  </View>
+
             </View>
 
 
 
-          <View style={{display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
-    
-              <Text style={[styles.navHeaderStyle]} onPress={this.navigateToScreen('approveStudent')}>
-            عرض الطلاب الجدد
-              </Text>
+          <View style={{padding: 10,display:'flex',justifyContent:'center',height:60,backgroundColor: '#EDF3FF'}}>
+
+
+              <View style={{flexDirection:'row-reverse'}}>
+            <FontAwesomeIcon icon={ faList } size={ 20 } style={{color:'#6B82B6'}}/>
+                  <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('approveStudent')}>
+                  عرض الطلاب الجدد
+                  </Text>
+                  </View>
+
             </View>
 
 
@@ -130,7 +145,7 @@ const styles = {
   navHeaderStyle: {
 
     color:'#6B82B6',
-    padding: 10,
+
     textAlign: 'right',
 
   },
