@@ -13,7 +13,8 @@ import Constants from 'expo-constants';
 import editParent from './editParent';
 import editChild from './editChild';
 import addChild from './addChild';
-
+import { Linking } from 'expo';
+import Geocoder from 'react-native-geocoder';
 
   export default class parentDashboard extends React.Component {
   UNSAFE_componentWillMount(){
@@ -53,6 +54,41 @@ console.log(this.state.childrenList.length);
       console.log(this.state.childrenList);
    }//end edit child.
 
+   getCurrentPosition(childKey) {
+
+
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+              var latitude= position.coords.latitude;
+              var longitude= position.coords.longitude;
+              var confirmMsg='تغيير الموقع لـ ('+latitude+','+longitude+')؟'
+
+Alert.alert(
+'',
+confirmMsg,
+[{text: 'نعم',onPress: () => {    firebase.database().ref('children/'+childKey).update({
+     lat: latitude,
+     long: longitude,
+   })//end update
+      Alert.alert('تم تحديث موقعك بنجاح');
+ }
+},
+{
+text: 'لا',
+onPress: () => console.log('Cancel Pressed'),
+style: 'cancel',
+},
+
+],
+{cancelable: false},
+);
+
+          })
+
+
+        }//end method
+
     componentDidMount(){ //to fetch data
 
       firebase.auth().onAuthStateChanged((user) => {
@@ -88,6 +124,8 @@ firebase.database().ref('children/').on('value', (snap) => {
         childKey:child.key,
         name: child.val().name ,
         busNo: child.val().busNo ,
+        long:child.val().long,
+        lat:child.val().lat,
         inst: child.val().inst ,
         level: child.val().level ,
         district: child.val().district ,
@@ -210,8 +248,8 @@ return (  <Card containerStyle={styles.cards} title={this.state.childrenList[i].
      <Text style={styles.editText}>تعديل</Text>
    </TouchableHighlight>
    <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{backgroundColor:'#F4D65B'}]}
-   onPress={() => this.props.navigation.push('editChild',{childKey:this.state.childrenList[i].childKey})} >
-   <Text style={styles.editText}>تتبع</Text>
+   onPress ={() => this.getCurrentPosition(this.state.childrenList[i].childKey)} >
+   <Text style={styles.editText}>تحديث الموقع</Text>
    </TouchableHighlight>
 </View>
 

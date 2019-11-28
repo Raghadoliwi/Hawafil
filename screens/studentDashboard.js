@@ -138,6 +138,41 @@ getCurrentPosition() {
        Alert.alert('تم تحديث موقعك بنجاح');
      }//end method
 
+     getCurrentPosition(childKey) {
+
+
+
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+                var latitude= position.coords.latitude;
+                var longitude= position.coords.longitude;
+                var confirmMsg='تغيير الموقع لـ ('+latitude+','+longitude+')؟'
+
+  Alert.alert(
+  '',
+  confirmMsg,
+  [{text: 'نعم',onPress: () => {   firebase.database().ref('students/'+this.state.userId).update({
+      lat: latitude,
+      long: longitude,
+    })//end update
+        Alert.alert('تم تحديث موقعك بنجاح');
+   }
+  },
+  {
+  text: 'لا',
+  onPress: () => console.log('Cancel Pressed'),
+  style: 'cancel',
+  },
+
+  ],
+  {cancelable: false},
+  );
+
+            })
+
+
+          }//end method
+
 static navigationOptions = function(props) {
 return {
   drawerLabel:'الرئيسية',
