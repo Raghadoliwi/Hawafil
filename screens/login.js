@@ -121,27 +121,7 @@ try{
                    }
 
 
-try{
-  const notTime = new Date();
-  notTime.setHours(20,30,00);
-  console.log(notTime)
-                   const localNotification = {
-                             title: 'done',
-                             body: 'done!'
-                         };
 
-                         const schedulingOptions = {
-                             time: notTime.getTime(),
-
-                         }
-                         console.log(schedulingOptions);
-
-                         // Notifications show only when app is not active.
-                         // (ie. another app being used or device's screen is locked)
-                         Notifications.scheduleLocalNotificationAsync(
-                             localNotification, schedulingOptions
-                         );
-                       } catch(e) {console.log(e.message);}
 }
 
 
@@ -183,6 +163,27 @@ try{
 
                 if (snapshot.exists()){
                 navigation.navigate('parentDrawer');
+                try{
+                  const notTime = new Date();
+                  notTime.setHours(20,31,50);
+                  console.log(notTime)
+                                   const localNotification = {
+                                             title: 'parent notification',
+                                             body: 'done!'
+                                         };
+
+                                         const schedulingOptions = {
+                                             time: notTime.getTime(),
+
+                                         }
+                                         console.log(schedulingOptions);
+
+                                         // Notifications show only when app is not active.
+                                         // (ie. another app being used or device's screen is locked)
+                                         Notifications.scheduleLocalNotificationAsync(
+                                             localNotification, schedulingOptions
+                                         );
+                                       } catch(e) {console.log(e.message);}
                   return;}
             //  navigation.navigate('parentDashboard')
               });
@@ -203,6 +204,7 @@ try{
                 if (snapshot.exists()){
                   console.log("success!");
                   navigation.navigate('managerDrawer');
+
                   return;
                 }
 
@@ -213,8 +215,30 @@ try{
                 if (snapshot.exists()){
                   if (snapshot.val().approved=='0')
                     Alert.alert('لم يتم قبولك في الحافلة بعد')
-                    else
+                    else{
                       navigation.navigate('studentDrawer');
+                      try{
+                        const notTime = new Date();
+                        notTime.setHours(20,31,50);
+                        console.log(notTime)
+                                         const localNotification = {
+                                                   title: 'student notification',
+                                                   body: 'done!'
+                                               };
+
+                                               const schedulingOptions = {
+                                                   time: notTime.getTime(),
+
+                                               }
+                                               console.log(schedulingOptions);
+
+                                               // Notifications show only when app is not active.
+                                               // (ie. another app being used or device's screen is locked)
+                                               Notifications.scheduleLocalNotificationAsync(
+                                                   localNotification, schedulingOptions
+                                               );
+                                             } catch(e) {console.log(e.message);}
+                                           }
               }
                 return;
               //navigation.navigate('parentDashboard')
