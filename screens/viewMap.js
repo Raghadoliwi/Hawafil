@@ -44,7 +44,7 @@ export default class viewMap extends React.Component {
     constructor(props){
       super(props)
       this.state = {
-        onMap : []
+
       }
     }
 
@@ -55,15 +55,6 @@ export default class viewMap extends React.Component {
       this.setState({onMap: varOnMap})
 }//end componentDidMount
 //rendering code
-  /*
-  {this.state.markers.map(marker => (
-      <Marker
-        coordinate={marker.latlng}
-        title={marker.title}
-        description={marker.description}
-      />
-    ))}
-*/
 
 static navigationOptions = function(props) {
 return {
