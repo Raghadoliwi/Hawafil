@@ -101,7 +101,7 @@ redirectWhatsapp = () => {
 
 static navigationOptions = function(props) {
 return {
-  title: 'تعديل البيانات الشخصية',
+  title: 'عرض الطلاب',
   headerLeft: <View style={{paddingLeft:16, }}>
   <Icon
       name="chevron-left"
