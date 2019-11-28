@@ -32,6 +32,7 @@ UNSAFE_componentWillMount(){
   firebase.auth().signOut()
   .then(function() {
   // Sign-out successful.
+  Alert.alert('تم تسجيل الخروج بنجاح');
         navigation.navigate('login');
     })
     .catch(function(error) {
