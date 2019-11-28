@@ -121,8 +121,24 @@ return {
               />
             ))}
 
+<<<<<<< HEAD
 
 
+=======
+        {
+        this.state.onMap.map((marker ) => {
+          return (
+            <Marker
+            coordinate={{longitude: marker.long, latitude: marker.lat}}
+            title={marker.name}
+            />
+
+          );//end return
+        }
+        )
+      }//end rendering
+      /*
+>>>>>>> 33437fcae6af3596e7a1585641432d548ceee4c7
         <Marker
      coordinate={{latitude: 24.699954,
             longitude: 46.652474}}
