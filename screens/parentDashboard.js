@@ -14,7 +14,6 @@ import editParent from './editParent';
 import editChild from './editChild';
 import addChild from './addChild';
 import { Linking } from 'expo';
-import Geocoder from 'react-native-geocoder';
 
   export default class parentDashboard extends React.Component {
   UNSAFE_componentWillMount(){
