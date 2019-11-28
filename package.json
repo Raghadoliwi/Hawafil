@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "babel-preset-expo": "^7.0.0",
+    "exp": "^57.2.1",
     "react-native-clean-project": "^3.2.4"
   },
   "private": true

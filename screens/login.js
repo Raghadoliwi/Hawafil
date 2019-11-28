@@ -19,7 +19,7 @@ import * as React from 'react';
   import * as Font from 'expo-font';
   import {Platform} from 'react-native';
   import * as Permissions from 'expo-permissions';
-  import { Notifications } from 'expo';
+import {Constants, Notifications} from 'expo';
   //import * as request from 'request';
 
 export default class login extends React.Component {
@@ -30,7 +30,8 @@ export default class login extends React.Component {
             visibilty: 'none',
             emailBorders:'#EAEAEA',
             passBorders:'#EAEAEA',
-            fontLoaded: false
+            fontLoaded: false,
+            token:''
           }
 
    UNSAFE_componentWillMount(){
@@ -79,8 +80,15 @@ console.log("final status = " + finalStatus);
 
 if (finalStatus === 'granted'){
   console.log("final status = " + finalStatus);
+try {
   let token = await Notifications.getExpoPushTokenAsync();
-  console.log("METHOD MY NOT" + token);
+  this.setState({token: token})
+    console.log("METHooooOD MY NOT" + token);
+} catch(e){
+
+  console.log(e.message);
+}
+try{
   fetch('https://exp.host/--/api/v2/push/send', {
        method: 'POST',
        headers: {
@@ -90,7 +98,7 @@ if (finalStatus === 'granted'){
             'host': 'exp.host'
         },
       body: JSON.stringify({
-            to: token,
+            to: this.state.token,
             title: 'New Notification',
             body: 'The notification worked!',
             priority: "high",
@@ -105,10 +113,38 @@ if (finalStatus === 'granted'){
                     .catch((error) => {
                        console.log("error "+ error);
                      });
+                   } catch (e){
 
+                       console.log( e.message);
+                         console.log("error");
+                           console.log("error");
+                   }
+
+
+try{
+  const notTime = new Date();
+  notTime.setHours(20,30,00);
+  console.log(notTime)
+                   const localNotification = {
+                             title: 'done',
+                             body: 'done!'
+                         };
+
+                         const schedulingOptions = {
+                             time: notTime.getTime(),
+
+                         }
+                         console.log(schedulingOptions);
+
+                         // Notifications show only when app is not active.
+                         // (ie. another app being used or device's screen is locked)
+                         Notifications.scheduleLocalNotificationAsync(
+                             localNotification, schedulingOptions
+                         );
+                       } catch(e) {console.log(e.message);}
 }
 
-     console.log("who cares");
+
 
 }//componentDidMount end
 
@@ -122,6 +158,12 @@ if (finalStatus === 'granted'){
           this.setState({passBorders: 'red'})
             return;
         }*/
+
+
+
+
+
+
       const {email, password} = this.state
       const { navigation } = this.props;
       //we need to add code to check if user's account is verified or not.
@@ -139,9 +181,9 @@ if (finalStatus === 'granted'){
 
               firebase.database().ref('parents/'+user.uid).on('value', snapshot => {
 
-                if (snapshot.exists())
+                if (snapshot.exists()){
                 navigation.navigate('parentDrawer');
-                  return;
+                  return;}
             //  navigation.navigate('parentDashboard')
               });
 

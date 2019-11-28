@@ -9,6 +9,12 @@
       "android",
       "web"
     ],
+    "notification":{
+      "icon": "./assets/not.png",
+      "color":"#ffffff",
+
+        "iosDisplayInForeground":true
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,6 +23,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#678ec9"
     },
+
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -24,6 +31,7 @@
       "**/*"
     ],
     "ios": {
+      "icon":"./assets/icon.png",
       "supportsTablet": true,
       "infoPlist": {
    "LSApplicationQueriesSchemes": ["whatsapp","comgooglemaps"]
