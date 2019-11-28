@@ -271,7 +271,7 @@ return {
 
                                     <View style={{flexDirection:'row-reverse'}}>
                                     <Text style={styles.paragraph} >الحي: </Text>
-                                    <Text style={styles.info}>{this.state.attendees[i].neighborhood}</Text>
+                                    <Text style={styles.info}>{this.state.attendees[i].district}</Text>
                                     </View>
 
 
