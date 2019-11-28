@@ -58,6 +58,7 @@ export default class editParent extends React.Component {
         password: '',
   confirmPassword:'',
      currentColor: '#EAEAEA',
+     changePassword:false,
       passError:'none',
      neighborhood: '',
       errorMessage: null,
@@ -163,7 +164,29 @@ this.setState({phoneBorder: 'red'})
 
      editProfile = () => {
          const { navigation } = this.props;
-       if (this.state.fullName == '' || this.state.email == ''|| this.state.phoneNo == '') {
+         console.log(this.state.changePassword);
+         if (this.state.changePassword && this.state.password.length < 6 && this.state.password.length > 0) {
+           console.log('short password');
+           this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور أكثر من ٦ خانات'})
+           this.setState({errorMsgVisibilty: 'flex'})
+           return;
+         }
+
+         if (this.state.changePassword && this.state.confirmPassword=='') {
+           console.log('confirm');
+           this.setState({formErrorMsg: 'عفوًا أدخل كلمة مرور تأكيدية'})
+           this.setState({errorMsgVisibilty: 'flex'})
+           return;
+         }
+         if (this.state.password=='' && this.state.confirmPassword!='') {
+           console.log('confirm');
+           this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور'})
+           this.setState({errorMsgVisibilty: 'flex'})
+           return;
+         }
+
+       if (this.state.pName == '' || this.state.email == ''|| this.state.phoneNo == '') {
+          console.log('missing field');
          this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
          this.setState({errorMsgVisibilty: 'flex'})
          return;
@@ -174,11 +197,7 @@ this.setState({phoneBorder: 'red'})
          return;
        }
 
-       if (this.state.password.length < 6) {
-         this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور أكثر من ٦ خانات'})
-         this.setState({errorMsgVisibilty: 'flex'})
-         return;
-       }
+
 
 
 
@@ -186,27 +205,35 @@ this.setState({phoneBorder: 'red'})
        var uid;
        if (user != null) {
          uid = user.uid;
-         if (this.state.password == '') {
+         if (!this.state.changePassword) {
            if (this.state.email != ''){
              user.updateEmail(this.state.email);
            }
+
 
            if (this.state.pName != ''){
              firebase.database().ref('parents/'+ this.state.userIdNo).update({name : this.state.pName,})
            }
 
+
            if (this.state.phoneNo != ''){
              firebase.database().ref('parents/'+ this.state.userIdNo).update({phoneNo : this.state.phoneNo,})
            }
-           navigation.navigate('parentDashboard')
+
+       navigation.navigate('parentDashboard')
+
          }
          else {
-           user.updatePassword(this.state.password).then(() => {
+           if (this.state.changePassword && this.state.password == this.state.confirmPassword)
+           {
+
+             user.updatePassword(this.state.password).then(() => {
              navigation.navigate('login')
            }, (error) => {
              console.log(error);
              // An error happened.
            });
+         }
          }
 
 
@@ -326,11 +353,37 @@ this.setState({conPasswordBorder: '#EAEAEA'})
                 secureTextEntry={true}
                 underlineColorAndroid='transparent'
                 autoCapitalize="none"
+                blurOnSubmit={false}
+                textContentType="newPassword"
                 onChangeText={(password) => {
+                  console.log(password);
+                  if (password.length>0){
+                  console.log(this.state.changePassword);
+                  this.setState({changePassword:true})
+                  console.log(this.state.changePassword);
                   this.setState({password})
+                  console.log(this.state.password);
                   this.setState({passwordBorder: '#EAEAEA'})
-                } }
-                value={this.state.password}
+                  console.log('aa'+this.state.password);
+                }
+                else {
+                  this.setState({changePassword:false})
+                  this.setState({password})
+                  console.log('bb'+this.state.password);
+                  console.log('empty!');
+                }
+              }
+                }
+
+                onEndEditing={() => {
+                    console.log(this.state.password);
+                  if (this.state.password==''){
+                    this.setState({changePassword:false})
+                    console.log('endEditing');
+                  }
+                }}
+
+value={this.state.password}
                 />
                 </View>
 

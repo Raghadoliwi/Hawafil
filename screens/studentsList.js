@@ -18,6 +18,7 @@ import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+import { Linking } from 'expo';
 
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
@@ -89,6 +90,11 @@ export default class studentsList extends React.Component {
 
 
 
+
+
+}
+
+redirectWhatsapp = () => {
 
 
 }
@@ -184,13 +190,10 @@ return {
                     <Text style={styles.info}>{this.state.noonStudents[i].neighborhood}</Text>
                     </View>
 
-                    <View style={{flexDirection:'row-reverse'}}>
-                    <Text style={styles.paragraph} >رقم الجوال: </Text>
-                    <Text style={styles.info}>{this.state.noonStudents[i].phoneNo}</Text>
-                    </View>
+
                 <View style={{flexDirection:'row-reverse',justifyContent:'flex-end',marginTop:10,alignItems:'center',marginBottom:10}}>
                       <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{  backgroundColor: "#EDC51B"}]}
-                       onPress={null}>
+                       onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.noonStudents[i].phoneNo);}}>
                 <View>
                           <FontAwesomeIcon icon={ faComment } size={ 20 } style={{color:'white'}}/>
 
@@ -229,13 +232,10 @@ return {
                             <Text style={styles.info}>{this.state.afternoonStudents[i].neighborhood}</Text>
                             </View>
 
-                            <View style={{flexDirection:'row-reverse'}}>
-                            <Text style={styles.paragraph} >رقم الجوال: </Text>
-                            <Text style={styles.info}>{this.state.afternoonStudents[i].phoneNo}</Text>
-                            </View>
+
                 <View style={{flexDirection:'row-reverse',justifyContent:'flex-end',marginTop:10,alignItems:'center',marginBottom:10}}>
                               <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{  backgroundColor: "#EDC51B"}]}
-                               onPress={null}>
+                               onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.afternoonStudents[i].phoneNo);}}>
                  <View>
                                   <FontAwesomeIcon icon={ faComment } size={ 20 } style={{color:'white'}}/>
 
@@ -274,13 +274,10 @@ return {
                                     <Text style={styles.info}>{this.state.attendees[i].neighborhood}</Text>
                                     </View>
 
-                                    <View style={{flexDirection:'row-reverse'}}>
-                                    <Text style={styles.paragraph} >رقم الجوال: </Text>
-                                    <Text style={styles.info}>{this.state.attendees[i].phoneNo}</Text>
-                                    </View>
+
                                   <View style={{flexDirection:'row-reverse',justifyContent:'flex-end',marginTop:10,alignItems:'center',marginBottom:10}}>
                                       <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{  backgroundColor: "#EDC51B"}]}
-                                       onPress={null}>
+                                       onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.attendees[i].phoneNo);}}>
                                   <View>
                                           <FontAwesomeIcon icon={ faComment } size={ 20 } style={{color:'white'}}/>
 
@@ -395,7 +392,7 @@ info: {
   	borderRadius:30,
     color:'white'
  },
- 
+
   viewStudentsText:{
      color: 'white',
 

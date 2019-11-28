@@ -140,7 +140,7 @@ const {navigation} = this.props;
             try {
                   user.sendEmailVerification();
 
-        firebase.database().ref('drivers/'+firebaseUser.uid).set(
+        firebase.database().ref('drivers/'+user.uid).set(
             {
               name: driverName,
               nationalId: nationalId,

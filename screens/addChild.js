@@ -34,7 +34,7 @@ export default class addChild extends React.Component {
   neighborhood: '',
   busNo: '',
  universities:[],
-  busesNumbers:[{value:'قم باختيار مدرسة'}],
+  busesNumbers:[{value:'قم باختيار المدرسة أولًا'}],
 universities:[],
 neighborhoodBorder:'#EAEAEA',
 nameBorder:'',
@@ -45,7 +45,7 @@ formErrorMsg:'',
 errorMsgVisibilty:'none',
 busNoError:'',
 disableBuses:true,
-busPlaceholder:'قم باختيار مدرسة',
+busPlaceholder:'قم باختيار المدرسة أولًا',
 
 
   }
@@ -481,7 +481,6 @@ borderRadius:30,
    width: 60,
    height:30,
    top: -15,
-   left:40,
    backgroundColor:"#3C68BF",
   //alignSelf:'flex-end'
    //marginBottom: 300,

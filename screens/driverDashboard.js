@@ -88,6 +88,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
             let mornStudents = [];
             let noonStudents = [];
             let afternoonStudents = [];
+              let attendees = [];
 
           if (this.state.instType && this.state.instType==='university' ){
 
@@ -153,15 +154,19 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
                         studentKey:child.key,
                         name: child.val().name ,
                         neighborhood: child.val().neighborhood ,
-                        phoneNo: child.val().phoneNo ,
+                        phoneNo: child.key.substring(0, 9),
                       });
-                     this.setState({attendees:attendees.length});
+                     this.setState({attendeesNumber:attendees.length});
+
                    }
 
 
                 }
 
               })//end snap for each
+              this.setState({
+                attendees: attendees
+              });
 
             });
           }
@@ -295,7 +300,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
               <Text style={styles.title}>رحلة اليوم</Text>
               <View style={{flexDirection:'row-reverse',justifyContent:'space-between',marginTop:10,alignItems:'center',marginBottom:10}}>
-              <Text style={styles.paragraph}>{this.state.morning} ركاب</Text>
+              <Text style={styles.paragraph}>{this.state.attendeesNumber} ركاب</Text>
                  <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{flexDirection:'row-reverse'}]}
               onPress={() => this.props.navigation.navigate('studentsList',{rideTime:'attendees',intType:this.state.instType,attendees:this.state.attendees})}>
               <View style={{flexDirection:'row-reverse'}}>

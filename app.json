@@ -24,7 +24,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+   "LSApplicationQueriesSchemes": ["whatsapp"]
+ }
     },
     "description": ""
   }
