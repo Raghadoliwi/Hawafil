@@ -44,26 +44,17 @@ export default class viewMap extends React.Component {
     constructor(props){
       super(props)
       this.state = {
-        onMap : []
+
       }
     }
 
     componentDidMount(){ //to fetch data
       const { navigation } = this.props;
       var varOnMap = navigation.getParam('onMap', 'NO-NUM');
-      console.log("On Map = " + onMap);
+      console.log("On My Map = " + varOnMap);
       this.setState({onMap: varOnMap})
 }//end componentDidMount
 //rendering code
-  /*
-  {this.state.markers.map(marker => (
-      <Marker
-        coordinate={marker.latlng}
-        title={marker.title}
-        description={marker.description}
-      />
-    ))}
-*/
 
 static navigationOptions = function(props) {
 return {
@@ -87,14 +78,6 @@ return {
 };
 
   render() {
-   var markers = [
-  {
-    latitude: 24.7136,
-    longitude: 46.6753,
-    title: 'لمى القاسم',
-    subtitle: 'سب تايتل'
-  }
-];
     return (
       <View style={styles.container}>
       <Text style={styles.paragraph}>
@@ -109,18 +92,6 @@ return {
           longitudeDelta: 0.0421,
         }}
         >
-        //rendering
-        /*
-        //rendering code
-          /*
-          {this.state.markers.map(marker => (
-              <Marker
-                coordinate={marker.latlng}
-                title={marker.title}
-                description={marker.description}
-              />
-            ))}
-        */
 
         {
         this.state.onMap.map((marker ) => {
@@ -134,18 +105,6 @@ return {
         }
         )
       }//end rendering
-      /*
-        <Marker
-     coordinate={{latitude: 24.699954,
-            longitude: 46.652474}}
-     title={'لمى القاسم'}
-   />
-   <Marker
-coordinate={{latitude: 24.703847,
-longitude: 46.653756}}
-title={'رغد العليوي'}
-/>
-*/
       </MapView>
       </View>
     );
