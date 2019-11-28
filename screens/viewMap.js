@@ -123,14 +123,15 @@ return {
         */
 
         {
-        this.state.onMap.map(marker => (
+        this.state.onMap.map((marker ) => {
           return (
             <Marker
-            coordinate={}
+            coordinate={{longitude: marker.long, latitude: marker.lat}}
             title={marker.name}
             />
 
           );//end return
+        }
         )
       }//end rendering
       /*
