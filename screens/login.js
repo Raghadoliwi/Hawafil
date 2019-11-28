@@ -100,7 +100,7 @@ export default class login extends React.Component {
 
 
               firebase.database().ref('drivers/'+user.uid).on('value', snapshot => {
-      
+
                 if (snapshot.exists()){
 
                 try {navigation.navigate('driverDrawer');}
@@ -125,7 +125,7 @@ export default class login extends React.Component {
                   if (snapshot.val().approved=='0')
                     Alert.alert('لم يتم قبولك في الحافلة بعد')
                     else
-                      navigation.navigate('driverDrawer');
+                      navigation.navigate('studentDrawer');
               }
                 return;
               //navigation.navigate('parentDashboard')
