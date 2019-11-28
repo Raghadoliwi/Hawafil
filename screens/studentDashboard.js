@@ -82,19 +82,6 @@ this.setState((state, props) => ({
 }//end on onDepartureToggle
 
 onArrivalToggle = (arr) => {
-  /*works
-  this.setState((state, props) => ({
-    arrival: arr,
-  }));
-   //update in  db
-     firebase.database().ref('students/'+this.state.userId).update({
-      arrival: arr
-      })
-   //Alert
-   Alert.alert('تم تحديث حالة الحضور');
-*/
-
-   ///
    if (arr==='13:00' && this.state.arrival === '13:00'){
      var temp = 'none'
 
@@ -134,23 +121,22 @@ onArrivalToggle = (arr) => {
    }
 
     //Alert
-
-
-
-  /*
-  this.setState({
-    arrival: arr
-  })
-
-  firebase.database().ref('students/'+this.state.userId).update({
-   arrival: arr
-   })
-   //Alert
-   //Alert.alert('تم تحديث حالة الحضور');
-
-   */
 }//end onarrivaltoggle
 
+getCurrentPosition() {
+     navigator.geolocation.getCurrentPosition(
+       (position) => {
+           var latitude= position.coords.latitude;
+           var longitude= position.coords.longitude;
+           //var latitudeDelta= LATITUDE_DELTA;
+           //var longitudeDelta= LONGITUDE_DELTA;
+           firebase.database().ref('students/'+this.state.userId).update({
+            lat: latitude,
+            long: longitude,
+          })//end update
+       })
+       Alert.alert('تم تحديث موقعك بنجاح');
+     }//end method
 
 static navigationOptions = function(props) {
 return {
@@ -180,6 +166,11 @@ resetScrollToCoords={{ x: 0, y: 0 }}
 contentContainerStyle={styles.container}
 scrollEnabled={false}>
 <View style={styles.smallContainer}>
+<View style={styles.trackingContainer}>
+<TouchableHighlight style={[styles.typeButtonContainer,styles.trackingButton]} onPress ={() => this.getCurrentPosition()} >
+<Text style={styles.typeText}>حدّث موقعي</Text>
+</TouchableHighlight>
+</View>
 
 <Text style={styles.SubSub}>ــــــ وقت الذهاب ــــــ</Text>
 
@@ -191,9 +182,7 @@ scrollEnabled={false}>
                 </View>
 
             <Text style={styles.SubSub}>ــــــ وقت الإياب ــــــ</Text>
-
                 <View style={styles.typeContainer}>
-
                     <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '13:00'?styles.pressedButton:styles.typeButton]} onPress ={() => this.onArrivalToggle('13:00')}>
                     <Text style={styles.typeText}>13:00</Text>
                     </TouchableHighlight>
@@ -206,15 +195,6 @@ scrollEnabled={false}>
 </View>
 
 
-<View style={styles.smallContainer}>
-
-<View style={styles.typeContainer}>
-<TouchableHighlight style={styles.typeButtonContainer} onPress={() => this.props.navigation.push('viewMap')} >
-<Text style={styles.typeText}>اضغط للتتبع</Text>
-</TouchableHighlight>
-</View>
-
-</View>
                 </KeyboardAwareScrollView>
 </ScrollView>
                 );
@@ -235,7 +215,7 @@ const styles = StyleSheet.create({
   SubSub: {
     color: '#9F9F9F',
     fontSize: 10,
-    marginBottom: 30,
+    marginBottom: 19,
   },
   container: {
     flex: 1,
@@ -287,10 +267,16 @@ const styles = StyleSheet.create({
 
   typeContainer: {
     justifyContent: 'center',
-
+    marginBottom: 10,
     backgroundColor: 'white',
-    borderRadius: 10,
+    flex: 1,
+    flexDirection: 'row-reverse',
+  },
 
+  trackingContainer: {
+    justifyContent: 'center',
+    marginBottom: 30,
+    backgroundColor: 'white',
     flex: 1,
     flexDirection: 'row-reverse',
   },
@@ -418,7 +404,11 @@ marginLeft:10,
     backgroundColor: "#7597DB",
     marginLeft: 10,
     marginRight: 10,
-
+  },
+  trackingButton: {
+    backgroundColor: "#EDC51B",
+    marginLeft: 10,
+    marginRight: 10,
   },
   attachButton: {
     backgroundColor: "#8BC8E4",

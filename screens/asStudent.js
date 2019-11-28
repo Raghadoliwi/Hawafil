@@ -500,23 +500,6 @@ const styles = StyleSheet.create({
 
                                  },
 
-                                 keyNo:{
-                                 backgroundColor: '#FFFFFF',
-                                 borderRadius:30,
-                                 borderWidth: 1,
-                                 width:30,
-                                 height:35,
-
-                                 // marginLeft: 250,
-
-
-                                 //justifyContent:'flex-end',
-                                 //alignItems:'flex-end',
-                                 borderColor: '#EAEAEA'
-                                 },
-                                 dropdown:{
-                                   borderRadius:25,
-                                 },
 
                                  neighborhoodList: {
                                    borderColor: '#EAEAEA',

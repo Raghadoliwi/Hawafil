@@ -1,6 +1,7 @@
 import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+import { Text, View, Alert } from 'react-native';
 
 import stuCustomDrawer from './stuCustomDrawer';
 import addChild from '../screens/addChild';
