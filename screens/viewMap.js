@@ -59,18 +59,22 @@ export default class viewMap extends React.Component {
 static navigationOptions = function(props) {
 return {
 
-  headerLeft: <View style={{marginRight:16, paddingLeft:16,paddingTop:16,paddingBottom:16,paddingRight:16,flexDirection:'row-reverse',backgroundColor:'white',borderRadius:25,  shadowRadius: 5,
-    shadowColor: 'black',
-    shadowOffset: { height: 0, width: 0 },}}>
+  headerLeft: <View style={{hieght:50,marginRight:16, paddingLeft:16,paddingRight:16,flexDirection:'row-reverse',backgroundColor:'white',borderRadius:25,  shadowOpacity: 0.2,
+          shadowRadius: 5,
+          shadowColor: 'black',
+          shadowOffset: { height: 0, width: 0 },}}
+        >
  <Text style={{color:'rgba(76, 115, 204, 1)', fontSize:16}}>عودة</Text>
  <Icon
      name="chevron-left"
      size={30}
-     color='rgba(76, 115, 204, 1)'
      onPress={() => {
- props.navigation.goBack()
+  props.navigation.goBack()
 
-}} />
+ }
+}
+     color='rgba(76, 115, 204, 1)'
+     />
  </View>,
 
  headerTintColor: 'black',

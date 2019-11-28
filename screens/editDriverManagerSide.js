@@ -70,31 +70,23 @@ export default class editDriverManagerSide extends React.Component {
           componentDidMount(){ //to fetch data
 
 
+
 const { navigation } = this.props;
       var driverId = navigation.getParam('id', 'NO-ID');
       console.log(driverId);
 if (driverId !== 'NO-ID'){
 
-  firebase.database().ref('drivers/').on('value', (snap) => {
-
-snap.forEach((child) => {
-
-  if (child.val().id === driverId){
+  firebase.database().ref('drivers/'+driverId).on('value', snapshot => {
+console.log(snapshot);
   this.setState({
-      driverKey:child.key,
-      workerId: child.val().id,
-      driverName: child.val().name,
-     phoneNo: child.val().phoneNo,
-      busNo: child.val().busNo,
-      busPlate:child.val().busPlate
+      driverKey:snapshot.key,
+      nationalId: snapshot.val().nationalId,
+      driverName: snapshot.val().name,
+     phoneNo: snapshot.val().phoneNo,
+      busNo: snapshot.val().busNo,
+      busPlate:snapshot.val().busPlate,
     });
-}
-
-
-})//end snap for each
-
-
-  });
+});
 
 
 
