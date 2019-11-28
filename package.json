@@ -18,6 +18,7 @@
     "@fortawesome/react-native-fontawesome": "^0.1.0",
     "expo": "^35.0.0",
     "expo-keep-awake": "^7.0.0",
+    "expo-permissions": "^7.0.0",
     "expo-push-notification-helper": "^0.4.0",
     "firebase": "^6.6.2",
     "material-design-icons": "^3.0.1",
@@ -45,6 +46,7 @@
     "react-navigation": "^4.0.7",
     "react-navigation-drawer": "^2.2.2",
     "react-navigation-stack": "^1.8.1",
+    "request": "^2.88.0",
     "validate.js": "^0.13.1"
   },
   "devDependencies": {

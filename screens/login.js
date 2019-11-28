@@ -18,6 +18,9 @@ import * as React from 'react';
   import firebase from 'firebase';
   import * as Font from 'expo-font';
   import {Platform} from 'react-native';
+  import * as Permissions from 'expo-permissions';
+  import { Notifications } from 'expo';
+  //import * as request from 'request';
 
 export default class login extends React.Component {
   state = {
@@ -30,7 +33,8 @@ export default class login extends React.Component {
             fontLoaded: false
           }
 
-  UNSAFE_componentWillMount(){
+   UNSAFE_componentWillMount(){
+
     const firebaseConfig = {
       apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
       authDomain: "hawafildb.firebaseapp.com",
@@ -57,6 +61,56 @@ export default class login extends React.Component {
   }//end component will mount.
 
 
+
+async componentDidMount(){
+  // get expo push token
+  console.log("componentDidMount");
+
+  const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+    let finalStatus = existingStatus;
+    console.log("final status = " + finalStatus);
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    finalStatus = status;
+}//end if
+console.log("final status = " + finalStatus);
+
+if (finalStatus === 'granted'){
+  console.log("final status = " + finalStatus);
+  let token = await Notifications.getExpoPushTokenAsync();
+  console.log("METHOD MY NOT" + token);
+  fetch('https://exp.host/--/api/v2/push/send', {
+       method: 'POST',
+       headers: {
+             'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'accept-encoding': 'gzip, deflate',
+            'host': 'exp.host'
+        },
+      body: JSON.stringify({
+            to: token,
+            title: 'New Notification',
+            body: 'The notification worked!',
+            priority: "high",
+            sound:"default",
+            channelId:"default",
+                }),
+    }).then((response) => response.json())
+             .then((responseJson) => {
+               console.log(responseJson);
+               console.log(responseJson.data);
+             })
+                    .catch((error) => {
+                       console.log("error "+ error);
+                     });
+
+}
+
+     console.log("who cares");
+
+}//componentDidMount end
 
 
     handleLogin = () => {
