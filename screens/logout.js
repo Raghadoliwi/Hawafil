@@ -38,12 +38,7 @@ UNSAFE_componentWillMount(){
   .then(function() {
     console.log(this.state);
   // Sign-out successful.
-  const initialState = {
-    hello:'',
-  };
-
-
-
+  Alert.alert('تم تسجيل الخروج بنجاح');
         navigation.navigate('login');
 
     })
