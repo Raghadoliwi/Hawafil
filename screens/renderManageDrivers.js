@@ -62,7 +62,7 @@ firebase.database().ref('drivers/').on('value', (snap) => {
             busNo: child.val().busNo ,
             district: child.val().district ,
             busPlate: child.val().busPlate ,
-            id: child.val().id ,
+            id: child.val().nationalId ,
             inst: child.val().inst ,
             phoneNo: child.val().phoneNo ,
 

@@ -153,7 +153,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
                       attendees.push({
                         studentKey:child.key,
                         name: child.val().name ,
-                        neighborhood: child.val().neighborhood ,
+                        district: child.val().district ,
                         phoneNo: child.key.substring(0, 9),
                       });
                      this.setState({attendeesNumber:attendees.length});
