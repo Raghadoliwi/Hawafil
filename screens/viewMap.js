@@ -51,7 +51,7 @@ export default class viewMap extends React.Component {
     componentDidMount(){ //to fetch data
       const { navigation } = this.props;
       var varOnMap = navigation.getParam('onMap', 'NO-NUM');
-      console.log("On Map = " + onMap);
+      console.log("On Map = " + varOnMap);
       this.setState({onMap: varOnMap})
 }//end componentDidMount
 //rendering code
@@ -67,39 +67,45 @@ export default class viewMap extends React.Component {
 
 static navigationOptions = function(props) {
 return {
-  title: 'خريطة الطلاب',
-  headerLeft: <View style={{paddingLeft:16, }}>
-  <Icon
-      name="chevron-left"
-      size={30}
-      color='white'
-      onPress={() => {
-  props.navigation.goBack()
 
-      }} />
+  headerLeft: <View style={{marginRight:16, paddingLeft:16,paddingTop:16,paddingBottom:16,paddingRight:16,flexDirection:'row-reverse',backgroundColor:'white',borderRadius:25,  shadowRadius: 5,
+    shadowColor: 'black',
+    shadowOffset: { height: 0, width: 0 },}}>
+ <Text style={{color:'rgba(76, 115, 204, 1)', fontSize:16}}>عودة</Text>
+ <Icon
+     name="chevron-left"
+     size={30}
+     color='rgba(76, 115, 204, 1)'
+     onPress={() => {
+ props.navigation.goBack()
+
+}} />
  </View>,
 
- headerTintColor: 'white',
+ headerTintColor: 'black',
        headerStyle: {
-          backgroundColor: "#4C73CC"
-       }
+          backgroundColor: 'rgba(76, 115, 204, 0)',
+          height:30,
+
+       },
+       headerTransparent: {
+     position: 'absolute',
+     backgroundColor: 'transparent',
+     zIndex: 100,
+     top: 0,
+     left: 0,
+     right: 0
+   }
 }
 };
 
+
   render() {
-   var markers = [
-  {
-    latitude: 24.7136,
-    longitude: 46.6753,
-    title: 'لمى القاسم',
-    subtitle: 'سب تايتل'
-  }
-];
+
     return (
+
       <View style={styles.container}>
-      <Text style={styles.paragraph}>
-      تتبع على الخريطة
-      </Text>
+<StatusBar barStyle='dark-content'/>
       <MapView
         style={styles.mapStyle}
         initialRegion={{
@@ -109,52 +115,29 @@ return {
           longitudeDelta: 0.0421,
         }}
         >
-        //rendering
-        /*
-        //rendering code
-          /*
-          {this.state.markers.map(marker => (
-              <Marker
-                coordinate={marker.latlng}
-                title={marker.title}
-                description={marker.description}
-              />
-            ))}
-
-<<<<<<< HEAD
 
 
-=======
-        {
-        this.state.onMap.map((marker ) => {
-          return (
-            <Marker
-            coordinate={{longitude: marker.long, latitude: marker.lat}}
-            title={marker.name}
-            />
-
-          );//end return
-        }
+        {this.state.onMap ?
+           (
+        this.state.onMap.map((u, i ) => {
+        return (
+          <Marker
+          coordinate={{longitude: u.long, latitude: u.lat}}
+          title={u.name}
+          onCalloutPress={()=>{Linking.openURL('comgooglemaps://?q='+u.lat+','+u.long+'&center='+u.lat+','+u.long+'&zoom=14&views=traffic');}}
+          />
         )
-      }//end rendering
-      /*
->>>>>>> 33437fcae6af3596e7a1585641432d548ceee4c7
-        <Marker
-     coordinate={{latitude: 24.699954,
-            longitude: 46.652474}}
-     title={'لمى القاسم'}
-   />
-   <Marker
-coordinate={{latitude: 24.703847,
-longitude: 46.653756}}
-title={'رغد العليوي'}
-/>
-*/
+
+
+        }) )
+        :null}
+
+
       </MapView>
       </View>
     );
-  }//end render
-}//end class
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -172,6 +155,6 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     alignSelf: 'stretch',
-    height: 400,
+    flex:1
   },
 });
