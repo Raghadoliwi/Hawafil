@@ -17,6 +17,7 @@ import * as React from 'react';
   import Icon from 'react-native-vector-icons/Octicons';
   import firebase from 'firebase';
   import * as Font from 'expo-font';
+  import {Platform} from 'react-native';
 
 export default class login extends React.Component {
   state = {
@@ -28,14 +29,6 @@ export default class login extends React.Component {
             passBorders:'#EAEAEA',
             fontLoaded: false
           }
-  /*  async componentDidMount() {
-  await Font.loadAsync({
-    'Tajawal': require('./assets/fonts/Tajawal.ttf'),
-    'Tajawal-Medium': require('./assets/fonts/Tajawal-Medium.ttf'),
-  });
-
-  this.setState({ fontLoaded: true });
-  }*/
 
   UNSAFE_componentWillMount(){
     const firebaseConfig = {
