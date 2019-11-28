@@ -230,6 +230,11 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
              networkActivityIndicatorVisible = {true}
              />
       <ScrollView style={{flex: 1, marginBottom:20}}>
+      <View style={styles.trackingContainer}>
+      <TouchableHighlight style={[styles.typeButtonContainer,styles.trackingButton]} onPress ={() => this.getCurrentPosition()} >
+      <Text style={styles.typeText}>عرض على الخريطة</Text>
+      </TouchableHighlight>
+      </View>
 
       {this.state.instType==='university' ?
 (
@@ -357,9 +362,33 @@ title: {
             shadowOffset: { height: 0, width: 0 },
 
 
-  }
-  ,
+  },
+  typeButtonContainer: {
+    height: 40,
 
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
+    width: '38%',
+    borderRadius: 30,
+  },
+  trackingButton: {
+    backgroundColor: "#EDC51B",
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  attachButton: {
+    backgroundColor: "#8BC8E4",
+
+
+  },
+  trackingContainer: {
+    justifyContent: 'center',
+    marginTop: 30,
+    marginBottom: 5,
+    flex: 1,
+    flexDirection: 'row-reverse',
+  },
   buttonContainer: {
     height:45,
     flex: 1,
@@ -396,11 +425,32 @@ title: {
       color:'white'
 
  },
+
+ smallContainer: {
+   marginTop: 15,
+   marginBottom: 15,
+   justifyContent: 'center',
+   alignItems: 'center',
+   backgroundColor: 'white',
+   borderRadius: 10,
+   width: 300,
+   paddingVertical: 17,
+   shadowOpacity: 0.04,
+   shadowRadius: 5,
+   shadowColor: 'black',
+   shadowOffset: {
+     height: 0,
+     width: 0
+   }
+ },
+
   viewStudentsText:{
      color: 'white',
 
   },
-
+  typeText: {
+    color: 'white',
+  },
 
   addText: {
     color: 'white',
