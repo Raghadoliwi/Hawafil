@@ -152,7 +152,7 @@ this.setState({currentColor: 'red'})
               firebase.database().ref('students/'+this.userId).set(
                 {
                   name: this.state.fullName,
-                  phoneNo: '0'+this.state.phoneNo,
+                  phoneNo: this.state.phoneNo,
                   busNo: this.state.busNo,
                   neighborhood: this.state.neighborhood,
                   university:this.state.university,
