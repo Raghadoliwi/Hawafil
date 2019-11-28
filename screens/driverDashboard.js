@@ -231,11 +231,6 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
              networkActivityIndicatorVisible = {true}
              />
       <ScrollView style={{flex: 1, marginBottom:20}}>
-      <View style={styles.trackingContainer}>
-      <TouchableHighlight style={[styles.typeButtonContainer,styles.trackingButton]} onPress ={() => this.getCurrentPosition()} >
-      <Text style={styles.typeText}>عرض على الخريطة</Text>
-      </TouchableHighlight>
-      </View>
 
       {this.state.instType==='university' ?
 (
