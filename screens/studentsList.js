@@ -152,7 +152,7 @@ return {
             </View>
 <View style={{flexDirection:'row-reverse',justifyContent:'flex-end',marginTop:10,alignItems:'center',marginBottom:10}}>
               <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{  backgroundColor: "#EDC51B"}]}
-               onPress={null}>
+               onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.mornStudents[i].phoneNo);}}>
  <View>
                   <FontAwesomeIcon icon={ faComment } size={ 20 } style={{color:'white'}}/>
 
@@ -160,7 +160,7 @@ return {
               </TouchableHighlight>
 
               <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-               onPress={null}>
+               onPress={()=>{Linking.openURL("comgooglemaps://?q=40.765819,-73.975866&center=40.765819,-73.975866&zoom=14&views=traffic");}}>
               <View>
               <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
@@ -201,7 +201,7 @@ return {
                       </TouchableHighlight>
 
                       <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-                       onPress={null}>
+                       onPress={()=>{Linking.openURL("https://www.google.com/maps/@42.585444,13.007813,6z");}}>
                       <View>
                       <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
@@ -243,7 +243,7 @@ return {
                               </TouchableHighlight>
 
                               <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-                               onPress={null}>
+                               onPress={()=>{Linking.openURL("https://www.google.com/maps/@42.585444,13.007813,6z");}}>
                               <View>
                               <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
@@ -285,7 +285,7 @@ return {
                                       </TouchableHighlight>
 
                                       <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-                                       onPress={null}>
+                                       onPress={()=>{Linking.openURL("https://www.google.com/maps/@42.585444,13.007813,6z");}}>
                                       <View>
                                       <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 

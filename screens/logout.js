@@ -21,8 +21,13 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 
-export default class logout extends React.Component {
 
+export default class logout extends React.Component {
+  state = {
+    name:'',
+  email   : '',
+  instName: '',
+  }
 constructor(props){
   super(props);
 }
@@ -31,8 +36,16 @@ UNSAFE_componentWillMount(){
 
   firebase.auth().signOut()
   .then(function() {
+    console.log(this.state);
   // Sign-out successful.
+  const initialState = {
+    hello:'',
+  };
+
+
+
         navigation.navigate('login');
+
     })
     .catch(function(error) {
   // An error happened.
