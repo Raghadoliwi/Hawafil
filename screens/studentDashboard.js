@@ -19,7 +19,7 @@ import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Dropdown } from 'react-native-material-dropdown';
-
+import viewMap from '../screens/viewMap';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
 
@@ -190,8 +190,6 @@ scrollEnabled={false}>
                     </TouchableHighlight>
                 </View>
 
-
-
             <Text style={styles.SubSub}>ــــــ وقت الإياب ــــــ</Text>
 
                 <View style={styles.typeContainer}>
@@ -204,8 +202,19 @@ scrollEnabled={false}>
                         </TouchableHighlight>
                 </View>
 
+
 </View>
 
+
+<View style={styles.smallContainer}>
+
+<View style={styles.typeContainer}>
+<TouchableHighlight style={styles.typeButtonContainer} onPress={() => this.props.navigation.push('viewMap')} >
+<Text style={styles.typeText}>اضغط للتتبع</Text>
+</TouchableHighlight>
+</View>
+
+</View>
                 </KeyboardAwareScrollView>
 </ScrollView>
                 );
