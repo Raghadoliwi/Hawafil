@@ -49,7 +49,22 @@ console.log(this.state.name);
     navigation.navigate(route);
     navigation.closeDrawer();
   }
+  logoutNav = () => {
+    Alert.alert(
+'',
+'هل أنت متأكد؟',
+[{text: 'نعم', onPress: this.navigateToScreen('logout')},
+{
+text: 'لا',
+onPress: () => console.log('Cancel Pressed'),
+style: 'cancel',
+},
 
+],
+{cancelable: false},
+);
+
+  }
   render () {
     return (
 
@@ -86,9 +101,7 @@ console.log(this.state.name);
 
         </ScrollView>
         <View style={styles.footerContainer}>
-        <Text style={styles.navItemStyle} onPress={
-          this.navigateToScreen('logout')
-        }>
+        <Text style={styles.navItemStyle} onPress={() => this.logoutNav()}>
         تسجيل الخروج
         </Text>
         </View>

@@ -92,7 +92,25 @@ return {
           longitudeDelta: 0.0421,
         }}
         >
+<<<<<<< HEAD
+=======
+        //rendering
+        /*
+        //rendering code
+          /*
+          {this.state.markers.map(marker => (
+              <Marker
+                coordinate={marker.latlng}
+                title={marker.title}
+                description={marker.description}
+              />
+            ))}
+>>>>>>> 0c511705d79cd381bd5616b59c33e79a19fb153f
 
+<<<<<<< HEAD
+
+
+=======
         {
         this.state.onMap.map((marker ) => {
           return (
@@ -105,6 +123,22 @@ return {
         }
         )
       }//end rendering
+<<<<<<< HEAD
+=======
+      /*
+>>>>>>> 33437fcae6af3596e7a1585641432d548ceee4c7
+        <Marker
+     coordinate={{latitude: 24.699954,
+            longitude: 46.652474}}
+     title={'لمى القاسم'}
+   />
+   <Marker
+coordinate={{latitude: 24.703847,
+longitude: 46.653756}}
+title={'رغد العليوي'}
+/>
+*/
+>>>>>>> 0c511705d79cd381bd5616b59c33e79a19fb153f
       </MapView>
       </View>
     );

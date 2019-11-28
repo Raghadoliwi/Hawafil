@@ -104,6 +104,8 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
                         name: child.val().name ,
                         neighborhood: child.val().neighborhood ,
                         phoneNo: child.val().phoneNo ,
+                      long:child.val().long,
+                      lat:child.val().lat,
                       });
                      this.setState({morning:mornStudents.length});
                    }
@@ -113,6 +115,8 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
                        name: child.val().name ,
                        neighborhood: child.val().neighborhood ,
                        phoneNo: child.val().phoneNo ,
+                       long:child.val().long,
+                       lat:child.val().lat,
                      });
                       this.setState({noon:noonStudents.length});
                     }
@@ -122,6 +126,8 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
                         name: child.val().name ,
                         neighborhood: child.val().neighborhood ,
                         phoneNo: child.val().phoneNo ,
+                        long:child.val().long,
+                        lat:child.val().lat,
                       });
                        this.setState({afternoon:afternoonStudents.length});
                      }
@@ -155,6 +161,8 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
                         name: child.val().name ,
                         district: child.val().district ,
                         phoneNo: child.key.substring(0, 9),
+                        long:child.val().long,
+                        lat:child.val().lat,
                       });
                      this.setState({attendeesNumber:attendees.length});
 

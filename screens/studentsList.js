@@ -168,7 +168,7 @@ options.push(<View style={styles.trackingContainer}>
               </TouchableHighlight>
 
               <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-               onPress={()=>{Linking.openURL("comgooglemaps://?q=40.765819,-73.975866&center=40.765819,-73.975866&zoom=14&views=traffic");}}>
+               onPress={()=>{Linking.openURL('comgooglemaps://?q='+this.state.mornStudents[i].lat+','+this.state.mornStudents[i].long+'&center='+this.state.mornStudents[i].lat+','+this.state.mornStudents[i].long+'&zoom=14&views=traffic');}}>
               <View>
               <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
@@ -209,7 +209,7 @@ options.push(<View style={styles.trackingContainer}>
                       </TouchableHighlight>
 
                       <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-                       onPress={()=>{Linking.openURL("https://www.google.com/maps/@42.585444,13.007813,6z");}}>
+                      onPress={()=>{Linking.openURL('comgooglemaps://?q='+this.state.noonStudents[i].lat+','+this.state.noonStudents[i].long+'&center='+this.state.noonStudents[i].lat+','+this.state.noonStudents[i].long+'&zoom=14&views=traffic');}}>
                       <View>
                       <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
@@ -251,7 +251,7 @@ options.push(<View style={styles.trackingContainer}>
                               </TouchableHighlight>
 
                               <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-                               onPress={()=>{Linking.openURL("https://www.google.com/maps/@42.585444,13.007813,6z");}}>
+                               onPress={()=>{Linking.openURL('comgooglemaps://?q='+this.state.afternoonStudents[i].lat+','+this.state.afternoonStudents[i].long+'&center='+this.state.afternoonStudents[i].lat+','+this.state.afternoonStudents[i].long+'&zoom=14&views=traffic');}}>
                               <View>
                               <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
@@ -293,7 +293,7 @@ options.push(<View style={styles.trackingContainer}>
                                       </TouchableHighlight>
 
                                       <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-                                       onPress={()=>{Linking.openURL("https://www.google.com/maps/@42.585444,13.007813,6z");}}>
+                                      onPress={()=>{Linking.openURL('comgooglemaps://?q='+this.state.attendees[i].lat+','+this.state.attendees[i].long+'&center='+this.state.attendees[i].lat+','+this.state.attendees[i].long+'&zoom=14&views=traffic');}}>
                                       <View>
                                       <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
