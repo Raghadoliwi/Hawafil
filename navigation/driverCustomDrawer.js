@@ -49,7 +49,7 @@ this.setState({
   logoutNav = () => {
     Alert.alert(
 '',
-'هل أنت متأكد؟',
+'هل أنت متأكد من تسجيل الخروج؟',
 [{text: 'نعم', onPress: this.navigateToScreen('logout')},
 {
 text: 'لا',

@@ -410,10 +410,13 @@ const { navigation } = this.props;
                         data={this.state.universities}
                    />
                  </View>
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 1204f888f177a45f83f3a85368d5cd423a4c368c
 <View style={[styles.neighborhoodList, {marginTop: 20, marginBottom:20}]}>
                       <Dropdown
                       itemColor='#919191'

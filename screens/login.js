@@ -138,8 +138,8 @@ try {
                   notTime.setHours(20,0,0);
                   console.log(notTime)
                                    const localNotification = {
-                                             title: 'parent notification',
-                                             body: 'done!'
+                                             title: 'لا تنس تحديث حالة حضور طفلك',
+                                             body: 'ليلة سعيدة',
                                          };
 
                                          const schedulingOptions = {
@@ -192,8 +192,8 @@ try {
                         notTime.setHours(20,0,0);
                         console.log(notTime)
                                          const localNotification = {
-                                                   title: 'student notification',
-                                                   body: 'done!'
+                                                   title: 'لا تنس تحديث أوقات دوامك',
+                                                   body: 'ليلة سعيدة',
                                                };
 
                                                const schedulingOptions = {
@@ -326,7 +326,10 @@ try {
 
                 <Text style={[styles.fontStyle,styles.warning, {display: this.state.visibilty}]}> البريد الإلكتروني أو كلمة المرور غير صحيحة </Text>
               </View>
-
+              <TouchableHighlight style={styles.forgetPass}
+                 onPress={() => this.props.navigation.push('forgetPassword')}>
+                  <Text style={[styles.fontStyle,styles.forgetPassText]}> نسيت كلمة المرور؟</Text>
+              </TouchableHighlight>
               <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
               onPress={this.handleLogin}>
 
@@ -335,10 +338,7 @@ try {
 
               </TouchableHighlight>
 
-              <TouchableHighlight style={styles.forgetPass}
-                 onPress={() => this.props.navigation.push('forgetPassword')}>
-                  <Text style={[styles.fontStyle,styles.forgetPassText]}> نسيت كلمة المرور؟</Text>
-              </TouchableHighlight>
+
 
          <View style={{flexDirection: 'row'}}>
     <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginLeft:20}} />
@@ -427,7 +427,8 @@ try {
   	flexDirection: 'row-reverse',
   	//justifyContent: 'flex',
   	//alignItems: 'center',
-  	width:250
+  	width:250,
+    marginBottom: 15,
   },
   forgetPassText: {
 
