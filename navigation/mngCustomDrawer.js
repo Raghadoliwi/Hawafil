@@ -98,7 +98,7 @@ console.log(this.state.name);
 
             <View style={{flexDirection:'row-reverse'}}>
           <FontAwesomeIcon icon={ faHome } size={ 20 } style={{color:'#6B82B6'}}/>
-                <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('parentDashboard')}>
+                <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('renderManageDrivers')}>
     الرئيسية
                 </Text>
                 </View>
@@ -108,7 +108,7 @@ console.log(this.state.name);
 
               <View style={{flexDirection:'row-reverse'}}>
             <FontAwesomeIcon icon={ faCogs } size={ 20 } style={{color:'#6B82B6'}}/>
-                  <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('renderManageDrivers')}>
+                  <Text style={[styles.navHeaderStyle,{paddingRight: 10}]} onPress={this.navigateToScreen('editManagerForm')}>
                   تعديل البيانات
                   </Text>
                   </View>

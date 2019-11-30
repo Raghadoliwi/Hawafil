@@ -83,42 +83,12 @@ if (finalStatus === 'granted'){
 try {
   let token = await Notifications.getExpoPushTokenAsync();
   this.setState({token: token})
-    console.log("METHooooOD MY NOT" + token);
+    console.log("METHOD MY NOT" + token);
 } catch(e){
 
   console.log(e.message);
 }
-try{
-  fetch('https://exp.host/--/api/v2/push/send', {
-       method: 'POST',
-       headers: {
-             'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'accept-encoding': 'gzip, deflate',
-            'host': 'exp.host'
-        },
-      body: JSON.stringify({
-            to: this.state.token,
-            title: 'New Notification',
-            body: 'The notification worked!',
-            priority: "high",
-            sound:"default",
-            channelId:"default",
-                }),
-    }).then((response) => response.json())
-             .then((responseJson) => {
-               console.log(responseJson);
-               console.log(responseJson.data);
-             })
-                    .catch((error) => {
-                       console.log("error "+ error);
-                     });
-                   } catch (e){
 
-                       console.log( e.message);
-                         console.log("error");
-                           console.log("error");
-                   }
 
 
 

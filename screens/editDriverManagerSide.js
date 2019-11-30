@@ -23,7 +23,7 @@ import firebase from 'firebase';
 import Constants from 'expo-constants';
 import DropdownMenu from 'react-native-dropdown-menu';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import { Dropdown } from 'react-native-material-dropdown';
 const MenuIcon = ({ navigate }) => <Icon
     name='chevron-left'
     size={20}
@@ -59,6 +59,8 @@ export default class editDriverManagerSide extends React.Component {
      phoneNo: '',
      inst:'',
      busNo: '',
+     deleted:false,
+     neighborhoodBorder:'#EAEAEA',
      errorMessage: null,
     nameBorders:'#EAEAEA',
     emailBorders:'#EAEAEA',
@@ -66,33 +68,60 @@ export default class editDriverManagerSide extends React.Component {
   conPasswordBorder:'#EAEAEA',
      }
 
+     showAlertDialog = () =>{
+  Alert.alert(
+  'هل أنت متأكد؟',
+  '',
+  [
+    {
+      text: 'إلغاء',
+      onPress: () => console.log('Cancel Pressed'),
+      style: 'cancel',
+    },
+    {text: 'نعم', onPress: () => {
+      var driverKey = this.props.navigation.getParam('driverKey', 'NO-NUM');
 
+        firebase.database().ref('drivers/'+driverKey).remove()
+        this.setState({
+            deleted:true})
+        try {  this.props.navigation.push('renderManageDrivers');}
+         catch (e){console.log(e.message);}
+
+    }},
+  ],
+  {cancelable: false},
+ );}
           componentDidMount(){ //to fetch data
 
 
 
 const { navigation } = this.props;
-      var driverId = navigation.getParam('id', 'NO-ID');
-      console.log(driverId);
-if (driverId !== 'NO-ID'){
+      var driverKey = navigation.getParam('driverKey', 'NO-ID');
 
-  firebase.database().ref('drivers/'+driverId).on('value', snapshot => {
-console.log(snapshot);
-  this.setState({
-      driverKey:snapshot.key,
-      nationalId: snapshot.val().nationalId,
-      driverName: snapshot.val().name,
-     phoneNo: snapshot.val().phoneNo,
-      busNo: snapshot.val().busNo,
-      busPlate:snapshot.val().busPlate,
-    });
-});
+      console.log(driverKey);
+      if (!this.state.deleted){if (driverKey !== 'NO-ID'){
+
+        firebase.database().ref('drivers/'+driverKey).on('value', snapshot => {
+      console.log(snapshot);
+      try {    this.setState({
+              driverKey:snapshot.key,
+
+              driverName: snapshot.val().name,
+             phoneNo: snapshot.val().phoneNo,
+              busNo: snapshot.val().busNo,
+              district:snapshot.val().district,
+              busPlate:snapshot.val().busPlate,
+                nationalId: snapshot.val().nationalId,
+            });} catch(e){console.log(e.message);}
+
+      });
 
 
 
 
 
-}
+      }}
+
 
 
 
@@ -153,22 +182,18 @@ const { navigation } = this.props;
        var driverKey=this.state.driverKey;
 
    if (this.state.password == '') {
-         if (this.state.driverName != ''){
-           firebase.database().ref('drivers/'+driverKey).update({name : this.state.driverName,})
-         }
 
-         if (this.state.phoneNo != ''){
-           firebase.database().ref('drivers/'+driverKey).update({phoneNo : this.state.phoneNo,})
-         }
-         if (this.state.workerId != ''){
-           firebase.database().ref('drivers/'+driverKey).update({id : this.state.workerId,})
-         }
-         if (this.state.busNo != ''){
-           firebase.database().ref('drivers/'+driverKey).update({busNo : this.state.busNo,})
-         }
-         if (this.state.busPlate != ''){
-           firebase.database().ref('drivers/'+driverKey).update({busPlate : this.state.busPlate,})
-         }
+
+         firebase.database().ref('children/'+childKey).update({
+
+          nationalId: this.state.nationalId,
+          name:this.state.driverName,
+          phoneNo: this.state.phoneNo,
+          busNo: this.state.busNo,
+          busPlate: this.state.busPlate,
+          district: this.state.district,
+        })
+
   navigation.navigate('renderManageDrivers')
        }
       /* else {
@@ -219,8 +244,8 @@ const { navigation } = this.props;
                         placeholder="رقم الهوية"
                         keyboardType="numeric"
                         underlineColorAndroid='transparent'
-                        onChangeText={workerId => this.setState({ workerId })}
-                        value={this.state.workerId}
+                        onChangeText={nationalId => this.setState({ nationalId })}
+                        value={this.state.nationalId}
                         />
                         </View>
                         <View style={styles.inputContainer}>
@@ -259,6 +284,35 @@ const { navigation } = this.props;
 
 
                       <Text style={styles.Main}> • تعديل بيانات الحافلة • </Text>
+
+                      <View style={[styles.neighborhoodList,{marginTop: -5}]}>
+                                            <Dropdown
+                                            itemColor='#919191'
+                                            baseColor='#919191'
+                                            textColor='#919191'
+
+                                            itemTextStyle={{textAlign:'right'}}
+                                style={{textAlign:'right'}}
+                                dropdownOffset={{ top: 0, left: 0}}
+                                                 inputContainerStyle={{textAlign:'right', borderBottomColor: 'transparent' }}
+                                                containerStyle={{marginBottom:-15,textAlign:'right',paddingHorizontal:10, borderWidth:1, borderColor:this.state.neighborhoodBorder, borderRadius:25}}
+                                                pickerStyle={{paddingHorizontal:10,shadowOpacity:'0.1',shadowRadius:'5',textAlign:'right',color:'#EAEAEA',borderBottomColor:'transparent',borderRadius:25,borderWidth: 0}}
+                                                itemPadding={10}
+                                                shadeOpacity={0}
+                                                rippleInsets={{top: 0, bottom: 0}}
+                                                dropdownMargins	={{min: 0, max: 0}}
+                                                dropdownPosition ={0}
+                                label='الحي السكني'
+
+                                data={riyadhDistricts}
+
+                                onChangeText={(district) => {
+                                  this.setState({district})
+                                  this.setState({neighborhoodBorder: '#EAEAEA'})
+                                } }
+                                value={this.state.district}
+                              />
+                            </View>
 
                      <View style={styles.inputContainer}>
 
@@ -448,7 +502,7 @@ onPress={this.showAlertDialog}>
                                                                 flexDirection: 'row',
                                                                 justifyContent: 'center',
                                                                 alignItems: 'center',
-                                                                top: 20,
+                                                                top: 10,
                                                                 width:250,
                                                                 borderRadius:30,
                                                                 },
@@ -502,6 +556,11 @@ marginRight:10,
   flexDirection: 'row',
   //justifyContent:'flex-end',
   justifyContent:'space-around',
+  },
+  neighborhoodList: {
+    borderColor: '#EAEAEA',
+    width:260,
+    height:50,
   },
   phoneInput:{
 

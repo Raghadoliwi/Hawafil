@@ -22,6 +22,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 import viewMap from '../screens/viewMap';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
+import { Linking } from 'expo';
 
 export default class studentDashboard extends React.Component {
 
@@ -56,9 +57,24 @@ firebase.database().ref('students/'+userId).on('value', snapshot => {
 this.setState({
     arrival: snapshot.val().arrival,
     departure: snapshot.val().departure,
+    busNo: snapshot.val().busNo,
+    university: snapshot.val().university,
     userId: userId
 });
 });
+
+firebase.database().ref('drivers/').once('value', (snap) => {
+
+    snap.forEach((child) => {
+      if (child.val().inst==this.state.university)
+      this.setState({
+          driverNumber: child.val().phoneNo,
+      });
+
+    })
+})//end on
+
+
 }
 })
 
@@ -201,9 +217,12 @@ resetScrollToCoords={{ x: 0, y: 0 }}
 contentContainerStyle={styles.container}
 scrollEnabled={false}>
 <View style={styles.smallContainer}>
-<View style={styles.trackingContainer}>
+<View style={[styles.trackingContainer,{flexDirection:'row-reverse'}]}>
 <TouchableHighlight style={[styles.typeButtonContainer,styles.trackingButton]} onPress ={() => this.getCurrentPosition()} >
 <Text style={styles.typeText}>حدّث موقعي</Text>
+</TouchableHighlight>
+<TouchableHighlight style={[{backgroundColor:'#8197C6'},styles.typeButtonContainer,styles.secondButton]}  onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.driverNumber);}} >
+<Text style={styles.typeText}>محادثة السائق</Text>
 </TouchableHighlight>
 </View>
 
@@ -442,6 +461,11 @@ marginLeft:10,
   },
   trackingButton: {
     backgroundColor: "#EDC51B",
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  secondButton: {
+    backgroundColor: "#8BC8E4",
     marginLeft: 10,
     marginRight: 10,
   },
