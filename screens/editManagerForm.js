@@ -63,7 +63,8 @@ export default class editManagerForm extends React.Component {
      neighborhood: '',
       errorMessage: null,
     nameBorders:'#EAEAEA',
-    emailBorders:'#EAEAEA',
+    emailBorder:'#EAEAEA',
+    instBorders:'#EAEAEA',
     phoneBorder:'#EAEAEA',
   passwordBorder:'#EAEAEA',
   conPasswordBorder:'#EAEAEA',
@@ -86,7 +87,6 @@ export default class editManagerForm extends React.Component {
 
    this.setState({
      name: snapshot.val().name ,
-     //nationalId: snapshot.val().nationalId,
      phoneNo: snapshot.val().phoneNo,
      email: email,
      instName: snapshot.val().instName,
@@ -112,10 +112,10 @@ export default class editManagerForm extends React.Component {
   if(reg.test(this.state.email)== false)
   {
 
-  this.setState({emailBorders:'red'})
+  this.setState({emailBorder:'red'})
     }
   else {
-    this.setState({emailBorders:'#91b804'})
+    this.setState({emailBorder:'#91b804'})
   }
 }//end validate phone number
 
@@ -148,6 +148,8 @@ this.setState({phoneBorder: 'red'})
     }
 }//end validate phone number
 
+
+
 //it's better to use Alert.alert, same one we used in forget password.
      showAlertDialog = () =>{
   Alert.alert(
@@ -164,9 +166,33 @@ this.setState({phoneBorder: 'red'})
   {cancelable: false},
 );}
 
+
+
      editProfile = () => {
          const { navigation } = this.props;
-       if (this.state.fullName == '' || this.state.email == ''|| this.state.phoneNo == '') {
+         console.log(this.state.changePassword);
+
+         if (this.state.changePassword && this.state.password.length < 6 && this.state.password.length > 0) {
+           console.log('short password');
+           this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور أكثر من ٦ خانات'})
+           this.setState({errorMsgVisibilty: 'flex'})
+           return;
+         }
+
+         if (this.state.changePassword && this.state.confirmPassword=='') {
+           console.log('confirm');
+           this.setState({formErrorMsg: 'عفوًا أدخل كلمة مرور تأكيدية'})
+           this.setState({errorMsgVisibilty: 'flex'})
+           return;
+         }
+         if (this.state.password=='' && this.state.confirmPassword!='') {
+           console.log('confirm');
+           this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور'})
+           this.setState({errorMsgVisibilty: 'flex'})
+           return;
+         }
+
+       if (this.state.name == '' || this.state.email == ''|| this.state.phoneNo == '' || this.state.instName=='') {
          this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
          this.setState({errorMsgVisibilty: 'flex'})
          return;
@@ -177,11 +203,8 @@ this.setState({phoneBorder: 'red'})
          return;
        }
 
-       if (this.state.password.length < 6) {
-         this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور أكثر من ٦ خانات'})
-         this.setState({errorMsgVisibilty: 'flex'})
-         return;
-       }
+
+
 
 
 
@@ -204,7 +227,7 @@ this.setState({phoneBorder: 'red'})
            if (this.state.instName != ''){
              firebase.database().ref('managers/'+ this.state.userIdNo).update({instName : this.state.instName,})
            }
-           navigation.navigate('managerDashboard')
+           navigation.navigate('renderManageDrivers')
          }
          else {
            user.updatePassword(this.state.password).then(() => {
@@ -220,7 +243,7 @@ this.setState({phoneBorder: 'red'})
        }
 
 this.setState({phoneBorder: '#EAEAEA'})
-this.setState({emailBorders: '#EAEAEA'})
+this.setState({emailBorder: '#EAEAEA'})
 this.setState({nameBorders: '#EAEAEA'})
 this.setState({passwordBorder: '#EAEAEA'})
 this.setState({conPasswordBorder: '#EAEAEA'})
@@ -307,7 +330,7 @@ this.setState({conPasswordBorder: '#EAEAEA'})
                 </View>
 
 
-                   <View style={[styles.inputContainer, {borderColor: this.state.emailBorders}]}>
+                   <View style={[styles.inputContainer, {borderColor: this.state.emailBorder}]}>
 
                 <TextInput style={styles.input}
                 placeholder="البريد الإلكتروني"
@@ -324,13 +347,16 @@ this.setState({conPasswordBorder: '#EAEAEA'})
 
                 </View>
 
-                <View style={[styles.inputContainer, {borderColor: this.state.nameBorders}]}>
+                <View style={[styles.inputContainer, {borderColor: this.state.instBorders}]}>
 
                 <TextInput style={styles.input}
                 placeholder=" اسم المنشأة"
                 keyboardType="TextInput"
                 underlineColorAndroid='transparent'
-                onChangeText={instName => this.setState({ instName })}
+                onChangeText={(instName) => {
+                  this.setState({ instName })
+                  this.setState({instBorders: '#EAEAEA'})
+                }}
                 value={this.state.instName}
                 />
                 </View>
@@ -343,10 +369,36 @@ this.setState({conPasswordBorder: '#EAEAEA'})
                 secureTextEntry={true}
                 underlineColorAndroid='transparent'
                 autoCapitalize="none"
+                blurOnSubmit={false}
+                textContentType="newPassword"
                 onChangeText={(password) => {
+                  console.log(password);
+                  if (password.length>0){
+                  console.log(this.state.changePassword);
+                  this.setState({changePassword:true})
+                  console.log(this.state.changePassword);
                   this.setState({password})
+                  console.log(this.state.password);
                   this.setState({passwordBorder: '#EAEAEA'})
-                } }
+                  console.log('aa'+this.state.password);
+                }
+                else {
+                  this.setState({changePassword:false})
+                  this.setState({password})
+                  console.log('bb'+this.state.password);
+                  console.log('empty!');
+                }
+
+}
+}
+
+              onEndEditing={() => {
+                  console.log(this.state.password);
+                if (this.state.password==''){
+                  this.setState({changePassword:false})
+                  console.log('endEditing');
+                }
+              }}
                 value={this.state.password}
                 />
                 </View>
