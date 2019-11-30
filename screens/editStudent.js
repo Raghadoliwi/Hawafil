@@ -413,19 +413,7 @@ const { navigation } = this.props;
 
 
 
-/*
-                     <View style={styles.inputContainer}>
 
-                     <TextInput style={styles.email, styles.input}
-                     placeholder="رقم الحافلة"
-                     keyboardType="numeric"
-                     underlineColorAndroid='transparent'
-                     onChangeText={busNo => this.setState({ busNo })}
-                     //line below is added new by lama:
-                     value={this.state.busNo}
-                     />
-                     </View>
-*/
 <View style={[styles.neighborhoodList, {marginTop: 20, marginBottom:20}]}>
                       <Dropdown
                       itemColor='#919191'
