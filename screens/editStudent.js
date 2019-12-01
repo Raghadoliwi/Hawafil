@@ -192,6 +192,22 @@ else {
       }
 }//end validate phone number
 
+
+showAlertDialog = () =>{
+Alert.alert(
+'هل أنت متأكد؟',
+'',
+[
+{
+ text: 'إلغاء',
+ onPress: () => console.log('Cancel Pressed'),
+ style: 'cancel',
+},
+{text: 'نعم', onPress: () => console.log('OK Pressed')},
+],
+{cancelable: false},
+);}
+
      editProfile = () => {
 const { navigation } = this.props;
        if (this.state.name == '' || this.state.neighborhood == ''|| this.state.phoneNo == ''|| this.state.busNo == ''|| this.state.university == '') {
