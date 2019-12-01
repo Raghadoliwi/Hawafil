@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import React, {StyleSheet, Component} from 'react';
 import {NavigationActions} from 'react-navigation';
-import {ScrollView, Text, View,Image} from 'react-native';
+import {ScrollView, Text, View,Image, Alert} from 'react-native';
 import firebase from 'firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
@@ -49,7 +49,22 @@ console.log(this.state.name);
     navigation.navigate(route);
     navigation.closeDrawer();
   }
+  logoutNav = () => {
+    Alert.alert(
+'',
+'هل أنت متأكد من تسجيل الخروج؟',
+[{text: 'نعم', onPress: this.navigateToScreen('logout')},
+{
+text: 'لا',
+onPress: () => console.log('Cancel Pressed'),
+style: 'cancel',
+},
 
+],
+{cancelable: false},
+);
+
+  }
   render () {
     return (
 
@@ -86,7 +101,7 @@ console.log(this.state.name);
 
         </ScrollView>
         <View style={styles.footerContainer}>
-        <Text style={styles.navItemStyle} onPress={this.navigateToScreen('logout')}>
+        <Text style={styles.navItemStyle} onPress={() => this.logoutNav()}>
         تسجيل الخروج
         </Text>
         </View>

@@ -13,7 +13,7 @@ import Constants from 'expo-constants';
 import editParent from './editParent';
 import editChild from './editChild';
 import addChild from './addChild';
-
+import { Linking } from 'expo';
 
   export default class parentDashboard extends React.Component {
   UNSAFE_componentWillMount(){
@@ -53,6 +53,8 @@ console.log(this.state.childrenList.length);
       console.log(this.state.childrenList);
    }//end edit child.
 
+
+
     componentDidMount(){ //to fetch data
 
       firebase.auth().onAuthStateChanged((user) => {
@@ -61,7 +63,6 @@ console.log(this.state.childrenList.length);
 var userId = firebase.auth().currentUser.uid;
 email= firebase.auth().currentUser.email;
 firebase.database().ref('parents/'+userId).on('value', snapshot => {
-
 
   this.setState({
     parentIn: {
@@ -74,37 +75,76 @@ firebase.database().ref('parents/'+userId).on('value', snapshot => {
 });
 
 this.setState({
-  childrenList: []
+  childrenList: [],
+  driversList: []
 });
+let driversList=[];
+firebase.database().ref('drivers/').once('value', (snap) => {
 
-//console.log (this.state.parentIn.name);
-//console.log (this.state.parentIn.phoneNo);
-let parentPhoneNo=this.state.parentIn.phoneNo;
-firebase.database().ref('children/').on('value', (snap) => {
-  let childrenList = [];
-  snap.forEach((child) => {
-    if (child.key.includes(parentPhoneNo)){
-      childrenList.push({
-        childKey:child.key,
-        name: child.val().name ,
-        busNo: child.val().busNo ,
-        inst: child.val().inst ,
-        level: child.val().level ,
-        district: child.val().district ,
-      attendance: child.val().attendance
+    snap.forEach((child) => {
+      driversList.push({
+        phoneNo: child.val().phoneNo ,
+        inst: child.val().inst,
+        busNo: child.val().busNo,
       });
 
+    })
+})//end on
 
+
+
+console.log(driversList);
+let parentPhoneNo=this.state.parentIn.phoneNo;
+try {firebase.database().ref('children/').on('value', (snap) => {
+  let childrenList = [];
+  let currInst='';
+  let curBusNo='';
+  snap.forEach((child) => {
+    if (child.key.includes(parentPhoneNo)){
+
+      driversList.forEach((driver) => {
+        if (child.val().inst === driver.inst && child.val().busNo === driver.busNo)
+
+        childrenList.push({
+          childKey:child.key,
+          name: child.val().name ,
+          busNo: child.val().busNo ,
+          long:child.val().long,
+          lat:child.val().lat,
+          inst: child.val().inst ,
+          level: child.val().level ,
+          district: child.val().district ,
+        attendance: child.val().attendance,
+        driverNumber: driver.phoneNo
+        });
+
+      })
+
+
+
+currInst = child.val().inst;
+curBusNo = child.val().busNo;
 
   }
+
+
+
   this.setState({
     childrenList: childrenList
   });
+
+
+
+
+
+
   })//end snap for each
 
 
 
 })//end on
+} catch(e){console.log(e.message);}
+
 
 
 
@@ -210,8 +250,8 @@ return (  <Card containerStyle={styles.cards} title={this.state.childrenList[i].
      <Text style={styles.editText}>تعديل</Text>
    </TouchableHighlight>
    <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{backgroundColor:'#F4D65B'}]}
-   onPress={() => this.props.navigation.push('editChild',{childKey:this.state.childrenList[i].childKey})} >
-   <Text style={styles.editText}>تتبع</Text>
+   onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.childrenList[i].driverNumber);}} >
+   <Text style={styles.editText}>محادثة السائق</Text>
    </TouchableHighlight>
 </View>
 

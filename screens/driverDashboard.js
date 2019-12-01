@@ -88,6 +88,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
             let mornStudents = [];
             let noonStudents = [];
             let afternoonStudents = [];
+              let attendees = [];
 
           if (this.state.instType && this.state.instType==='university' ){
 
@@ -103,6 +104,8 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
                         name: child.val().name ,
                         neighborhood: child.val().neighborhood ,
                         phoneNo: child.val().phoneNo ,
+                      long:child.val().long,
+                      lat:child.val().lat,
                       });
                      this.setState({morning:mornStudents.length});
                    }
@@ -112,6 +115,8 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
                        name: child.val().name ,
                        neighborhood: child.val().neighborhood ,
                        phoneNo: child.val().phoneNo ,
+                       long:child.val().long,
+                       lat:child.val().lat,
                      });
                       this.setState({noon:noonStudents.length});
                     }
@@ -121,6 +126,8 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
                         name: child.val().name ,
                         neighborhood: child.val().neighborhood ,
                         phoneNo: child.val().phoneNo ,
+                        long:child.val().long,
+                        lat:child.val().lat,
                       });
                        this.setState({afternoon:afternoonStudents.length});
                      }
@@ -152,16 +159,23 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
                       attendees.push({
                         studentKey:child.key,
                         name: child.val().name ,
-                        neighborhood: child.val().neighborhood ,
-                        phoneNo: child.val().phoneNo ,
+                        district: child.val().district ,
+                        phoneNo: child.key.substring(0, 9),
+                        long:child.val().long,
+                        lat:child.val().lat,
                       });
-                     this.setState({attendees:attendees.length});
+                     this.setState({attendeesNumber:attendees.length});
+
                    }
 
 
                 }
 
               })//end snap for each
+              this.setState({
+                attendees: attendees
+              });
+              console.log(this.state);
 
             });
           }
@@ -295,7 +309,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
               <Text style={styles.title}>رحلة اليوم</Text>
               <View style={{flexDirection:'row-reverse',justifyContent:'space-between',marginTop:10,alignItems:'center',marginBottom:10}}>
-              <Text style={styles.paragraph}>{this.state.morning} ركاب</Text>
+              <Text style={styles.paragraph}>{this.state.attendeesNumber} ركاب</Text>
                  <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{flexDirection:'row-reverse'}]}
               onPress={() => this.props.navigation.navigate('studentsList',{rideTime:'attendees',intType:this.state.instType,attendees:this.state.attendees})}>
               <View style={{flexDirection:'row-reverse'}}>
@@ -352,9 +366,33 @@ title: {
             shadowOffset: { height: 0, width: 0 },
 
 
-  }
-  ,
+  },
+  typeButtonContainer: {
+    height: 40,
 
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
+    width: '38%',
+    borderRadius: 30,
+  },
+  trackingButton: {
+    backgroundColor: "#EDC51B",
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  attachButton: {
+    backgroundColor: "#8BC8E4",
+
+
+  },
+  trackingContainer: {
+    justifyContent: 'center',
+    marginTop: 30,
+    marginBottom: 5,
+    flex: 1,
+    flexDirection: 'row-reverse',
+  },
   buttonContainer: {
     height:45,
     flex: 1,
@@ -391,11 +429,32 @@ title: {
       color:'white'
 
  },
+
+ smallContainer: {
+   marginTop: 15,
+   marginBottom: 15,
+   justifyContent: 'center',
+   alignItems: 'center',
+   backgroundColor: 'white',
+   borderRadius: 10,
+   width: 300,
+   paddingVertical: 17,
+   shadowOpacity: 0.04,
+   shadowRadius: 5,
+   shadowColor: 'black',
+   shadowOffset: {
+     height: 0,
+     width: 0
+   }
+ },
+
   viewStudentsText:{
      color: 'white',
 
   },
-
+  typeText: {
+    color: 'white',
+  },
 
   addText: {
     color: 'white',

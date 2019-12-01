@@ -18,6 +18,7 @@ import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+import { Linking } from 'expo';
 
 const MenuIcon = ({ navigate }) => <Icon
     name='three-bars'
@@ -46,7 +47,7 @@ export default class studentsList extends React.Component {
       constructor(props){
         super(props)
         this.state = {
-
+          onMap:[],
         }
       }
       componentDidMount(){ //to fetch data
@@ -59,7 +60,8 @@ export default class studentsList extends React.Component {
               this.setState({
                 rideTime:rideTime,
                 busNo:busNo,
-                mornStudents:mornStudents
+                mornStudents:mornStudents,
+                onMap: mornStudents,
               });
             }
               else if (rideTime==='noon'){
@@ -67,7 +69,8 @@ export default class studentsList extends React.Component {
               this.setState({
                 rideTime:rideTime,
                 busNo:busNo,
-                noonStudents:noonStudents
+                noonStudents:noonStudents,
+                onMap: noonStudents,
               });
             }
               else if (rideTime==='afternoon'){
@@ -75,7 +78,8 @@ export default class studentsList extends React.Component {
               this.setState({
                 rideTime:rideTime,
                 busNo:busNo,
-                afternoonStudents:afternoonStudents
+                afternoonStudents:afternoonStudents,
+                onMap: afternoonStudents,
               });
             }
             else if (rideTime==='attendees'){
@@ -83,7 +87,8 @@ export default class studentsList extends React.Component {
             this.setState({
               rideTime:rideTime,
               busNo:busNo,
-              attendees:attendees
+              attendees:attendees,
+              onMap: attendees,
             });
           }
 
@@ -93,9 +98,14 @@ export default class studentsList extends React.Component {
 
 }
 
+redirectWhatsapp = () => {
+
+
+}
+
 static navigationOptions = function(props) {
 return {
-  title: 'تعديل البيانات الشخصية',
+  title: 'عرض الطلاب',
   headerLeft: <View style={{paddingLeft:16, }}>
   <Icon
       name="chevron-left"
@@ -120,10 +130,14 @@ return {
       console.log(this.state.rideTime);
       console.log(this.state.mornStudents);
               const options = [];
+options.push(<View style={styles.trackingContainer}>
+<TouchableHighlight style={[styles.typeButtonContainer,styles.trackingButton]} onPress ={() => this.props.navigation.navigate('viewMap',{onMap:this.state.onMap})} >
+<Text style={styles.typeText}>عرض على الخريطة</Text>
+</TouchableHighlight>
+</View>);
         switch(this.state.rideTime) {
 
           case 'morning':
-
     options.push(<View style={{flexDirection: 'row',marginTop:20}}>
  <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginLeft:20}} />
  <Text style={[{ color: 'grey', alignSelf:'center', paddingHorizontal:5},styles.titles]}>ركاب رحلة 6:00 صباحًا</Text>
@@ -146,7 +160,7 @@ return {
             </View>
 <View style={{flexDirection:'row-reverse',justifyContent:'flex-end',marginTop:10,alignItems:'center',marginBottom:10}}>
               <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{  backgroundColor: "#EDC51B"}]}
-               onPress={null}>
+               onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.mornStudents[i].phoneNo);}}>
  <View>
                   <FontAwesomeIcon icon={ faComment } size={ 20 } style={{color:'white'}}/>
 
@@ -154,7 +168,7 @@ return {
               </TouchableHighlight>
 
               <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-               onPress={null}>
+               onPress={()=>{Linking.openURL('comgooglemaps://?q='+this.state.mornStudents[i].lat+','+this.state.mornStudents[i].long+'&center='+this.state.mornStudents[i].lat+','+this.state.mornStudents[i].long+'&zoom=14&views=traffic');}}>
               <View>
               <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
@@ -184,13 +198,10 @@ return {
                     <Text style={styles.info}>{this.state.noonStudents[i].neighborhood}</Text>
                     </View>
 
-                    <View style={{flexDirection:'row-reverse'}}>
-                    <Text style={styles.paragraph} >رقم الجوال: </Text>
-                    <Text style={styles.info}>{this.state.noonStudents[i].phoneNo}</Text>
-                    </View>
+
                 <View style={{flexDirection:'row-reverse',justifyContent:'flex-end',marginTop:10,alignItems:'center',marginBottom:10}}>
                       <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{  backgroundColor: "#EDC51B"}]}
-                       onPress={null}>
+                       onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.noonStudents[i].phoneNo);}}>
                 <View>
                           <FontAwesomeIcon icon={ faComment } size={ 20 } style={{color:'white'}}/>
 
@@ -198,7 +209,7 @@ return {
                       </TouchableHighlight>
 
                       <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-                       onPress={null}>
+                      onPress={()=>{Linking.openURL('comgooglemaps://?q='+this.state.noonStudents[i].lat+','+this.state.noonStudents[i].long+'&center='+this.state.noonStudents[i].lat+','+this.state.noonStudents[i].long+'&zoom=14&views=traffic');}}>
                       <View>
                       <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
@@ -229,13 +240,10 @@ return {
                             <Text style={styles.info}>{this.state.afternoonStudents[i].neighborhood}</Text>
                             </View>
 
-                            <View style={{flexDirection:'row-reverse'}}>
-                            <Text style={styles.paragraph} >رقم الجوال: </Text>
-                            <Text style={styles.info}>{this.state.afternoonStudents[i].phoneNo}</Text>
-                            </View>
+
                 <View style={{flexDirection:'row-reverse',justifyContent:'flex-end',marginTop:10,alignItems:'center',marginBottom:10}}>
                               <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{  backgroundColor: "#EDC51B"}]}
-                               onPress={null}>
+                               onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.afternoonStudents[i].phoneNo);}}>
                  <View>
                                   <FontAwesomeIcon icon={ faComment } size={ 20 } style={{color:'white'}}/>
 
@@ -243,7 +251,7 @@ return {
                               </TouchableHighlight>
 
                               <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-                               onPress={null}>
+                               onPress={()=>{Linking.openURL('comgooglemaps://?q='+this.state.afternoonStudents[i].lat+','+this.state.afternoonStudents[i].long+'&center='+this.state.afternoonStudents[i].lat+','+this.state.afternoonStudents[i].long+'&zoom=14&views=traffic');}}>
                               <View>
                               <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
@@ -271,16 +279,13 @@ return {
 
                                     <View style={{flexDirection:'row-reverse'}}>
                                     <Text style={styles.paragraph} >الحي: </Text>
-                                    <Text style={styles.info}>{this.state.attendees[i].neighborhood}</Text>
+                                    <Text style={styles.info}>{this.state.attendees[i].district}</Text>
                                     </View>
 
-                                    <View style={{flexDirection:'row-reverse'}}>
-                                    <Text style={styles.paragraph} >رقم الجوال: </Text>
-                                    <Text style={styles.info}>{this.state.attendees[i].phoneNo}</Text>
-                                    </View>
+
                                   <View style={{flexDirection:'row-reverse',justifyContent:'flex-end',marginTop:10,alignItems:'center',marginBottom:10}}>
                                       <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton,{  backgroundColor: "#EDC51B"}]}
-                                       onPress={null}>
+                                       onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.attendees[i].phoneNo);}}>
                                   <View>
                                           <FontAwesomeIcon icon={ faComment } size={ 20 } style={{color:'white'}}/>
 
@@ -288,7 +293,7 @@ return {
                                       </TouchableHighlight>
 
                                       <TouchableHighlight style={[styles.viewStudentsButtonContainer, styles.viewStudentsButton, {  backgroundColor: "#3C68BF",}]}
-                                       onPress={null}>
+                                      onPress={()=>{Linking.openURL('comgooglemaps://?q='+this.state.attendees[i].lat+','+this.state.attendees[i].long+'&center='+this.state.attendees[i].lat+','+this.state.attendees[i].long+'&zoom=14&views=traffic');}}>
                                       <View>
                                       <FontAwesomeIcon icon={ faMapMarkerAlt } size={ 20 } style={{color:'white'}}/>
 
@@ -309,6 +314,7 @@ return {
 
       <View style={{padding: 10, flex: 1}, styles.container} >
       <ScrollView style={{flex: 1, marginBottom:20}}>
+
 <View>{enrolledStudents()}</View>
 
       </ScrollView>
@@ -395,10 +401,34 @@ info: {
   	borderRadius:30,
     color:'white'
  },
- 
+ typeText: {
+   color: 'white',
+ },
+ typeButtonContainer: {
+   height: 40,
+
+   justifyContent: 'center',
+   alignItems: 'center',
+   marginBottom: 5,
+   width: '38%',
+   borderRadius: 30,
+ },
+
   viewStudentsText:{
      color: 'white',
 
+  },
+  trackingContainer: {
+    justifyContent: 'center',
+    marginTop: 30,
+    marginBottom: 5,
+    flex: 1,
+    flexDirection: 'row-reverse',
+  },
+  trackingButton: {
+    backgroundColor: "#EDC51B",
+    marginLeft: 10,
+    marginRight: 10,
   },
 
 

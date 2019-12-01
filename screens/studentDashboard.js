@@ -19,9 +19,10 @@ import {createAppContainer } from 'react-navigation';
 import {createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Dropdown } from 'react-native-material-dropdown';
-
+import viewMap from '../screens/viewMap';
 import Icon from 'react-native-vector-icons/Octicons';
 import firebase from 'firebase';
+import { Linking } from 'expo';
 
 export default class studentDashboard extends React.Component {
 
@@ -56,9 +57,24 @@ firebase.database().ref('students/'+userId).on('value', snapshot => {
 this.setState({
     arrival: snapshot.val().arrival,
     departure: snapshot.val().departure,
+    busNo: snapshot.val().busNo,
+    university: snapshot.val().university,
     userId: userId
 });
 });
+
+firebase.database().ref('drivers/').once('value', (snap) => {
+
+    snap.forEach((child) => {
+      if (child.val().inst==this.state.university)
+      this.setState({
+          driverNumber: child.val().phoneNo,
+      });
+
+    })
+})//end on
+
+
 }
 })
 
@@ -82,19 +98,6 @@ this.setState((state, props) => ({
 }//end on onDepartureToggle
 
 onArrivalToggle = (arr) => {
-  /*works
-  this.setState((state, props) => ({
-    arrival: arr,
-  }));
-   //update in  db
-     firebase.database().ref('students/'+this.state.userId).update({
-      arrival: arr
-      })
-   //Alert
-   Alert.alert('تم تحديث حالة الحضور');
-*/
-
-   ///
    if (arr==='13:00' && this.state.arrival === '13:00'){
      var temp = 'none'
 
@@ -134,23 +137,57 @@ onArrivalToggle = (arr) => {
    }
 
     //Alert
-
-
-
-  /*
-  this.setState({
-    arrival: arr
-  })
-
-  firebase.database().ref('students/'+this.state.userId).update({
-   arrival: arr
-   })
-   //Alert
-   //Alert.alert('تم تحديث حالة الحضور');
-
-   */
 }//end onarrivaltoggle
 
+getCurrentPosition() {
+     navigator.geolocation.getCurrentPosition(
+       (position) => {
+           var latitude= position.coords.latitude;
+           var longitude= position.coords.longitude;
+           //var latitudeDelta= LATITUDE_DELTA;
+           //var longitudeDelta= LONGITUDE_DELTA;
+           firebase.database().ref('students/'+this.state.userId).update({
+            lat: latitude,
+            long: longitude,
+          })//end update
+       })
+       Alert.alert('تم تحديث موقعك بنجاح');
+     }//end method
+
+     getCurrentPosition(childKey) {
+
+
+
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+                var latitude= position.coords.latitude;
+                var longitude= position.coords.longitude;
+                var confirmMsg='تغيير الموقع لـ ('+latitude+','+longitude+')؟'
+
+  Alert.alert(
+  '',
+  confirmMsg,
+  [{text: 'نعم',onPress: () => {   firebase.database().ref('students/'+this.state.userId).update({
+      lat: latitude,
+      long: longitude,
+    })//end update
+        Alert.alert('تم تحديث موقعك بنجاح');
+   }
+  },
+  {
+  text: 'لا',
+  onPress: () => console.log('Cancel Pressed'),
+  style: 'cancel',
+  },
+
+  ],
+  {cancelable: false},
+  );
+
+            })
+
+
+          }//end method
 
 static navigationOptions = function(props) {
 return {
@@ -180,6 +217,14 @@ resetScrollToCoords={{ x: 0, y: 0 }}
 contentContainerStyle={styles.container}
 scrollEnabled={false}>
 <View style={styles.smallContainer}>
+<View style={[styles.trackingContainer,{flexDirection:'row-reverse'}]}>
+<TouchableHighlight style={[styles.typeButtonContainer,styles.trackingButton]} onPress ={() => this.getCurrentPosition()} >
+<Text style={styles.typeText}>حدّث موقعي</Text>
+</TouchableHighlight>
+<TouchableHighlight style={[{backgroundColor:'#8197C6'},styles.typeButtonContainer,styles.secondButton]}  onPress={()=>{Linking.openURL('whatsapp://send?text= &phone=+966'+this.state.driverNumber);}} >
+<Text style={styles.typeText}>محادثة السائق</Text>
+</TouchableHighlight>
+</View>
 
 <Text style={styles.SubSub}>ــــــ وقت الذهاب ــــــ</Text>
 
@@ -190,12 +235,8 @@ scrollEnabled={false}>
                     </TouchableHighlight>
                 </View>
 
-
-
             <Text style={styles.SubSub}>ــــــ وقت الإياب ــــــ</Text>
-
                 <View style={styles.typeContainer}>
-
                     <TouchableHighlight style={[styles.typeButtonContainer, this.state.arrival === '13:00'?styles.pressedButton:styles.typeButton]} onPress ={() => this.onArrivalToggle('13:00')}>
                     <Text style={styles.typeText}>13:00</Text>
                     </TouchableHighlight>
@@ -204,7 +245,9 @@ scrollEnabled={false}>
                         </TouchableHighlight>
                 </View>
 
+
 </View>
+
 
                 </KeyboardAwareScrollView>
 </ScrollView>
@@ -226,7 +269,7 @@ const styles = StyleSheet.create({
   SubSub: {
     color: '#9F9F9F',
     fontSize: 10,
-    marginBottom: 30,
+    marginBottom: 19,
   },
   container: {
     flex: 1,
@@ -278,10 +321,16 @@ const styles = StyleSheet.create({
 
   typeContainer: {
     justifyContent: 'center',
-
+    marginBottom: 10,
     backgroundColor: 'white',
-    borderRadius: 10,
+    flex: 1,
+    flexDirection: 'row-reverse',
+  },
 
+  trackingContainer: {
+    justifyContent: 'center',
+    marginBottom: 30,
+    backgroundColor: 'white',
     flex: 1,
     flexDirection: 'row-reverse',
   },
@@ -409,7 +458,16 @@ marginLeft:10,
     backgroundColor: "#7597DB",
     marginLeft: 10,
     marginRight: 10,
-
+  },
+  trackingButton: {
+    backgroundColor: "#EDC51B",
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  secondButton: {
+    backgroundColor: "#8BC8E4",
+    marginLeft: 10,
+    marginRight: 10,
   },
   attachButton: {
     backgroundColor: "#8BC8E4",

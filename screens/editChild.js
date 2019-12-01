@@ -100,6 +100,8 @@ export default class editChild extends React.Component {
     },
     {text: 'نعم', onPress: () => {
       var childKey = this.props.navigation.getParam('childKey', 'NO-NUM');
+
+
         firebase.database().ref('children/'+childKey).remove()
         this.props.navigation.push('parentDashboard');
     }},
@@ -110,6 +112,7 @@ export default class editChild extends React.Component {
 componentDidMount(){
       var childKey = this.props.navigation.getParam('childKey', 'NO-NUM');
       console.log(childKey);
+      this.setState({childKey: childKey})
       firebase.database().ref('managers/').once('value', (snap) => {
 
           snap.forEach((child) => {
@@ -186,7 +189,41 @@ retrieveBuses = () => {
 
 console.log(this.state.busesNumbers);
 }
+getCurrentPosition(childKey) {
 
+
+console.log('method: AAA'+childKey);
+console.log('method: BBB'+this.state.childKey);
+     navigator.geolocation.getCurrentPosition(
+       (position) => {
+           var latitude= position.coords.latitude;
+           var longitude= position.coords.longitude;
+           var confirmMsg='تغيير الموقع لـ ('+latitude+','+longitude+')؟'
+
+Alert.alert(
+'',
+confirmMsg,
+[{text: 'نعم',onPress: () => {    firebase.database().ref('children/'+this.state.childKey).update({
+  lat: latitude,
+  long: longitude,
+})//end update
+   Alert.alert('تم تحديث موقعك بنجاح');
+}
+},
+{
+text: 'لا',
+onPress: () => console.log('Cancel Pressed'),
+style: 'cancel',
+},
+
+],
+{cancelable: false},
+);
+
+       })
+
+
+     }//end method
      editChild = () => {
 
        if (this.state.name == '' || this.state.inst == '' || this.state.district == '' || this.state.busNo == '' || this.state.level == '' ) {
@@ -203,6 +240,7 @@ console.log(this.state.busesNumbers);
 
 
          var childKey = this.props.navigation.getParam('childKey', 'NO-NUM');
+
        console.log(childKey);
        if (childKey != null){
 
@@ -213,6 +251,7 @@ console.log(this.state.busesNumbers);
            level: this.state.level,
            district: this.state.district,
          })
+
          Alert.alert('تم تحديث البيانات بنجاح');
          this.props.navigation.navigate('parentDashboard');
        }
@@ -299,6 +338,10 @@ console.log(this.state.busesNumbers);
 
               </View>
 
+              <TouchableHighlight style={[styles.buttonContainer, styles.editButton,{backgroundColor:'#F4D65B'}]}
+              onPress ={() => this.getCurrentPosition(this.state.childKey)} >
+              <Text style={styles.editText}>تحديث الموقع</Text>
+              </TouchableHighlight>
 
               <View style={[styles.neighborhoodList,{marginTop: 30}]}>
                                     <Dropdown
@@ -536,6 +579,26 @@ console.log(this.state.busesNumbers);
    //alignSelf:'flex-end'
     //marginBottom: 300,
   },
+  editButton:{
+
+    alignSelf:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 120,
+    height:30,
+    bottom: 5,
+    marginRight:5,
+    marginLeft:5,
+    marginTop:20,
+    color:'white',
+
+    //marginBottom: 300,
+  },
+  editText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight:'bold'
+  },
   cancel:{
     width: 60,
     height: 30,
@@ -561,6 +624,7 @@ typeButtonContainer: {
   flexDirection: 'row',
   width: 60,
      height:30,
+     color:'white',
      backgroundColor:"#3C68BF",
 },
 typeButton: {
@@ -579,6 +643,9 @@ warning:{
   color: 'red',
   fontSize:12,
   marginBottom:20,
+       },
+       typeText: {
+         color: 'white',
        },
 
 pressedButton: {

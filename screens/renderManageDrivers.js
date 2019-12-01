@@ -62,9 +62,11 @@ firebase.database().ref('drivers/').on('value', (snap) => {
             busNo: child.val().busNo ,
             district: child.val().district ,
             busPlate: child.val().busPlate ,
-            id: child.val().id ,
+
             inst: child.val().inst ,
             phoneNo: child.val().phoneNo ,
+            driverKey:child.key,
+                id: child.val().nationalId ,
 
 
         })
@@ -72,7 +74,7 @@ firebase.database().ref('drivers/').on('value', (snap) => {
     })//end snap for each
     itm = items;
     this.setState({items: items});
-
+console.log(items)
 
 })//end on
 
@@ -141,7 +143,7 @@ onPress={() => this.props.navigation.push('addBusDriver',{inst:this.state.inst})
 
 
                                      <TouchableHighlight style={[styles.buttonContainer, styles.editButton]}
-                                     onPress={() =>  this.props.navigation.push('editDriverManagerSide',{id:u.id}) }>
+                                     onPress={() =>  this.props.navigation.push('editDriverManagerSide',{driverKey:u.driverKey}) }>
                                     <Text style={styles.editText}>تعديل</Text>
                                   </TouchableHighlight>
                 </Card>

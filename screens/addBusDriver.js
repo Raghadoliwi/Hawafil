@@ -61,9 +61,9 @@ export default class addBusDriver extends React.Component {
      district:'',
      idBorder:'#EAEAEA',
       busPlate: '',
-     nameBorders:'#EAEAEA',
+     nameBorder:'#EAEAEA',
      emailBorder:'#EAEAEA',
-     busPlateBorders:'#EAEAEA',
+     busPlateBorder:'#EAEAEA',
  neighborhoodBorder:'#EAEAEA',
    passwordBorder:'#EAEAEA',
    conPasswordBorder:'#EAEAEA',
@@ -140,7 +140,7 @@ const {navigation} = this.props;
             try {
                   user.sendEmailVerification();
 
-        firebase.database().ref('drivers/'+firebaseUser.uid).set(
+        firebase.database().ref('drivers/'+user.uid).set(
             {
               name: driverName,
               nationalId: nationalId,
@@ -263,7 +263,7 @@ const {navigation} = this.props;
 
             <View style={[styles.inputContainer, {borderColor: this.state.idBorder}]}>
 
-            <TextInput style={[styles.inputs]}
+            <TextInput style={[styles.inputs, styles.input]}
             placeholder="الهوية/الإقامة"
             keyboardType="numeric"
             underlineColorAndroid='transparent'
@@ -281,7 +281,7 @@ const {navigation} = this.props;
 
                               <View style={[styles.inputContainer, {borderColor: this.state.nameBorder}]}>
 
-                              <TextInput style={styles.email, styles.input}
+                              <TextInput style={styles.inputs, styles.input}
                               placeholder="اسم القائد"
                               keyboardType="TextInput"
                               underlineColorAndroid='transparent'
@@ -297,7 +297,7 @@ const {navigation} = this.props;
 
                               <View style={[styles.inputContainer, {borderColor: this.state.emailBorder}]}>
 
-                              <TextInput style={[styles.fontStyle,styles.inputs]}
+                              <TextInput style={styles.inputs, styles.input}
                               placeholder="البريد الإلكتروني"
                               keyboardType="email-address"
                               underlineColorAndroid='transparent'
@@ -367,7 +367,7 @@ const {navigation} = this.props;
 
                               <View style={styles.inputContainer}>
 
-                              <TextInput style={styles.email, styles.input}
+                              <TextInput style={styles.inputs, styles.input}
                               placeholder="رقم الحافلة"
                               keyboardType="numeric"
                               underlineColorAndroid='transparent'
@@ -469,16 +469,15 @@ const styles = StyleSheet.create({
 
                                  },
                                  input:{
-                                   flex:1,
+
                                    height:40,
                                    //flexDirection:'row-reverse',
                                    //justifyContent:'flex-end',
                                    //marginright:16,
                                   textAlign:'right',
                                    borderColor: '#EAEAEA',
-                                   marginLeft:10,
-                                   marginRight:10,
-
+                                   //marginLeft:10,
+                                   marginRight: 10,
                                  },
                                  pass:{
                                  height:45,
@@ -560,6 +559,17 @@ const styles = StyleSheet.create({
                                  },
                                  loginText: {
                                  color: 'white',
+                                 },
+                                 inputs:{
+
+                                     height:40,
+                                     //flexDirection:'row-reverse',
+
+                                     //marginRight:120,
+                                     //justifyContent:'flex-end',
+                                     //marginright:16,
+                                     borderColor: '#EAEAEA',
+                                     marginRight: 10,
                                  },
 
                                  registerText:{

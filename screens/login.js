@@ -17,6 +17,10 @@ import * as React from 'react';
   import Icon from 'react-native-vector-icons/Octicons';
   import firebase from 'firebase';
   import * as Font from 'expo-font';
+  import {Platform} from 'react-native';
+  import * as Permissions from 'expo-permissions';
+import {Constants, Notifications} from 'expo';
+  //import * as request from 'request';
 
 export default class login extends React.Component {
   state = {
@@ -26,18 +30,12 @@ export default class login extends React.Component {
             visibilty: 'none',
             emailBorders:'#EAEAEA',
             passBorders:'#EAEAEA',
-            fontLoaded: false
+            fontLoaded: false,
+            token:''
           }
-  /*  async componentDidMount() {
-  await Font.loadAsync({
-    'Tajawal': require('./assets/fonts/Tajawal.ttf'),
-    'Tajawal-Medium': require('./assets/fonts/Tajawal-Medium.ttf'),
-  });
 
-  this.setState({ fontLoaded: true });
-  }*/
+   UNSAFE_componentWillMount(){
 
-  UNSAFE_componentWillMount(){
     const firebaseConfig = {
       apiKey: "AIzaSyBes0dgEE8268NEKb4vDaECnmwaWUGM1J8",
       authDomain: "hawafildb.firebaseapp.com",
@@ -65,6 +63,41 @@ export default class login extends React.Component {
 
 
 
+async componentDidMount(){
+  // get expo push token
+  console.log("componentDidMount");
+
+  const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+    let finalStatus = existingStatus;
+    console.log("final status = " + finalStatus);
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    finalStatus = status;
+}//end if
+console.log("final status = " + finalStatus);
+
+if (finalStatus === 'granted'){
+  console.log("final status = " + finalStatus);
+try {
+  let token = await Notifications.getExpoPushTokenAsync();
+  this.setState({token: token})
+    console.log("METHOD MY NOT" + token);
+} catch(e){
+
+  console.log(e.message);
+}
+
+
+
+
+}
+
+
+
+}//componentDidMount end
+
 
     handleLogin = () => {
         if (this.state.email == '') {
@@ -75,6 +108,12 @@ export default class login extends React.Component {
           this.setState({passBorders: 'red'})
             return;
         }*/
+
+
+
+
+
+
       const {email, password} = this.state
       const { navigation } = this.props;
       //we need to add code to check if user's account is verified or not.
@@ -92,16 +131,40 @@ export default class login extends React.Component {
 
               firebase.database().ref('parents/'+user.uid).on('value', snapshot => {
 
-                if (snapshot.exists())
+                if (snapshot.exists()){
                 navigation.navigate('parentDrawer');
-                  return;
+                try{
+                  const notTime = new Date();
+                  notTime.setHours(20,0,0);
+                  console.log(notTime)
+                                   const localNotification = {
+                                             title: 'لا تنس تحديث حالة حضور طفلك',
+                                             body: 'ليلة سعيدة',
+                                         };
+
+                                         const schedulingOptions = {
+                                             time: notTime.getTime(),
+
+                                         }
+                                         console.log(schedulingOptions);
+
+                                         // Notifications show only when app is not active.
+                                         // (ie. another app being used or device's screen is locked)
+                                         Notifications.scheduleLocalNotificationAsync(
+                                             localNotification, schedulingOptions
+                                         );
+                                       } catch(e) {console.log(e.message);}
+                  return;}
             //  navigation.navigate('parentDashboard')
               });
 
 
               firebase.database().ref('drivers/'+user.uid).on('value', snapshot => {
-                if (snapshot.exists())
-                navigation.navigate('driverDrawer');
+
+                if (snapshot.exists()){
+
+                try {navigation.navigate('driverDrawer');}
+                catch(e){console.log(e.message);}}
                   return;
             //  navigation.navigate('parentDashboard')
               });
@@ -111,6 +174,7 @@ export default class login extends React.Component {
                 if (snapshot.exists()){
                   console.log("success!");
                   navigation.navigate('managerDrawer');
+
                   return;
                 }
 
@@ -121,8 +185,30 @@ export default class login extends React.Component {
                 if (snapshot.exists()){
                   if (snapshot.val().approved=='0')
                     Alert.alert('لم يتم قبولك في الحافلة بعد')
-                    else
+                    else{
                       navigation.navigate('studentDrawer');
+                      try{
+                        const notTime = new Date();
+                        notTime.setHours(20,0,0);
+                        console.log(notTime)
+                                         const localNotification = {
+                                                   title: 'لا تنس تحديث أوقات دوامك',
+                                                   body: 'ليلة سعيدة',
+                                               };
+
+                                               const schedulingOptions = {
+                                                   time: notTime.getTime(),
+
+                                               }
+                                               console.log(schedulingOptions);
+
+                                               // Notifications show only when app is not active.
+                                               // (ie. another app being used or device's screen is locked)
+                                               Notifications.scheduleLocalNotificationAsync(
+                                                   localNotification, schedulingOptions
+                                               );
+                                             } catch(e) {console.log(e.message);}
+                                           }
               }
                 return;
               //navigation.navigate('parentDashboard')
@@ -240,7 +326,10 @@ export default class login extends React.Component {
 
                 <Text style={[styles.fontStyle,styles.warning, {display: this.state.visibilty}]}> البريد الإلكتروني أو كلمة المرور غير صحيحة </Text>
               </View>
-
+              <TouchableHighlight style={styles.forgetPass}
+                 onPress={() => this.props.navigation.push('forgetPassword')}>
+                  <Text style={[styles.fontStyle,styles.forgetPassText]}> نسيت كلمة المرور؟</Text>
+              </TouchableHighlight>
               <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]}
               onPress={this.handleLogin}>
 
@@ -249,10 +338,7 @@ export default class login extends React.Component {
 
               </TouchableHighlight>
 
-              <TouchableHighlight style={styles.forgetPass}
-                 onPress={() => this.props.navigation.push('forgetPassword')}>
-                  <Text style={[styles.fontStyle,styles.forgetPassText]}> نسيت كلمة المرور؟</Text>
-              </TouchableHighlight>
+
 
          <View style={{flexDirection: 'row'}}>
     <View style={{backgroundColor: 'grey', height: 0.5, flex: 1, alignSelf: 'center',marginLeft:20}} />
@@ -341,7 +427,8 @@ export default class login extends React.Component {
   	flexDirection: 'row-reverse',
   	//justifyContent: 'flex',
   	//alignItems: 'center',
-  	width:250
+  	width:250,
+    marginBottom: 15,
   },
   forgetPassText: {
 

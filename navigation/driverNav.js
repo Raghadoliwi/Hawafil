@@ -13,12 +13,15 @@ import studentsList from '../screens/studentsList'
 import editDriver from '../screens/editDriver'
 import driverCustomDrawer from './driverCustomDrawer'
 import logout from '../screens/logout'
+import viewMap from '../screens/viewMap';
 
 const driverNavigation = createStackNavigator(
   {
     driverDashboard: { screen: driverDashboard },
     editDriver: { screen: editDriver },
     studentsList: { screen: studentsList },
+    viewMap:{screen: viewMap},
+
         /*all pages that a driver can access from his home page not the drawer
       addChild: { screen: addChild },
       editChild: { screen: editChild },
@@ -42,11 +45,20 @@ const addChildNavigation = createStackNavigator(
 */
 const editDriverNavigation = createStackNavigator(
   {
-    
+
     editDriver: { screen: editDriver }
   },
   {
     initialRouteName: 'editDriver'
+  }
+)
+
+const viewMapNavigation = createStackNavigator(
+  {
+    viewMap: { screen: viewMap }
+  },
+  {
+    initialRouteName: 'viewMap'
   }
 )
 
