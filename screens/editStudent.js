@@ -56,6 +56,7 @@ export default class editStudent extends React.Component {
     password: '',
   confirmPassword:'',
      currentColor: '#EAEAEA',
+     phoneBorder:'#EAEAEA',
      changePassword:false,
       passError:'none',
       universities:[],
@@ -188,11 +189,11 @@ else {
     if (!numRegex.test('0'+this.state.phoneNo)) {
       console.log('number bad');
       console.log('0'+this.state.phoneNo);
-
+      this.setState({phoneBorder: 'red'})
 
       }
       else {
-      this.setState({currentColor: '#91b804'})
+      this.setState({phoneBorder: '#91b804'})
       }
 }//end validate phone number
 
@@ -229,7 +230,7 @@ const { navigation } = this.props;
          return;
        }
 
-       if (this.state.pName == '' || this.state.email == ''|| this.state.phoneNo == '') {
+       if (this.state.name == '' || this.state.email == ''|| this.state.phoneNo == '') {
           console.log('missing field');
          this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
          this.setState({errorMsgVisibilty: 'flex'})
@@ -261,13 +262,17 @@ const { navigation } = this.props;
        var userIdNo;
 
        if (user != null) {
-         userIdNo = =this.state.userIdNo;
+         userIdNo = this.state.userIdNo;
          if (!this.state.changePassword) {
            if (this.state.email != ''){
              user.updateEmail(this.state.email);
            }
 
    if (!this.state.password ) {
+
+          if (this.state.name != ''){
+            firebase.database().ref('students/'+ userIdNo).update({name : this.state.name,})
+          }
          if (this.state.userIdNo != ''){
            firebase.database().ref('students/'+userIdNo).update({name : this.state.name,})
          }
@@ -291,15 +296,19 @@ const { navigation } = this.props;
   navigation.navigate('studentDashboard')
        }
        else {
-          firebase.database().ref('students/'+userIdNo).updatePassword(this.state.password).then(() => {
-          navigation.navigate('login')
+         if (this.state.changePassword && this.state.password == this.state.confirmPassword)
+         {
+           user.updatePassword(this.state.password).then(() => {
+           navigation.navigate('login')
          }, (error) => {
+           console.log(error);
            // An error happened.
          });
+
        }
 
-
-    }
+}
+}
 }
 this.setState({phoneBorder: '#EAEAEA'})
 this.setState({emailBorders: '#EAEAEA'})
@@ -358,7 +367,7 @@ this.setState({conPasswordBorder: '#EAEAEA'})
                         <Text style={styles.Main}> • تعديل البيانات الشخصية • </Text>
 
 
-                        <View style={styles.inputContainer{borderColor: this.state.nameBorders}]}>
+                        <View style={[styles.inputContainer ,{ borderColor: this.state.nameBorders }]}>
 
                         <TextInput style={styles.input}
                         placeholder="اسم الطالب"
@@ -468,6 +477,16 @@ this.setState({conPasswordBorder: '#EAEAEA'})
                        onEndEditing={(confirmPassword) =>{this.identicalPass(confirmPassword)} }
                      value={this.state.confirmPassword}
                      />
+                     </View>
+
+                     <View >
+
+                       <Text style={[styles.warning,styles.fontStyle, {display: this.state.passError}]}> كلمة المرور غير متطابقة </Text>
+                     </View>
+
+                     <View >
+
+                       <Text style={[styles.fontStyle,styles.warning, {display: this.state.errorMsgVisibilty}]}> {this.state.formErrorMsg} </Text>
                      </View>
 
                      <View style={[styles.neighborhoodList,styles.fontStyle, {borderColor: this.state.neighborhoodBorder}]}>
@@ -594,22 +613,22 @@ disabled={this.state.disableBuses}
                                  alignItems: 'center',
                                  bottom:50,
                                  },
+
                                  container: {
                                  flex: 1,
                                  justifyContent: 'center',
                                  alignItems: 'center',
                                  backgroundColor: '#F7FAFF',
                                  },
+
                                  smallContainer:{
-                                   marginTop: 30,
+                                   marginTop: 15,
                                    marginBottom: 30,
                                    justifyContent: 'center',
                                    alignItems: 'center',
                                    backgroundColor: 'white',
                                    borderRadius: 10,
                                    width: 300,
-
-
                                    paddingVertical: 35,
                                    shadowOpacity: 0.04,
                                    shadowRadius: 5,
@@ -625,8 +644,8 @@ disabled={this.state.disableBuses}
                                    backgroundColor: 'white',
                                    width:250,
                                    height:100,
-                                   marginBottom:-40,
-                                   marginTop:5
+                                   marginBottom:-45,
+                                   marginTop:40
                                  },
                                  dropdown:{
                                    borderRadius:25,
@@ -644,13 +663,13 @@ disabled={this.state.disableBuses}
 
                                  inputContainer: {
                                    borderColor: '#EAEAEA',
-                                   backgroundColor: '#FFFFFF',
+                                   backgroundColor: 'white',
                                    borderRadius:25,
                                    borderWidth: 1,
                                    width:250,
-                                   height:35,
+                                   height:40,
                                    marginBottom:15,
-                                   bottom:20,
+                                   //bottom:20,
                                    paddingHorizontal:10,
                                   flexDirection: 'row',
 
@@ -662,7 +681,7 @@ disabled={this.state.disableBuses}
                                  flex: 1,
                                  backgroundColor: '#F7FAFF',
                                  },
-
+                                                                /*
                                                                 Main:{
                                                                 color:'#4C73CC',
                                                                 marginTop:30,
@@ -670,13 +689,15 @@ disabled={this.state.disableBuses}
                                                                 justifyContent: 'center',
                                                                 alignItems: 'center',
                                                                 marginBottom:50,
-                                                                },
+                                                              },*/
+                                                                /*
                                                                 container: {
                                                                   flex: 1,
                                                                   justifyContent: 'center',
                                                                   alignItems: 'center',
                                                                   backgroundColor: '#F7FAFF',
-                                                                },
+                                                                },*/
+                                                                /*
                                                                 smallContainer:{
                                                                    marginTop:40,
                                                                    justifyContent: 'center',
@@ -686,14 +707,15 @@ disabled={this.state.disableBuses}
                                                                     width:300,
                                                                     height:600
                                                                 },
+                                                                */
                                                                 header: {
                                                                   color: "#8197C6",
                                                                   fontSize: 20, //problema
                                                                   //fontWeight:900,
-                                                                  marginTop: 30,
+                                                                  //marginTop: 30,
                                                                   bottom: 20,
                                                                 },
-
+                                                                /*
                                                                 inputContainer: {
                                                                   borderColor: '#EAEAEA',
                                                                   backgroundColor: '#FFFFFF',
@@ -705,7 +727,7 @@ disabled={this.state.disableBuses}
                                                                   paddingHorizontal:10,
 
 
-                                                                },
+                                                                },*/
                                                                 input:{
                                                                   flex:1,
                                                                   height:40,
@@ -732,11 +754,11 @@ disabled={this.state.disableBuses}
                                                                 },
 
                                                                 buttonContainer: {
-
+                                                                height:45,
                                                                 flexDirection: 'row',
                                                                 justifyContent: 'center',
                                                                 alignItems: 'center',
-                                                                top: 20,
+                                                                //top: 20,
                                                                 width:250,
                                                                 borderRadius:30,
                                                                 },

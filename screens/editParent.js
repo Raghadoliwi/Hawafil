@@ -383,7 +383,7 @@ this.setState({conPasswordBorder: '#EAEAEA'})
                   }
                 }}
 
-value={this.state.password}
+                value={this.state.password}
                 />
                 </View>
 
