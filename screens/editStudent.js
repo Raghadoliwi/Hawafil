@@ -51,10 +51,12 @@ export default class editStudent extends React.Component {
 
       }
      state = {
+       userIdNo:'',
      email: '' ,
     password: '',
   confirmPassword:'',
      currentColor: '#EAEAEA',
+     changePassword:false,
       passError:'none',
       universities:[],
       buses:[],
@@ -72,6 +74,7 @@ export default class editStudent extends React.Component {
     emailBorders:'#EAEAEA',
   passwordBorder:'#EAEAEA',
   conPasswordBorder:'#EAEAEA',
+
   busesNumbers:[{value:'قم باختيار مدرسة'}],
 
   busNoBorder:'',
@@ -110,6 +113,7 @@ if (user) {
       busNo: snapshot.val().busNo,
       neighborhood:snapshot.val().neighborhood,
       university: snapshot.val().university,
+      email: email
     });
 })
 
@@ -210,18 +214,66 @@ Alert.alert(
 
      editProfile = () => {
 const { navigation } = this.props;
+  console.log(this.state.changePassword);
+
        if (this.state.name == '' || this.state.neighborhood == ''|| this.state.phoneNo == ''|| this.state.busNo == ''|| this.state.university == '') {
+        console.log('missing field');
          this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
          this.setState({errorMsgVisibilty: 'flex'})
          return;
        }
 
+       if (this.state.phoneBorder=='red'|| this.state.currentColor=='red'||this.state.emailBorder == 'red'||this.state.passwordBorder == 'red'||this.state.conPasswordBorder=='red'){
+         this.setState({formErrorMsg: 'فضًلا، قم بتصحيح الأخطاء'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
 
-       var userIdNo=this.state.userIdNo;
+       if (this.state.pName == '' || this.state.email == ''|| this.state.phoneNo == '') {
+          console.log('missing field');
+         this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
 
-   if (this.state.password == '') {
+       if (this.state.changePassword && this.state.confirmPassword=='') {
+         console.log('confirm');
+         this.setState({formErrorMsg: 'عفوًا أدخل كلمة مرور تأكيدية'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
+       if (this.state.password=='' && this.state.confirmPassword!='') {
+         console.log('confirm');
+         this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
+
+       if (this.state.changePassword && this.state.password.length < 6 && this.state.password.length > 0) {
+         console.log('short password');
+         this.setState({formErrorMsg: 'عفوًا، أدخل كلمة مرور أكثر من ٦ خانات'})
+         this.setState({errorMsgVisibilty: 'flex'})
+         return;
+       }
+
+
+       var user = firebase.auth().currentUser;
+       var userIdNo;
+
+       if (user != null) {
+         userIdNo = =this.state.userIdNo;
+         if (!this.state.changePassword) {
+           if (this.state.email != ''){
+             user.updateEmail(this.state.email);
+           }
+
+   if (!this.state.password ) {
          if (this.state.userIdNo != ''){
            firebase.database().ref('students/'+userIdNo).update({name : this.state.name,})
+         }
+
+         if (this.state.email != ''){
+           user.updateEmail(this.state.email);
          }
 
          if (this.state.phoneNo != ''){
@@ -247,19 +299,42 @@ const { navigation } = this.props;
        }
 
 
-    }//end edit driver
+    }
+}
+this.setState({phoneBorder: '#EAEAEA'})
+this.setState({emailBorders: '#EAEAEA'})
+this.setState({nameBorders: '#EAEAEA'})
+this.setState({passwordBorder: '#EAEAEA'})
+this.setState({conPasswordBorder: '#EAEAEA'})
+
+}//end edit driver
 
      static navigationOptions = function(props) {
 
 
      return {
-        title: ' بيانات الطالب',
+        title: 'تعديل بيانات الطالب',
        headerLeft: <View style={{paddingLeft:16, }}>
    				<Icon
    						name="chevron-left"
    						size={25}
    						color='white'
-   						onPress={() => props.navigation.goBack()} />
+   						onPress={() =>{
+                Alert.alert(
+     '',
+     'هل أنت متأكد؟',
+     [{text: 'نعم', onPress: () => props.navigation.goBack()},
+       {
+         text: 'لا',
+         onPress: () => console.log('Cancel Pressed'),
+         style: 'cancel',
+       },
+
+     ],
+     {cancelable: false},
+   );
+
+              }} />
    		</View>,
 
    		headerTintColor: 'white',
@@ -283,9 +358,9 @@ const { navigation } = this.props;
                         <Text style={styles.Main}> • تعديل البيانات الشخصية • </Text>
 
 
-                        <View style={styles.inputContainer}>
+                        <View style={styles.inputContainer{borderColor: this.state.nameBorders}]}>
 
-                        <TextInput style={styles.email, styles.input}
+                        <TextInput style={styles.input}
                         placeholder="اسم الطالب"
                         keyboardType="TextInput"
                         underlineColorAndroid='transparent'
@@ -343,10 +418,35 @@ const { navigation } = this.props;
                        secureTextEntry={true}
                        underlineColorAndroid='transparent'
                        autoCapitalize="none"
+                       blurOnSubmit={false}
+                       textContentType="newPassword"
                        onChangeText={(password) => {
+                         console.log(password);
+                         if (password.length>0){
+                         console.log(this.state.changePassword);
+                         this.setState({changePassword:true})
+                         console.log(this.state.changePassword);
                          this.setState({password})
+                         console.log(this.state.password);
                          this.setState({passwordBorder: '#EAEAEA'})
-                       } }
+                         console.log('aa'+this.state.password);
+                       }
+                       else {
+                         this.setState({changePassword:false})
+                         this.setState({password})
+                         console.log('bb'+this.state.password);
+                         console.log('empty!');
+                       }
+                     }
+                       }
+                       onEndEditing={() => {
+                           console.log(this.state.password);
+                         if (this.state.password==''){
+                           this.setState({changePassword:false})
+                           console.log('endEditing');
+                         }
+                       }}
+
                        value={this.state.password}
                        />
                        </View>
