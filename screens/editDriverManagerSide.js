@@ -172,7 +172,7 @@ else {
 
      editProfile = () => {
 const { navigation } = this.props;
-       if (this.state.workerId == '' || this.state.driverName == ''|| this.state.phoneNo == ''|| this.state.busNo == ''|| this.state.busPlate == '') {
+       if (this.state.nationalId == '' || this.state.driverName == ''|| this.state.phoneNo == ''|| this.state.busNo == ''|| this.state.busPlate == '') {
          this.setState({formErrorMsg: 'عفوًا، جميع الحقول مطلوبة'})
          this.setState({errorMsgVisibilty: 'flex'})
          return;
@@ -184,7 +184,7 @@ const { navigation } = this.props;
    if (this.state.password == '') {
 
 
-         firebase.database().ref('children/'+childKey).update({
+         firebase.database().ref('drivers/'+driverKey).update({
 
           nationalId: this.state.nationalId,
           name:this.state.driverName,
